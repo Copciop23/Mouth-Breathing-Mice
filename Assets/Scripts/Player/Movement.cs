@@ -28,18 +28,18 @@ public class Movement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && isGrounded() || Input.GetKeyDown(KeyCode.W) && isGrounded())
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
         }
-        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f || Input.GetKeyUp(KeyCode.W) && rb.velocity.y > 0f)
+        if (Input.GetButtonUp("Jump") && rb.linearVelocity.y > 0f || Input.GetKeyUp(KeyCode.W) && rb.linearVelocity.y > 0f)
         {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
         }
         flip(); // Flip the sprite
     }
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
     }
 
     private bool isGrounded()
@@ -61,15 +61,15 @@ public class Movement : MonoBehaviour
     private void UpdateState()
     {
 
-        if (!isGrounded() && rb.velocity.y >=0)
+        if (!isGrounded() && rb.linearVelocity.y >=0)
         {
             currentState = PlayerState.Jumping;
         }
-        else if (rb.velocity.y < 0)
+        else if (rb.linearVelocity.y < 0)
         {
             currentState = PlayerState.Landing;
         }
-        else if (horizontal != 0 && rb.velocity.y >= 0)
+        else if (horizontal != 0 && rb.linearVelocity.y >= 0)
         {
             currentState = PlayerState.Running;
         }
