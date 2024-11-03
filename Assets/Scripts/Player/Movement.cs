@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
@@ -13,28 +12,38 @@ public class Movement : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform playerSprite;
+    [SerializeField] private Animator animator;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource jumpSound;
+    [SerializeField] private AudioSource punchSound;
+    [SerializeField] private AudioSource dashSound;
 
     public bool IsFacingRight => isFacingRight;
-
-    // State tracking
     public PlayerState currentState;
 
     void Update()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
-
-        // Update state based on input
         UpdateState();
 
-        if (Input.GetButtonDown("Jump") && isGrounded() || Input.GetKeyDown(KeyCode.W) && isGrounded())
+        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W)) && isGrounded())
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
+            jumpSound?.Play();
         }
-        if (Input.GetButtonUp("Jump") && rb.linearVelocity.y > 0f || Input.GetKeyUp(KeyCode.W) && rb.linearVelocity.y > 0f)
+        if ((Input.GetButtonUp("Jump") || Input.GetKeyUp(KeyCode.W)) && rb.linearVelocity.y > 0f)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
         }
-        flip(); // Flip the sprite
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            currentState = PlayerState.Punching;
+            punchSound?.Play();
+        }
+
+        flip();
     }
 
     private void FixedUpdate()
@@ -60,8 +69,9 @@ public class Movement : MonoBehaviour
 
     private void UpdateState()
     {
+        if (currentState == PlayerState.Punching) return;
 
-        if (!isGrounded() && rb.linearVelocity.y >=0)
+        if (!isGrounded() && rb.linearVelocity.y > 0)
         {
             currentState = PlayerState.Jumping;
         }
@@ -69,7 +79,7 @@ public class Movement : MonoBehaviour
         {
             currentState = PlayerState.Landing;
         }
-        else if (horizontal != 0 && rb.linearVelocity.y >= 0)
+        else if (horizontal != 0 && isGrounded())
         {
             currentState = PlayerState.Running;
         }
@@ -78,34 +88,25 @@ public class Movement : MonoBehaviour
             currentState = PlayerState.Idle;
         }
 
+        animator.SetBool("isRunning", currentState == PlayerState.Running);
+        animator.SetBool("isJumping", currentState == PlayerState.Jumping);
+        animator.SetBool("isLanding", currentState == PlayerState.Landing);
 
-        switch (currentState)
-        {
-            case PlayerState.Idle:
-                //animator.SetTrigger("Idle");
-                break;
-            case PlayerState.Running:
-                Debug.Log("Running");
-                break;
-            case PlayerState.Jumping:
-                Debug.Log("Jumping");
-                break;
-            case PlayerState.Landing:
-                Debug.Log("Landing");
-                break;
-            case PlayerState.Dashing:
-                Debug.Log("Dashing");
-                break;
-        }
+        Debug.Log($"Current State: {currentState}");
     }
+
     public enum PlayerState
     {
         Idle,
         Running,
         Jumping,
         Landing,
-        Dashing
+        Dashing,
+        Punching
+    }
+
+    public void EndPunchingState()
+    {
+        currentState = PlayerState.Idle;
     }
 }
-
-

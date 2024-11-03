@@ -12,18 +12,25 @@ public class AbilityUI : MonoBehaviour
         if (dashScript == null)
             dashScript = FindObjectOfType<Dash>();
 
-        dashCooldownText.text = "Dash: Ready";
+        UpdateCooldownUI();
     }
 
     private void Update()
     {
+        if (dashScript == null) return;
+
+        UpdateCooldownUI();
+    }
+
+    private void UpdateCooldownUI()
+    {
         if (!dashScript.canDash)
         {
-            dashCooldownText.text = "Dash: " + "<color=#FF0000>" +dashScript.DashTimer.ToString("F1") + "s";
+            dashCooldownText.text = "Dash: <color=#FF0000>" + dashScript.DashTimer.ToString("F1") + "s</color>";
         }
         else
         {
-            dashCooldownText.text = "Dash:" + "<color=#00FF00> READY" ;
+            dashCooldownText.text = "Dash: <color=#00FF00>READY</color>";
         }
     }
 }

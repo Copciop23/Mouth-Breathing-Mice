@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Dash : MonoBehaviour
@@ -8,6 +7,8 @@ public class Dash : MonoBehaviour
     public float dashDelay = 1.5f;
     [SerializeField] private Rigidbody2D rb;
     private Movement movement;
+    [SerializeField] private AudioSource dashSound;
+
     public bool canDash { get; private set; } = true;
     public float DashTimer { get; private set; }
 
@@ -20,7 +21,7 @@ public class Dash : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1) && canDash)
         {
-            dash();
+            DashAbility();
             StartCoroutine(DashCooldown());
         }
 
@@ -30,9 +31,13 @@ public class Dash : MonoBehaviour
         }
     }
 
-    private void dash()
+    private void DashAbility()
     {
         if (movement == null) return;
+
+        movement.currentState = Movement.PlayerState.Dashing;
+        dashSound?.Play();
+
         float dashDirection = movement.IsFacingRight ? DashPower : -DashPower;
         rb.position = new Vector2(rb.position.x + dashDirection, rb.position.y);
     }
@@ -43,6 +48,7 @@ public class Dash : MonoBehaviour
         DashTimer = dashDelay;
         yield return new WaitForSeconds(dashDelay);
         canDash = true;
+
+        movement.currentState = Movement.PlayerState.Idle;
     }
 }
-
