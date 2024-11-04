@@ -405,7 +405,7 @@ GameObject:
   - component: {fileID: 463687785}
   - component: {fileID: 463687784}
   m_Layer: 7
-  m_Name: CooldownUI
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -425,7 +425,7 @@ RectTransform:
   m_Children:
   - {fileID: 1877553684}
   - {fileID: 1567976876}
-  m_Father: {fileID: 1254350667}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1158,8 +1158,7 @@ Transform:
   m_LocalPosition: {x: -0.41881832, y: -0.35187942, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 463687783}
+  m_Children: []
   m_Father: {fileID: 36341824}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1254350668
@@ -1441,9 +1440,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 463687783}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -392, y: 155}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 107, y: -123}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1567976877
@@ -1730,9 +1729,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 463687783}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -397, y: 244}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 102, y: -34}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1877553685
@@ -1934,3 +1933,4 @@ SceneRoots:
   - {fileID: 1852858851}
   - {fileID: 36341824}
   - {fileID: 1538208488}
+  - {fileID: 463687783}
