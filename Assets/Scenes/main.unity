@@ -461,6 +461,7 @@ GameObject:
   - component: {fileID: 169482646}
   - component: {fileID: 169482645}
   - component: {fileID: 169482644}
+  - component: {fileID: 169482649}
   m_Layer: 0
   m_Name: BrainRotEnemy
   m_TagString: Untagged
@@ -550,9 +551,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 0
 --- !u!212 &169482647
 SpriteRenderer:
@@ -621,9 +622,25 @@ Transform:
   m_LocalPosition: {x: 0.9299215, y: -2.9511287, z: -0.055634566}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1900441241}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &169482649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169482643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4068b9a2109ab3e4dbf27783e8b23390, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 9117396092212988311, guid: f8d90ff908023984f8328b3d22e5c072, type: 3}
+  shootInterval: 1
+  shootPoint: {fileID: 1900441241}
 --- !u!1 &399161976
 GameObject:
   m_ObjectHideFlags: 0
@@ -2223,7 +2240,7 @@ Transform:
   m_GameObject: {fileID: 1852858848}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.28, y: -1.67, z: 0}
+  m_LocalPosition: {x: 0.43, y: -1.95, z: 0}
   m_LocalScale: {x: 0.5378, y: 0.2552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2384,6 +2401,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dashScript: {fileID: 36341829}
   dashCooldownText: {fileID: 1877553685}
+--- !u!1 &1900441240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1900441241}
+  m_Layer: 0
+  m_Name: ShootPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1900441241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900441240}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.305, y: -0.099, z: 0.055634566}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 169482648}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1935050095
 GameObject:
   m_ObjectHideFlags: 0
