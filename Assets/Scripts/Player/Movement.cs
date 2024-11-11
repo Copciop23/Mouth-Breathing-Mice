@@ -7,6 +7,9 @@ public class Movement : MonoBehaviour
     public float speed = 8f;
     public float jumpingPower = 8f;
     private bool isFacingRight = true;
+    private bool canJump = true;
+    private bool recentlyLanded = false;
+    private bool isPunching = false;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -17,46 +20,46 @@ public class Movement : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource punchSound;
-    [SerializeField] private AudioSource dashSound;
 
     public bool IsFacingRight => isFacingRight;
-    public PlayerState currentState;
 
     void Update()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
-        UpdateState();
 
-        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W)) && isGrounded())
+        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W)) && IsGrounded() && canJump && !recentlyLanded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
             jumpSound?.Play();
+            canJump = false;
+            StartCoroutine(JumpCooldown());
         }
+
         if ((Input.GetButtonUp("Jump") || Input.GetKeyUp(KeyCode.W)) && rb.linearVelocity.y > 0f)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
         }
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && !isPunching)
         {
-            currentState = PlayerState.Punching;
-            punchSound?.Play();
+            StartCoroutine(PunchAction());
         }
 
-        flip();
+        Flip();
+        UpdateAnimation();
     }
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
+     rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
     }
 
-    private bool isGrounded()
+    private bool IsGrounded()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, 0.5f, groundLayer);
+        return Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, groundLayer);
     }
 
-    private void flip()
+    private void Flip()
     {
         if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
         {
@@ -67,46 +70,57 @@ public class Movement : MonoBehaviour
         }
     }
 
-    private void UpdateState()
+    private void UpdateAnimation()
     {
-        if (currentState == PlayerState.Punching) return;
+        if (isPunching) return;
 
-        if (!isGrounded() && rb.linearVelocity.y > 0)
+        if (!IsGrounded() && rb.linearVelocity.y > 0)
         {
-            currentState = PlayerState.Jumping;
+            animator.CrossFade("jump", 0, 0);
         }
         else if (rb.linearVelocity.y < 0)
         {
-            currentState = PlayerState.Landing;
+            animator.CrossFade("landing", 0, 0);
         }
-        else if (horizontal != 0 && isGrounded())
+        else if (horizontal != 0 && IsGrounded())
         {
-            currentState = PlayerState.Running;
+            animator.CrossFade("running", 0, 0);
         }
         else
         {
-            currentState = PlayerState.Idle;
+            animator.CrossFade("idle", 0, 0);
         }
-
-        animator.SetBool("isRunning", currentState == PlayerState.Running);
-        animator.SetBool("isJumping", currentState == PlayerState.Jumping);
-        animator.SetBool("isLanding", currentState == PlayerState.Landing);
-
-        Debug.Log($"Current State: {currentState}");
     }
 
-    public enum PlayerState
+    private IEnumerator PunchAction()
     {
-        Idle,
-        Running,
-        Jumping,
-        Landing,
-        Dashing,
-        Punching
+        isPunching = true;
+        punchSound?.Play();
+        animator.CrossFade("punch", 0, 0);
+
+        yield return new WaitForSeconds(0.77f);
+
+        isPunching = false;
     }
 
-    public void EndPunchingState()
+    private IEnumerator JumpCooldown()
     {
-        currentState = PlayerState.Idle;
+        yield return new WaitForSeconds(0.1f);
+        canJump = true;
+    }
+
+    private IEnumerator GroundCheckDelay()
+    {
+        yield return new WaitForSeconds(0.1f);
+        recentlyLanded = false;
+    }
+
+
+    public void TriggerDashingAnimation()
+    {
+        if (animator != null)
+        {
+            animator.CrossFade("dash", 0, 0);
+        }
     }
 }
