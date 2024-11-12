@@ -31,11 +31,13 @@ public class Dash : MonoBehaviour
         }
     }
 
+
+
     private void DashAbility()
     {
         if (movement == null) return;
 
-        movement.currentState = Movement.PlayerState.Dashing;
+        movement.TriggerDashingAnimation();
         dashSound?.Play();
 
         float dashDirection = movement.IsFacingRight ? DashPower : -DashPower;
@@ -48,7 +50,8 @@ public class Dash : MonoBehaviour
         DashTimer = dashDelay;
         yield return new WaitForSeconds(dashDelay);
         canDash = true;
-
-        movement.currentState = Movement.PlayerState.Idle;
     }
+
+
+
 }
