@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using TMPro;
 
@@ -25,11 +26,11 @@ public class AbilityUI : MonoBehaviour
     {
         if (!dashScript.canDash)
         {
-            dashCooldownText.text = "<color=#7FFFD4>Dash: <color=#FF0000>" + dashScript.DashTimer.ToString("F1") + "s</color>";
+            dashCooldownText.text = "Dash: <color=#FF0000>" + dashScript.DashTimer.ToString("F1") + "s</color>";
         }
         else
         {
-            dashCooldownText.text = "<color=#7FFFD4>Dash: <color=#00FF00>READY</color>";
+            dashCooldownText.text = "Dash: <color=#00FF00>READY</color>";
         }
     }
 }
