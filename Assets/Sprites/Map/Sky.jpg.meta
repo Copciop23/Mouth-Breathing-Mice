@@ -116,10 +116,10 @@ TextureImporter:
       name: muQL6L_0
       rect:
         serializedVersion: 2
-        x: 28
-        y: 120
-        width: 1738
-        height: 971
+        x: 57
+        y: 138
+        width: 1698
+        height: 930
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
