@@ -98,7 +98,7 @@ public class Movement : MonoBehaviour
         punchSound?.Play();
         animator.CrossFade("punch", 0, 0);
 
-        yield return new WaitForSeconds(0.77f);
+        yield return new WaitForSeconds(0.30f);
 
         isPunching = false;
     }
