@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
-public class HawkTuahShooting : MonoBehaviour
+public class EnemyShooting : MonoBehaviour
 {
     public GameObject projectilePrefab;
-    public float shootInterval = 1f;
+    public float shootInterval = 2f;
     public Transform shootPoint;
 
     private void Start()

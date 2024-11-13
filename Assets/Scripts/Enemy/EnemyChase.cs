@@ -19,5 +19,6 @@ public class EnemyChase : MonoBehaviour
             Vector2 direction = (player.position - transform.position).normalized;
             rb.linearVelocity = new Vector2(direction.x * speed, direction.y * speed);
         }
+        rb.freezeRotation = true;
     }
 }
