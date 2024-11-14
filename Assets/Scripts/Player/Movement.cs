@@ -109,11 +109,6 @@ public class Movement : MonoBehaviour
         canJump = true;
     }
 
-    private IEnumerator GroundCheckDelay()
-    {
-        yield return new WaitForSeconds(0.1f);
-        recentlyLanded = false;
-    }
 
 
     public void TriggerDashingAnimation()
