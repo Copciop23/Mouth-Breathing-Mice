@@ -262,8 +262,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d45450a7f78b5494bab50fa334b79e82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
-  jumpingPower: 4
+  speed: 6
+  jumpingPower: 7
   rb: {fileID: 36341826}
   groundCheck: {fileID: 1935050096}
   groundLayer:
@@ -1235,7 +1235,7 @@ GameObject:
   - component: {fileID: 812719077}
   - component: {fileID: 812719076}
   - component: {fileID: 812719078}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Floating Arena Map
   m_TagString: Ground
   m_Icon: {fileID: 0}
