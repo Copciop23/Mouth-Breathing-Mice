@@ -7,6 +7,7 @@ public class SpitProjectileBehaviour : MonoBehaviour
     public int damage = 20;
 
     private Rigidbody2D rb;
+    [SerializeField] PlayerStats HurtPlayer;
 
     void Start()
     {
@@ -26,7 +27,7 @@ public class SpitProjectileBehaviour : MonoBehaviour
         if (collision.gameObject.CompareTag("Player")) {
             PlayerStats playerHealth = collision.gameObject.GetComponent<PlayerStats>();
             if (playerHealth != null) {
-                playerHealth.TakeDamage(damage);
+                HurtPlayer.doDamage(damage);
             }
             Destroy(gameObject);
         }

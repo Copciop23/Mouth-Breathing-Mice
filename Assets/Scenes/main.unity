@@ -1769,7 +1769,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1240857190}
   - component: {fileID: 1240857189}
-  - component: {fileID: 1240857188}
   - component: {fileID: 1240857191}
   m_Layer: 7
   m_Name: SPIKE
@@ -1778,19 +1777,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1240857188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1240857186}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f07593cd70e70245b291cb5c0664c94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerStats: {fileID: 36341832}
 --- !u!212 &1240857189
 SpriteRenderer:
   m_ObjectHideFlags: 0
