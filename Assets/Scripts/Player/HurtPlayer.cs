@@ -5,7 +5,7 @@ public class HurtPlayer : MonoBehaviour
     [SerializeField] PlayerStats playerStats;
 
 
-private void OnCollisionEnter(Collision collision)
+private void OnCollisionEnter2D(Collision2D collision)
 {
     if (collision.gameObject.CompareTag("Player"))
     {
@@ -14,7 +14,7 @@ private void OnCollisionEnter(Collision collision)
 }
 
         public void doDamage(){
-        if(playerStats.playerHealth==null)return;
+        if (playerStats.playerHealth == 0) return;
         if(playerStats.playerHealth>0){
             playerStats.playerHealth -= 2;
         }
