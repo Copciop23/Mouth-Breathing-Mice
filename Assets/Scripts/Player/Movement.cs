@@ -56,7 +56,7 @@ public class Movement : MonoBehaviour
 
     private bool IsGrounded()
     {
-        return Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, groundLayer);
+        return Physics2D.Raycast(groundCheck.position, Vector2.down, 0.3f, groundLayer);
     }
 
     private void Flip()
