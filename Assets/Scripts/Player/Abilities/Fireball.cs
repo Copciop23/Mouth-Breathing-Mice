@@ -4,12 +4,12 @@ public class Fireball : MonoBehaviour
 {
     public GameObject fireballPrefab;
     public Transform firePoint;
+    public float fireballSpeed = 10f;
 
     private bool isFacingRight = true;
 
     void Update()
     {
-        // Check for direction change based on player input
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
             isFacingRight = false;
@@ -19,8 +19,7 @@ public class Fireball : MonoBehaviour
             isFacingRight = true;
         }
 
-        // Adjust fire point position based on direction
-        firePoint.localPosition = isFacingRight ? new Vector2(1, 0) : new Vector2(-1, 0);
+        firePoint.localPosition = isFacingRight ? new Vector2((float)0.1, 0) : new Vector2((float)-0.1, 0);
 
         // Shoot the fireball when 'F' is pressed
         if (Input.GetKeyDown(KeyCode.F))
@@ -30,17 +29,14 @@ public class Fireball : MonoBehaviour
     }
 
     void ShootFireball()
-    {
-        // Instantiate the fireball at the fire point position and rotation
-        GameObject fireball = Instantiate(fireballPrefab, firePoint.position, firePoint.rotation);
+{
+    GameObject fireball = Instantiate(fireballPrefab, firePoint.position, firePoint.rotation);
 
-        // Get the Rigidbody2D component of the fireball
-        Rigidbody2D rb = fireball.GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            // Set the velocity of the fireball based on the facing direction
-            float direction = isFacingRight ? 1 : -1;
-            rb.linearVelocity = new Vector2(direction, 0) * Mathf.Abs(rb.linearVelocity.x);
-        }
+    SpitProjectileBehaviour projectileBehaviour = fireball.GetComponent<SpitProjectileBehaviour>();
+    if (projectileBehaviour != null)
+    {
+        projectileBehaviour.isFacingRight = isFacingRight;
     }
+}
+
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6972752110121563944}
   - component: {fileID: 2453739021864158587}
   - component: {fileID: 1168660656871374965}
-  - component: {fileID: 4213698926523980656}
+  - component: {fileID: -2346401908647166304}
   m_Layer: 0
   m_Name: TestScuffedFireball_0
   m_TagString: Untagged
@@ -105,7 +105,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -163,7 +163,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.31, y: 0.28}
   m_EdgeRadius: 0
---- !u!114 &4213698926523980656
+--- !u!114 &-2346401908647166304
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,10 +172,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6257571448926500583}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f084d284a59721544b5b2aab692fb928, type: 3}
+  m_Script: {fileID: 11500000, guid: b230d40d0afd640488300ec9456877fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 25
-  lifetime: 6
+  speed: 5
+  lifetime: 3
   damage: 40
   HurtPlayer: {fileID: 0}
+  isFacingRight: 1

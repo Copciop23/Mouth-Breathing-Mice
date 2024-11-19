@@ -226,6 +226,9 @@ GameObject:
   - component: {fileID: 36341831}
   - component: {fileID: 36341832}
   - component: {fileID: 36341833}
+  - component: {fileID: 36341834}
+  - component: {fileID: 36341835}
+  - component: {fileID: 36341836}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -488,6 +491,49 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireballPrefab: {fileID: 6257571448926500583, guid: 3933ecafe387ffb43a356bfde126ddaa, type: 3}
   firePoint: {fileID: 1048498719}
+  fireballSpeed: 5
+--- !u!114 &36341834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36341823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 960a277180e540346aa1e9e0aa593271, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spitPrefab: {fileID: 9117396092212988311, guid: f8d90ff908023984f8328b3d22e5c072, type: 3}
+  firePoint: {fileID: 1048498719}
+  spitSpeed: 5
+--- !u!114 &36341835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36341823}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c42f6aff6de76a40a097a749e9a4400, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 36341824}
+  distanceFromPlayer: 1
+--- !u!114 &36341836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36341823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed5cf07bab33f66408dd7f7998453b37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shieldPrefab: {fileID: 4401958786331513828, guid: f09448572c4176a47bda13021897c8e4, type: 3}
 --- !u!1 &72420811
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,7 +641,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &169482644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -746,7 +792,7 @@ Transform:
   m_GameObject: {fileID: 169482643}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.9299215, y: -2.9511287, z: -0.055634566}
+  m_LocalPosition: {x: -2.585, y: -3.757, z: -0.055634566}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -766,7 +812,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 9117396092212988311, guid: f8d90ff908023984f8328b3d22e5c072, type: 3}
-  shootInterval: 1
+  shootInterval: 0.5
   shootPoint: {fileID: 1900441241}
 --- !u!1 &399161976
 GameObject:
@@ -1820,7 +1866,7 @@ Transform:
   m_GameObject: {fileID: 1048498718}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.15, y: 0, z: 0}
+  m_LocalPosition: {x: 0.1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3002,7 +3048,7 @@ Transform:
   m_GameObject: {fileID: 1900441240}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.305, y: -0.099, z: 0.055634566}
+  m_LocalPosition: {x: 0.525, y: -0.074, z: 0.055634566}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
