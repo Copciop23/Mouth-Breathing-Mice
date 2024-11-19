@@ -10,29 +10,46 @@ public class Movement : MonoBehaviour
     private bool canJump = true;
     private bool recentlyLanded = false;
     private bool isPunching = false;
+    private bool canDoubleJump = false;
+    private bool ChargingJump = false;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform playerSprite;
     [SerializeField] private Animator animator;
+    private SpringBoots springboots;
 
     [Header("Audio")]
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource punchSound;
+    [SerializeField] private AudioSource chargeSound;
 
     public bool IsFacingRight => isFacingRight;
+
+    private void Start()
+    {
+        if (springboots == null)
+        {
+            springboots = FindObjectOfType<SpringBoots>();
+        }
+    }
 
     void Update()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
 
+        // First jump
         if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W)) && IsGrounded() && canJump && !recentlyLanded)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
-            jumpSound?.Play();
-            canJump = false;
-            StartCoroutine(JumpCooldown());
+            Jump(jumpingPower);
+            canDoubleJump = true;
+        }
+        // Double jump
+        else if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W)) && canDoubleJump && !IsGrounded())
+        {
+            Jump(jumpingPower * 0.8f);
+            canDoubleJump = false;
         }
 
         if ((Input.GetButtonUp("Jump") || Input.GetKeyUp(KeyCode.W)) && rb.linearVelocity.y > 0f)
@@ -40,9 +57,13 @@ public class Movement : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
         }
 
-        if (Input.GetButtonDown("Fire1") && !isPunching)
+        if (Input.GetMouseButtonDown(0) && !isPunching)
         {
             StartCoroutine(PunchAction());
+        }
+        if (springboots.IsChargingJump)
+        {
+            StartCoroutine(ChargeJump());
         }
 
         Flip();
@@ -51,12 +72,18 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-     rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
     }
 
     private bool IsGrounded()
     {
-        return Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, groundLayer);
+        bool grounded = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, groundLayer);
+        if (grounded)
+        {
+            canDoubleJump = false;
+        }
+
+        return grounded;
     }
 
     private void Flip()
@@ -73,6 +100,7 @@ public class Movement : MonoBehaviour
     private void UpdateAnimation()
     {
         if (isPunching) return;
+        if (ChargingJump) return;
 
         if (!IsGrounded() && rb.linearVelocity.y > 0)
         {
@@ -92,6 +120,14 @@ public class Movement : MonoBehaviour
         }
     }
 
+    private void Jump(float power)
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, power);
+        jumpSound?.Play();
+        canJump = false;
+        StartCoroutine(JumpCooldown());
+    }
+
     private IEnumerator PunchAction()
     {
         isPunching = true;
@@ -102,14 +138,27 @@ public class Movement : MonoBehaviour
 
         isPunching = false;
     }
+    private IEnumerator ChargeJump()
+    {
+        ChargingJump = true;
+        chargeSound?.Play();
+        animator.CrossFade("charge", 0, 0);
+
+        while (Input.GetKey(KeyCode.LeftAlt))
+        {
+
+            ChargingJump = false;
+            animator.CrossFade("jumping",0,0);
+            yield return null;
+        }
+
+    }
 
     private IEnumerator JumpCooldown()
     {
         yield return new WaitForSeconds(0.1f);
         canJump = true;
     }
-
-
 
     public void TriggerDashingAnimation()
     {
