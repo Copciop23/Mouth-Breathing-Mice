@@ -7,43 +7,67 @@ public class Movement : MonoBehaviour
     public float speed = 8f;
     public float jumpingPower = 8f;
     private bool isFacingRight = true;
+    private bool canJump = true;
+    private bool recentlyLanded = false;
+    private bool isPunching = false;
+    private bool canDoubleJump = false;
+    private bool ChargingJump = false;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform playerSprite;
     [SerializeField] private Animator animator;
+    private SpringBoots springboots;
 
     [Header("Audio")]
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource punchSound;
-    [SerializeField] private AudioSource dashSound;
+    [SerializeField] private AudioSource chargeSound;
 
     public bool IsFacingRight => isFacingRight;
-    public PlayerState currentState;
+
+    private void Start()
+    {
+        if (springboots == null)
+        {
+            springboots = FindObjectOfType<SpringBoots>();
+        }
+    }
 
     void Update()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
-        UpdateState();
 
-        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W)) && isGrounded())
+        // First jump
+        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W)) && IsGrounded() && canJump && !recentlyLanded)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
-            jumpSound?.Play();
+            Jump(jumpingPower);
+            canDoubleJump = true;
         }
+        // Double jump
+        else if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W)) && canDoubleJump && !IsGrounded())
+        {
+            Jump(jumpingPower * 0.8f);
+            canDoubleJump = false;
+        }
+
         if ((Input.GetButtonUp("Jump") || Input.GetKeyUp(KeyCode.W)) && rb.linearVelocity.y > 0f)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
         }
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetMouseButtonDown(0) && !isPunching)
         {
-            currentState = PlayerState.Punching;
-            punchSound?.Play();
+            StartCoroutine(PunchAction());
+        }
+        if (springboots.IsChargingJump)
+        {
+            StartCoroutine(ChargeJump());
         }
 
-        flip();
+        Flip();
+        UpdateAnimation();
     }
 
     private void FixedUpdate()
@@ -51,12 +75,18 @@ public class Movement : MonoBehaviour
         rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
     }
 
-    private bool isGrounded()
+    private bool IsGrounded()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, 0.5f, groundLayer);
+        bool grounded = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, groundLayer);
+        if (grounded)
+        {
+            canDoubleJump = false;
+        }
+
+        return grounded;
     }
 
-    private void flip()
+    private void Flip()
     {
         if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
         {
@@ -67,46 +97,74 @@ public class Movement : MonoBehaviour
         }
     }
 
-    private void UpdateState()
+    private void UpdateAnimation()
     {
-        if (currentState == PlayerState.Punching) return;
+        if (isPunching) return;
+        if (ChargingJump) return;
 
-        if (!isGrounded() && rb.linearVelocity.y > 0)
+        if (!IsGrounded() && rb.linearVelocity.y > 0)
         {
-            currentState = PlayerState.Jumping;
+            animator.CrossFade("jump", 0, 0);
         }
         else if (rb.linearVelocity.y < 0)
         {
-            currentState = PlayerState.Landing;
+            animator.CrossFade("landing", 0, 0);
         }
-        else if (horizontal != 0 && isGrounded())
+        else if (horizontal != 0 && IsGrounded())
         {
-            currentState = PlayerState.Running;
+            animator.CrossFade("running", 0, 0);
         }
         else
         {
-            currentState = PlayerState.Idle;
+            animator.CrossFade("idle", 0, 0);
+        }
+    }
+
+    private void Jump(float power)
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, power);
+        jumpSound?.Play();
+        canJump = false;
+        StartCoroutine(JumpCooldown());
+    }
+
+    private IEnumerator PunchAction()
+    {
+        isPunching = true;
+        punchSound?.Play();
+        animator.CrossFade("punch", 0, 0);
+
+        yield return new WaitForSeconds(0.30f);
+
+        isPunching = false;
+    }
+    private IEnumerator ChargeJump()
+    {
+        ChargingJump = true;
+        chargeSound?.Play();
+        animator.CrossFade("charge", 0, 0);
+
+        while (Input.GetKey(KeyCode.LeftAlt))
+        {
+
+            ChargingJump = false;
+            animator.CrossFade("jumping",0,0);
+            yield return null;
         }
 
-        animator.SetBool("isRunning", currentState == PlayerState.Running);
-        animator.SetBool("isJumping", currentState == PlayerState.Jumping);
-        animator.SetBool("isLanding", currentState == PlayerState.Landing);
-
-        Debug.Log($"Current State: {currentState}");
     }
 
-    public enum PlayerState
+    private IEnumerator JumpCooldown()
     {
-        Idle,
-        Running,
-        Jumping,
-        Landing,
-        Dashing,
-        Punching
+        yield return new WaitForSeconds(0.1f);
+        canJump = true;
     }
 
-    public void EndPunchingState()
+    public void TriggerDashingAnimation()
     {
-        currentState = PlayerState.Idle;
+        if (animator != null)
+        {
+            animator.CrossFade("dash", 0, 0);
+        }
     }
 }
