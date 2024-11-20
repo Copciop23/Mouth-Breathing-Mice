@@ -1,12 +1,14 @@
 using UnityEngine;
-
+using UnityEngine.UI;
 public class PlayerStats : MonoBehaviour
 {
     public int playerHealth;
+    public Slider slider;
 
     void Start()
     {
         playerHealth = 100;
+        slider.value=100;
     }
 
      private void OnCollisionEnter2D (Collision2D collision) {
