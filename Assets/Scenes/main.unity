@@ -278,6 +278,7 @@ MonoBehaviour:
   animator: {fileID: 661821579}
   jumpSound: {fileID: 36341831}
   punchSound: {fileID: 36341831}
+  chargeSound: {fileID: 0}
 --- !u!50 &36341826
 Rigidbody2D:
   serializedVersion: 5
@@ -514,13 +515,20 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 36341823}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c42f6aff6de76a40a097a749e9a4400, type: 3}
+  m_Script: {fileID: 11500000, guid: 09f4037e6cf2c934ba2e9c34125414d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 36341824}
-  distanceFromPlayer: 1
+  baseJumpPower: 8
+  maxJumpPower: 12
+  jumpChargeRate: 10
+  rb: {fileID: 36341826}
+  groundCheck: {fileID: 1935050096}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  jumpSound: {fileID: 36341831}
 --- !u!114 &36341836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3021,8 +3029,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8026f31672dc6e448b7daa9db64a44a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashScript: {fileID: 36341829}
-  dashCooldownText: {fileID: 1877553685}
 --- !u!1 &1900441240
 GameObject:
   m_ObjectHideFlags: 0

@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      TestScuffedFireball_0: -6725867553803253477
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
