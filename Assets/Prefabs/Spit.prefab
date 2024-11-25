@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8657735113205851604}
   - component: {fileID: 8395027385742561607}
   - component: {fileID: 9011918833219469085}
-  - component: {fileID: 2358491257207529873}
+  - component: {fileID: 236789098945036777}
   m_Layer: 0
   m_Name: Spit
   m_TagString: Untagged
@@ -163,7 +163,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &2358491257207529873
+--- !u!114 &236789098945036777
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,11 +172,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 9117396092212988311}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b230d40d0afd640488300ec9456877fa, type: 3}
+  m_Script: {fileID: 11500000, guid: f084d284a59721544b5b2aab692fb928, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  lifetime: 3
-  damage: 20
-  HurtPlayer: {fileID: 0}
-  isFacingRight: 1
+  speed: 10
+  lifetime: 8
