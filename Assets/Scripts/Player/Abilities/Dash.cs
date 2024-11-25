@@ -8,6 +8,7 @@ public class Dash : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     private Movement movement;
     [SerializeField] private AudioSource dashSound;
+    private SpringBoots springboots;
 
     public bool canDash { get; private set; } = true;
     public float DashTimer { get; private set; }
@@ -15,11 +16,12 @@ public class Dash : MonoBehaviour
     void Start()
     {
         movement = GetComponent<Movement>();
+        springboots = GetComponent<SpringBoots>();
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1) && canDash)
+        if (Input.GetMouseButtonDown(1) && canDash && !springboots.IsChargingJump)
         {
             DashAbility();
             StartCoroutine(DashCooldown());
