@@ -1,19 +1,22 @@
 using System.Collections;
 using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class SpringBoots : MonoBehaviour
 {
-    public float baseJumpPower = 8f; // Minimum jump power
-    public float maxJumpPower = 12f; // Maximum jump power
-    public float jumpChargeRate = 10f; // Speed of charging jump power
+    public float baseJumpPower = 4f; // Minimum jump power
+    public float maxJumpPower = 8f; // Maximum jump power
+    public float jumpChargeRate = 2f; // Speed of charging jump power
     private float currentJumpPower; // Tracks the current jump charge
 
     private bool isChargingJump = false;
 
-    [SerializeField] private Rigidbody2D rb; // Reference to the player's Rigidbody2D
-    [SerializeField] private Transform groundCheck; // Ground check position
-    [SerializeField] private LayerMask groundLayer; // Ground layer mask
-    [SerializeField] private AudioSource jumpSound;// Sound effect for the jump
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private AudioSource jumpSound;
+    [SerializeField] private Slider ChargeSlider;
     public float CurrentJumpPower => currentJumpPower;
     public bool IsChargingJump => isChargingJump;
 
@@ -46,6 +49,7 @@ public class SpringBoots : MonoBehaviour
             PerformJump(currentJumpPower);
             isChargingJump = false;
         }
+        ChargeSlider.value = currentJumpPower;
     }
 
     private bool IsGrounded()
@@ -57,5 +61,6 @@ public class SpringBoots : MonoBehaviour
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, power);
         jumpSound?.Play();
+        currentJumpPower = 0;
     }
 }
