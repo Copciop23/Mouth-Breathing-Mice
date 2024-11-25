@@ -3,6 +3,7 @@ using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine.UI;
 using System;
+using UnityEngine.SceneManagement;
 
 public class PlayFabManager : MonoBehaviour
 {
@@ -39,6 +40,7 @@ public class PlayFabManager : MonoBehaviour
     {
         messageText.text = "Logged in";
         Debug.Log("Succesful Login");
+        SceneManager.LoadScene("main");
     }
 
     public void ResetPasswordButton() {

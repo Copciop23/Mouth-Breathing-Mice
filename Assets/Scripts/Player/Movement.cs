@@ -39,13 +39,11 @@ public class Movement : MonoBehaviour
     {
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        // First jump
         if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W)) && IsGrounded() && canJump && !recentlyLanded)
         {
             Jump(jumpingPower);
             canDoubleJump = true;
         }
-        // Double jump
         else if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W)) && canDoubleJump && !IsGrounded())
         {
             Jump(jumpingPower * 0.8f);

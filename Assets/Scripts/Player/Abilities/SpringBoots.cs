@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class SpringBoots : MonoBehaviour
 {
-    public float baseJumpPower = 4f; // Minimum jump power
-    public float maxJumpPower = 8f; // Maximum jump power
-    public float jumpChargeRate = 2f; // Speed of charging jump power
-    private float currentJumpPower; // Tracks the current jump charge
+    public float baseJumpPower = 4f;
+    public float maxJumpPower = 8f;
+    public float jumpChargeRate = 2f;
+    private float currentJumpPower;
 
     private bool isChargingJump = false;
 

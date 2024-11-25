@@ -11,5 +11,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/main.unity
     guid: 3c59ba56aa4f4ba4f993891f10d95776
+  - enabled: 1
+    path: Assets/Scenes/Login Menu.unity
+    guid: 38680146f16e976479e3190e77aeca84
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
