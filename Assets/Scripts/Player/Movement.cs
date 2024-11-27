@@ -12,6 +12,10 @@ public class Movement : MonoBehaviour
     private bool isPunching = false;
     private bool canDoubleJump = false;
     private bool ChargingJump = false;
+    private const float immobilityTolerance = 0.01f;
+    private const float immobilityThreshold = 0.2f;
+    private Vector3 lastPosition;
+    private float immobilityTime;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -63,9 +67,39 @@ public class Movement : MonoBehaviour
         {
             StartCoroutine(ChargeJump());
         }
+        DetectImmobility();
 
-        Flip();
-        UpdateAnimation();
+        if (IsGrounded() || !IsImmobile())
+        {
+            Flip();
+            UpdateAnimation();
+        }
+        else
+        {
+            rb.position += new Vector2(0, -0.0002f);
+            animator.CrossFade("inWall", 0, 0);
+        }
+
+    }
+    private void DetectImmobility()
+    {
+        float positionChange = Vector3.Distance(transform.position, lastPosition);
+
+        if (positionChange < immobilityTolerance && rb.linearVelocity.magnitude < immobilityTolerance && !IsGrounded())
+        {
+            immobilityTime += Time.deltaTime;
+        }
+        else
+        {
+            immobilityTime = 0f;
+        }
+
+        lastPosition = transform.position;
+    }
+
+    private bool IsImmobile()
+    {
+        return immobilityTime >= immobilityThreshold;
     }
 
     private void FixedUpdate()
@@ -75,7 +109,7 @@ public class Movement : MonoBehaviour
 
     private bool IsGrounded()
     {
-        bool grounded = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, groundLayer);
+        bool grounded = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.000001f, groundLayer);
         if (grounded)
         {
             canDoubleJump = false;
@@ -165,4 +199,6 @@ public class Movement : MonoBehaviour
             animator.CrossFade("dash", 0, 0);
         }
     }
+
+
 }
