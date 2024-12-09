@@ -12,6 +12,8 @@ public class Movement : MonoBehaviour
     private bool isPunching = false;
     private bool canDoubleJump = false;
     private bool ChargingJump = false;
+    private bool isBlocking = false;
+    private bool isCrouching = false;
     private const float immobilityTolerance = 0.01f;
     private const float immobilityThreshold = 0.2f;
     private Vector3 lastPosition;
@@ -43,6 +45,30 @@ public class Movement : MonoBehaviour
     {
         horizontal = Input.GetAxisRaw("Horizontal");
 
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            StartBlocking();
+        }
+        else if (Input.GetKeyUp(KeyCode.B))
+        {
+            StopBlocking();
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            StartCrouching();
+        }
+        else if (Input.GetKeyUp(KeyCode.S))
+        {
+            StopCrouching();
+        }
+
+        if (isBlocking || isCrouching)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W)) && IsGrounded() && canJump && !recentlyLanded)
         {
             Jump(jumpingPower);
@@ -63,10 +89,12 @@ public class Movement : MonoBehaviour
         {
             StartCoroutine(PunchAction());
         }
+
         if (springboots.IsChargingJump)
         {
             StartCoroutine(ChargeJump());
         }
+
         DetectImmobility();
 
         if (IsGrounded() || !IsImmobile())
@@ -79,8 +107,40 @@ public class Movement : MonoBehaviour
             rb.position += new Vector2(0, -0.0002f);
             animator.CrossFade("inWall", 0, 0);
         }
-
     }
+
+    private void FixedUpdate()
+    {
+        if (!isBlocking && !isCrouching)
+        {
+            rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
+        }
+    }
+
+    private void StartBlocking()
+    {
+        isBlocking = true;
+        animator.CrossFade("block", 0, 0);
+    }
+
+    private void StopBlocking()
+    {
+        isBlocking = false;
+        animator.CrossFade("idle", 0, 0);
+    }
+
+    private void StartCrouching()
+    {
+        isCrouching = true;
+        animator.CrossFade("down", 0, 0);
+    }
+
+    private void StopCrouching()
+    {
+        isCrouching = false;
+        animator.CrossFade("idle", 0, 0);
+    }
+
     private void DetectImmobility()
     {
         float positionChange = Vector3.Distance(transform.position, lastPosition);
@@ -100,11 +160,6 @@ public class Movement : MonoBehaviour
     private bool IsImmobile()
     {
         return immobilityTime >= immobilityThreshold;
-    }
-
-    private void FixedUpdate()
-    {
-        rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
     }
 
     private bool IsGrounded()
@@ -133,6 +188,8 @@ public class Movement : MonoBehaviour
     {
         if (isPunching) return;
         if (ChargingJump) return;
+        if (isBlocking) return;
+        if (isCrouching) return;
 
         if (!IsGrounded() && rb.linearVelocity.y > 0)
         {
@@ -170,6 +227,7 @@ public class Movement : MonoBehaviour
 
         isPunching = false;
     }
+
     private IEnumerator ChargeJump()
     {
         ChargingJump = true;
@@ -178,12 +236,10 @@ public class Movement : MonoBehaviour
 
         while (Input.GetKey(KeyCode.LeftAlt))
         {
-
             ChargingJump = false;
-            animator.CrossFade("jumping",0,0);
+            animator.CrossFade("jumping", 0, 0);
             yield return null;
         }
-
     }
 
     private IEnumerator JumpCooldown()
@@ -199,6 +255,4 @@ public class Movement : MonoBehaviour
             animator.CrossFade("dash", 0, 0);
         }
     }
-
-
 }
