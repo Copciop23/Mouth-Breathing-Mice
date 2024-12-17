@@ -17,12 +17,13 @@ public class EnemyHurt : MonoBehaviour
         enemyHealthBar.value = health;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, GameObject attacker)
     {
         health -= damage;
 
         if (health <= 0)
         {
+            AwardKill(attacker);
             Die();
         }
     }
@@ -30,5 +31,14 @@ public class EnemyHurt : MonoBehaviour
     private void Die()
     {
         Destroy(gameObject);
+    }
+
+    private void AwardKill(GameObject attacker)
+    {
+        PlayerStats playerStats = attacker.GetComponent<PlayerStats>();
+        if (playerStats != null)
+        {
+            playerStats.AddKill(); // Increment the player's kill count
+        }
     }
 }

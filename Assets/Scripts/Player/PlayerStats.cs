@@ -6,6 +6,7 @@ using System.Collections;
 public class PlayerStats : MonoBehaviour
 {
     public int playerHealth;
+    private int kills;
     [SerializeField] Slider slider;
     [SerializeField] private GameObject DeathScreen;
     [SerializeField] private GameObject playerSprite;
@@ -13,6 +14,7 @@ public class PlayerStats : MonoBehaviour
 
     private HashSet<Collider2D> processedColliders = new HashSet<Collider2D>();
     private Vector3 respawnPosition;
+    public int getkills => kills;
 
     void Start()
     {
@@ -93,5 +95,10 @@ public class PlayerStats : MonoBehaviour
         {
             playerSprite.SetActive(true);
         }
+    }
+
+    public void AddKill()
+    {
+        kills++;
     }
 }

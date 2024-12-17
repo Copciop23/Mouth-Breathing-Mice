@@ -3,15 +3,14 @@ using TMPro;
 public class StatsUI : MonoBehaviour
 {
     [SerializeField] private PlayerStats playerStats;
-    [SerializeField] private TextMeshProUGUI playerHealthText;
+    [SerializeField] private TextMeshProUGUI playerScoreText;
     void Start()
     {
-        playerHealthText.text="<color=#AA0000>HP: <color=#FF5555>"+playerStats.playerHealth+"</color>";
+        playerScoreText.text= "<color=#81D8D0>KILLS: <color=#5555FF>" + playerStats.getkills+"</color>";
     }
 
-    // Update is called once per frame
     void Update()
     {
-       playerHealthText.text="<color=#AA0000>HP: <color=#FF5555>"+playerStats.playerHealth+"</color>"; 
+       playerScoreText.text= "<color=#81D8D0>Health: <color=#5555FF>"+ playerStats.playerHealth + "\n<color=#81D8D0>KILLS: <color=#5555FF>" + playerStats.getkills+"</color>"; 
     }
 }

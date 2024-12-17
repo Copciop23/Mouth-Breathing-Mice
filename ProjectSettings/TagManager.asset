@@ -44,7 +44,7 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Mouse
+  - name: UI
     uniqueID: 218433681
     locked: 0
   m_RenderingLayers:
