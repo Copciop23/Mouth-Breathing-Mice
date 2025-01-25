@@ -39,7 +39,7 @@ public class Punch : MonoBehaviour
 
             if (hitObject.TryGetComponent(out EnemyHurt enemy))
             {
-                enemy.TakeDamage(punchDamage);
+                enemy.TakeDamage(punchDamage, gameObject);
                 hitSound?.Play();
             }
         }
