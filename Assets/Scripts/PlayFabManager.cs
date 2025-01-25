@@ -4,6 +4,12 @@ using PlayFab.ClientModels;
 using UnityEngine.UI;
 using System;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
+using NUnit.Framework;
+using System.Collections.Generic;
+using PlayFab.ProgressionModels;
+using PlayFab.SharedModels;
+using PlayFab.ProgressionModels;
 
 public class PlayFabManager : MonoBehaviour
 {
@@ -49,6 +55,7 @@ public class PlayFabManager : MonoBehaviour
             TitleId = "794EE"
         };
         PlayFabClientAPI.SendAccountRecoveryEmail(request, OnPasswordReset, OnError);
+
    }
 
     private void OnPasswordReset(SendAccountRecoveryEmailResult result)
@@ -78,9 +85,12 @@ public class PlayFabManager : MonoBehaviour
             CustomId = SystemInfo.deviceUniqueIdentifier,
             CreateAccount = true
         };
+
         PlayFabClientAPI.LoginWithCustomID(request, OnSuccess, OnError);
+
     }
     void OnSuccess(LoginResult result) {
+        SendLeaderboard();
         Debug.Log("Succesful Login/account created!");
     }
 
@@ -88,4 +98,22 @@ public class PlayFabManager : MonoBehaviour
         Debug.Log("Error While creating/Logging in");
         Debug.Log(error.GenerateErrorReport());
     }
+    public void SendLeaderboard() {
+    var request = new UpdatePlayerStatisticsRequest {
+        Statistics = new List<PlayFab.ClientModels.StatisticUpdate> {
+            new PlayFab.ClientModels.StatisticUpdate {
+                StatisticName = "KillTotal", 
+                Value = 3
+            }
+        }
+    };
+
+    PlayFabClientAPI.UpdatePlayerStatistics(request, OnSuccess, OnError);
 }
+
+private void OnSuccess(UpdatePlayerStatisticsResult result) {
+    Debug.Log("Successfully updated player statistics.");
+}
+}
+    
+
