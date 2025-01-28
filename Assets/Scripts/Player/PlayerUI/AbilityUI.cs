@@ -7,7 +7,9 @@ using UnityEngine.UI;
 public class AbilityUI : MonoBehaviour
 {
     [SerializeField] private Dash dashScript;
+    [SerializeField] private SpringBoots springBootsScript;
     [SerializeField] private Slider dashSlider;
+    [SerializeField] private Slider bootsSlider;
 
     private void Start()
     {
@@ -27,6 +29,7 @@ public class AbilityUI : MonoBehaviour
             else
             {
             }
+            bootsSlider.value = springBootsScript.CurrentJumpPower;
         }
     } 
 
