@@ -95,9 +95,7 @@ namespace PlayFab.MultiplayerModels
         CentralIndia,
         UaeNorth,
         UkSouth,
-        SwedenCentral,
-        CanadaCentral,
-        MexicoCentral
+        SwedenCentral
     }
 
     public enum AzureVmFamily
@@ -4761,8 +4759,7 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public string PubSubConnectionHandle;
         /// <summary>
-        /// The name of the resource to subscribe to. For LobbyChange subscriptions this is the lobbyId. For LobbyInvite
-        /// subscriptions this should always be "@me".
+        /// The name of the resource to subscribe to.
         /// </summary>
         public string ResourceId;
         /// <summary>
@@ -4770,9 +4767,7 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public uint SubscriptionVersion;
         /// <summary>
-        /// Subscription type. "LobbyChange" subscriptions allow a member or owner to receive notifications of lobby data, member or
-        /// owner changes. "LobbyInvite" subscriptions allow a player to receive invites to lobbies. A player does not need to be a
-        /// member of a lobby to receive lobby invites.
+        /// Subscription type.
         /// </summary>
         public SubscriptionType Type;
     }
