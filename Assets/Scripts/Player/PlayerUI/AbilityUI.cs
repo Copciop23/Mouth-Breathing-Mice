@@ -1,25 +1,22 @@
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
+using UnityEngine.UI;
+
 
 public class AbilityUI : MonoBehaviour
 {
     [SerializeField] private Dash dashScript;
-    [SerializeField] private SpringBoots springboots;
-    [SerializeField] private TextMeshProUGUI dashCooldownText;
+    [SerializeField] private SpringBoots springBootsScript;
+    [SerializeField] private Slider dashSlider;
+    [SerializeField] private Slider bootsSlider;
 
     private void Start()
     {
-        if (dashScript == null)
-            dashScript = FindObjectOfType<Dash>();
-        if (springboots == null)
-        {
-            springboots = FindObjectOfType<SpringBoots>();
-        }
         UpdateCooldownUI();
     }
         private void Update()
         {
-            if (dashScript == null|| springboots == null) return;
             UpdateCooldownUI();
         }
 
@@ -27,12 +24,12 @@ public class AbilityUI : MonoBehaviour
         {
             if (!dashScript.canDash)
             {
-                dashCooldownText.text = "<color=#7FFFD4>Dash: <color=#FF0000>" + dashScript.DashTimer.ToString("F1") + "s</color>\n" + "Charge: " + springboots.CurrentJumpPower.ToString("F1");
+            dashSlider.value = dashScript.DashTimer;
             }
             else
             {
-                dashCooldownText.text = "<color=#7FFFD4>Dash: <color=#00FF00>READY</color>\n"+"Charge: "+ springboots.CurrentJumpPower.ToString("F1");
             }
+            bootsSlider.value = springBootsScript.CurrentJumpPower;
         }
     } 
 
