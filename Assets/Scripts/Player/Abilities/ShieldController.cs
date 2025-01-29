@@ -1,63 +1,40 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
 public class ShieldController : MonoBehaviour
 {
-    public GameObject shieldPrefab;  // The bubble shield prefab
-    private GameObject activeShield; // Reference to the active shield
-    public float shieldDuration = 0.5f;  // How long the shield lasts
-    private bool isShieldActive = false;  // Track whether the shield is active
+    public GameObject shieldPrefab; // The shield object
+    public float shieldDuration = 0.3f; // How long the shield lasts
+    public float cooldownTime = 7f; // Cooldown before reusing the shield
 
-    public float cooldownTime = 7f;  // Cooldown time in seconds
-    private float timeSinceLastShield = 0f;  // Timer for cooldown
+    private bool isShieldActive = false;
+    private bool isOnCooldown = false;
 
     void Update()
     {
-        // Update the cooldown timer
-        timeSinceLastShield += Time.deltaTime;
-
-        // If 'H' key is pressed and shield is not active and cooldown has finished
-        if (Input.GetKeyDown(KeyCode.H) && !isShieldActive && timeSinceLastShield >= cooldownTime)
+        // Activate shield when 'H' is pressed, if not on cooldown
+        if (Input.GetKeyDown(KeyCode.H) && !isShieldActive && !isOnCooldown)
         {
-            ActivateShield();
-            timeSinceLastShield = 0f;  // Reset the cooldown timer
+            StartCoroutine(ActivateShield());
         }
     }
 
-    // Activate the shield
-    void ActivateShield()
+    IEnumerator ActivateShield()
     {
         isShieldActive = true;
+        isOnCooldown = true;
 
-        // Instantiate the shield at the player's position
-        activeShield = Instantiate(shieldPrefab, transform.position, Quaternion.identity);
-        activeShield.transform.SetParent(transform);  // Keep shield at the player
-
-        // Add a collider to the shield
-        CircleCollider2D collider = activeShield.AddComponent<CircleCollider2D>();
-        collider.isTrigger = true;  // Set it to trigger mode, so it doesn't physically block the player
-
-        // Destroy the shield after the specified duration
-        Destroy(activeShield, shieldDuration);
-
-        // Disable the shield after duration
-        StartCoroutine(DisableShieldAfterDelay());
-    }
-
-    // Coroutine to disable the shield after a delay
-    private IEnumerator DisableShieldAfterDelay()
-    {
+        // Instantiate shield at player's position
+        GameObject shield = Instantiate(shieldPrefab, transform.position, Quaternion.identity, transform);
+        
+        // Destroy the shield after the duration ends
         yield return new WaitForSeconds(shieldDuration);
+        Destroy(shield);
+        
         isShieldActive = false;
-    }
 
-    // Collision detection with projectiles
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (isShieldActive && other.CompareTag("Projectile"))
-        {
-            // Destroy the projectile if it hits the shield
-            Destroy(other.gameObject);
-        }
+        // Wait for cooldown before allowing another shield activation
+        yield return new WaitForSeconds(cooldownTime);
+        isOnCooldown = false;
     }
 }

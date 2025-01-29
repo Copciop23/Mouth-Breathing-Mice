@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3192762080323902707}
   m_Layer: 0
   m_Name: ProjectileSprite
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -174,6 +174,7 @@ MonoBehaviour:
   speed: 5
   lifetime: 5
   damage: 20
+  cooldown: 1
   HurtPlayer: {fileID: 0}
 --- !u!50 &3192762080323902707
 Rigidbody2D:

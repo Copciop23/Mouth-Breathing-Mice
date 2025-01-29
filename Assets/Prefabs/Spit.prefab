@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 236789098945036777}
   m_Layer: 0
   m_Name: Spit
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -177,3 +177,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   lifetime: 8
+  damage: 20
+  cooldown: 1
+  HurtPlayer: {fileID: 0}

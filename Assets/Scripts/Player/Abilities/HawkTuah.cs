@@ -2,15 +2,18 @@ using UnityEngine;
 
 public class HawkTuah : MonoBehaviour
 {
-    public GameObject spitPrefab; // Prefab for the spit projectile
-    public Transform firePoint; // Position from where the projectile is fired
-    public float spitSpeed = 5f; // Speed of the projectile
+    public GameObject spitPrefab;
+    public Transform firePoint;
+    public float spitSpeed = 5f;
+    public float cooldownTime = 3f;  // Set cooldown in the Inspector
 
     private bool isFacingRight = true;
+    private float timeSinceLastShot = 0f; // Track cooldown timer
 
     void Update()
     {
-        // Update facing direction based on input
+        timeSinceLastShot += Time.deltaTime; // Update cooldown timer
+
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
             isFacingRight = false;
@@ -20,31 +23,20 @@ public class HawkTuah : MonoBehaviour
             isFacingRight = true;
         }
 
-        // Update fire point position based on facing direction
         firePoint.localPosition = isFacingRight ? new Vector2(0.1f, 0) : new Vector2(-0.1f, 0);
 
-        // Shoot the spit when 'G' is pressed
-        if (Input.GetKeyDown(KeyCode.G))
+        // Shoot the spit when 'G' is pressed and cooldown has passed
+        if (Input.GetKeyDown(KeyCode.G) && timeSinceLastShot >= cooldownTime)
         {
-            // Check cooldown before shooting
-            SpitProjectileBehaviour spitBehaviour = spitPrefab.GetComponent<SpitProjectileBehaviour>();
-            if (spitBehaviour != null && spitBehaviour.TryUseSkill())
-            {
-                ShootSpit();
-            }
-            else
-            {
-                Debug.Log("Skill is on cooldown!");
-            }
+            ShootSpit();
+            timeSinceLastShot = 0f;  // Reset cooldown timer
         }
     }
 
     void ShootSpit()
     {
-        // Instantiate the spit projectile at the fire point
         GameObject spit = Instantiate(spitPrefab, firePoint.position, firePoint.rotation);
 
-        // Set the direction of the spit projectile
         SpitProjectileBehaviour projectileBehaviour = spit.GetComponent<SpitProjectileBehaviour>();
         if (projectileBehaviour != null)
         {

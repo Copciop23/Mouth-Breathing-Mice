@@ -5,13 +5,15 @@ public class Fireball : MonoBehaviour
     public GameObject fireballPrefab;
     public Transform firePoint;
     public float fireballSpeed = 10f;
-    public float fireballCooldown = 1.5f;
+    public float cooldownTime = 5f;  // Set cooldown in the Inspector
 
     private bool isFacingRight = true;
-    private float nextFireTime = 0f;
+    private float timeSinceLastShot = 0f; // Track cooldown timer
 
     void Update()
     {
+        timeSinceLastShot += Time.deltaTime; // Update cooldown timer
+
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
             isFacingRight = false;
@@ -21,29 +23,24 @@ public class Fireball : MonoBehaviour
             isFacingRight = true;
         }
 
-        firePoint.localPosition = isFacingRight ? new Vector2((float)0.1, 0) : new Vector2((float)-0.1, 0);
+        firePoint.localPosition = isFacingRight ? new Vector2(0.1f, 0) : new Vector2(-0.1f, 0);
 
-        // Shoot the fireball when 'F' is pressed
-        if (Input.GetKeyDown(KeyCode.F) && Time.time >= nextFireTime)
+        // Shoot the fireball when 'F' is pressed and cooldown has passed
+        if (Input.GetKeyDown(KeyCode.F) && timeSinceLastShot >= cooldownTime)
         {
             ShootFireball();
-            nextFireTime = Time.time + fireballCooldown; // Set the next fire time
-        }
-        else if (Input.GetKeyDown(KeyCode.F) && Time.time < nextFireTime)
-        {
-            Debug.Log("Fireball is on cooldown!");
+            timeSinceLastShot = 0f;  // Reset cooldown timer
         }
     }
 
     void ShootFireball()
-{
-    GameObject fireball = Instantiate(fireballPrefab, firePoint.position, firePoint.rotation);
-
-    SpitProjectileBehaviour projectileBehaviour = fireball.GetComponent<SpitProjectileBehaviour>();
-    if (projectileBehaviour != null)
     {
-        projectileBehaviour.isFacingRight = isFacingRight;
-    }
-}
+        GameObject fireball = Instantiate(fireballPrefab, firePoint.position, firePoint.rotation);
 
+        SpitProjectileBehaviour projectileBehaviour = fireball.GetComponent<SpitProjectileBehaviour>();
+        if (projectileBehaviour != null)
+        {
+            projectileBehaviour.isFacingRight = isFacingRight;
+        }
+    }
 }
