@@ -9,11 +9,30 @@ public class HawkTuah : MonoBehaviour
 
     private bool isFacingRight = true;
     private float timeSinceLastShot = 0f; // Track cooldown timer
+    private bool isOnCooldown = false; // Track cooldown state
+
+    // Public property to access the cooldown status
+    public bool IsOnCooldown => isOnCooldown;
+
+    // Public property to access the remaining cooldown time
+    public float RemainingCooldown => isOnCooldown ? Mathf.Max(0f, cooldownTime - timeSinceLastShot) : 0f;
 
     void Update()
     {
-        timeSinceLastShot += Time.deltaTime; // Update cooldown timer
+        // Update the cooldown timer
+        if (isOnCooldown)
+        {
+            timeSinceLastShot += Time.deltaTime;
 
+            // Check if cooldown has finished
+            if (timeSinceLastShot >= cooldownTime)
+            {
+                isOnCooldown = false;
+                timeSinceLastShot = 0f; // Reset the timer for the next cooldown
+            }
+        }
+
+        // Handle player input for direction
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
             isFacingRight = false;
@@ -23,13 +42,14 @@ public class HawkTuah : MonoBehaviour
             isFacingRight = true;
         }
 
+        // Update spit spawn position based on direction
         firePoint.localPosition = isFacingRight ? new Vector2(0.1f, 0) : new Vector2(-0.1f, 0);
 
-        // Shoot the spit when 'G' is pressed and cooldown has passed
-        if (Input.GetKeyDown(KeyCode.G) && timeSinceLastShot >= cooldownTime)
+        // Shoot the spit when 'G' is pressed and cooldown is not active
+        if (Input.GetKeyDown(KeyCode.G) && !isOnCooldown)
         {
             ShootSpit();
-            timeSinceLastShot = 0f;  // Reset cooldown timer
+            isOnCooldown = true; // Start cooldown
         }
     }
 
