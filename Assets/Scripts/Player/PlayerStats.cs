@@ -2,10 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
+using PlayFab.EconomyModels;
 
 public class PlayerStats : MonoBehaviour
 {
     public int playerHealth;
+    public int maxHealth = 100;
     private int kills;
     [SerializeField] Slider slider;
     [SerializeField] private GameObject DeathScreen;
@@ -100,5 +102,10 @@ public class PlayerStats : MonoBehaviour
     public void AddKill()
     {
         kills++;
+    }
+
+    public void IncreaseHealth(int amount) {
+        playerHealth = Mathf.Min(playerHealth + amount, maxHealth);
+        Debug.Log("Health Increased: " + playerHealth);
     }
 }
