@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 5da215c27a045494386233d2c43ee0bc
+guid: 1866aa18081b5404c983005a4f68ba5c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3629303924717070010
-    second: flameicontuah0_0
+      213: -5668518402485374812
+    second: Frame_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: flameicontuah0_0
+      name: Frame_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1344
-        height: 1376
+        width: 3072
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ab621bec0b0ed5230800000000000000
-      internalID: 3629303924717070010
+      spriteID: 4a03819cb806551b0800000000000000
+      internalID: -5668518402485374812
       vertices: []
       indices: 
       edges: []
@@ -134,8 +134,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      flameicontuah0_0: 3629303924717070010
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

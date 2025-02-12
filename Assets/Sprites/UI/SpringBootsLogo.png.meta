@@ -3,11 +3,11 @@ guid: 97a93d5312609da4994e442c8978da49
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 133982719826790466
-    second: Untitled_0
+      213: 4449207641946135771
+    second: SpringBootsLogo_0
   - first:
-      213: 8110719193379804542
-    second: Untitled_1
+      213: -4258607583115454899
+    second: SpringBootsLogo_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -103,7 +103,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Untitled_0
+      name: SpringBootsLogo_0
       rect:
         serializedVersion: 2
         x: 0
@@ -118,14 +118,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2480155e2900cd100800000000000000
-      internalID: 133982719826790466
+      spriteID: bdc172607c2cebd30800000000000000
+      internalID: 4449207641946135771
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Untitled_1
+      name: SpringBootsLogo_1
       rect:
         serializedVersion: 2
         x: 240
@@ -140,8 +140,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e75985a42201f8070800000000000000
-      internalID: 8110719193379804542
+      spriteID: d465e9a57f266e4c0800000000000000
+      internalID: -4258607583115454899
       vertices: []
       indices: 
       edges: []
@@ -160,8 +160,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Untitled_0: 133982719826790466
-      Untitled_1: 8110719193379804542
+      SpringBootsLogo_0: 4449207641946135771
+      SpringBootsLogo_1: -4258607583115454899
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

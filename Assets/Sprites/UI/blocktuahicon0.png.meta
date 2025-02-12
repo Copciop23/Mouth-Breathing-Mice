@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      blocktuahicon0_0: -8291981776827478510
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
