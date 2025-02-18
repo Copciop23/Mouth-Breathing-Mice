@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -254,5 +255,15 @@ public class Movement : MonoBehaviour
         {
             animator.CrossFade("dash", 0, 0);
         }
+    }
+
+    internal void SetSpeed(float value)
+    {
+        speed = value;
+    }
+
+    internal void SetJumpPower(float value)
+    {
+        jumpingPower = value;
     }
 }
