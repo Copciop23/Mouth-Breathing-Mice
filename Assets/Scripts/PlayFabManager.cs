@@ -13,6 +13,7 @@ using PlayFab.ProgressionModels;
 
 public class PlayFabManager : MonoBehaviour
 {
+    public InputField nameInput;
    public Text messageText;
    public InputField emailInput;
    public InputField passwordInput;
@@ -37,7 +38,11 @@ public class PlayFabManager : MonoBehaviour
    public void LoginButton() {
     var request = new LoginWithEmailAddressRequest {
         Email = emailInput.text,
-        Password = passwordInput.text
+        Password = passwordInput.text,
+        InfoRequestParameters = new GetPlayerCombinedInfoRequestParams {
+            GetPlayerProfile = true
+        }
+        
     };
     PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnError);
    }
@@ -47,8 +52,13 @@ public class PlayFabManager : MonoBehaviour
         messageText.text = "Logged in";
         Debug.Log("Succesful Login");
         SceneManager.LoadScene("main");
+        string name = null;
+        if (result.InfoResultPayload.PlayerProfile != null)
+            name = result.InfoResultPayload.PlayerProfile.DisplayName;
+        if (name == null)
+            name = "ExampleName";
     }
-
+//55
     public void ResetPasswordButton() {
         var request = new SendAccountRecoveryEmailRequest {
             Email = emailInput.text,
@@ -56,6 +66,17 @@ public class PlayFabManager : MonoBehaviour
         };
         PlayFabClientAPI.SendAccountRecoveryEmail(request, OnPasswordReset, OnError);
 
+   }
+   public void SubmitNameButton() {
+    var request = new UpdateUserTitleDisplayNameRequest {
+        DisplayName = nameInput.text,
+    };
+    PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnDisplayNameUpdate, OnError);
+
+   }
+
+   void OnDisplayNameUpdate(UpdateUserTitleDisplayNameResult result) {
+    Debug.Log("Updated Display name!");
    }
 
     private void OnPasswordReset(SendAccountRecoveryEmailResult result)

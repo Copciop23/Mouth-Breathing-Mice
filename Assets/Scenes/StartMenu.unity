@@ -273,13 +273,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: '0
 
-    0
-
-    0
-
-    0
-
-    0'
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 41bae25776dd81d4bb527fd3e8b39fab, type: 2}
   m_sharedMaterial: {fileID: 5618216651384441152, guid: 41bae25776dd81d4bb527fd3e8b39fab, type: 2}
@@ -4210,13 +4204,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Player 1
 
-    Player 2
-
-    Player 3
-
-    Player 4
-
-    Player 5'
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 41bae25776dd81d4bb527fd3e8b39fab, type: 2}
   m_sharedMaterial: {fileID: 5618216651384441152, guid: 41bae25776dd81d4bb527fd3e8b39fab, type: 2}
