@@ -52,11 +52,10 @@ public class PlayFabManager : MonoBehaviour
         messageText.text = "Logged in";
         Debug.Log("Succesful Login");
         SceneManager.LoadScene("main");
-        string name = null;
         if (result.InfoResultPayload.PlayerProfile != null)
-            name = result.InfoResultPayload.PlayerProfile.DisplayName;
-        if (name == null)
-            name = "ExampleName";
+            PlayerData.playerName = result.InfoResultPayload.PlayerProfile.DisplayName;
+        if (PlayerData.playerName == null)
+            PlayerData.playerName = "ExampleName";
     }
 //55
     public void ResetPasswordButton() {
