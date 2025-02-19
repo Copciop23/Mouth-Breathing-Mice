@@ -16,7 +16,6 @@ public class SpringBoots : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private AudioSource jumpSound;
-    [SerializeField] private Slider ChargeSlider;
     public float CurrentJumpPower => currentJumpPower;
     public bool IsChargingJump => isChargingJump;
 
@@ -49,7 +48,6 @@ public class SpringBoots : MonoBehaviour
             PerformJump(currentJumpPower);
             isChargingJump = false;
         }
-        ChargeSlider.value = currentJumpPower;
     }
 
     private bool IsGrounded()

@@ -9,26 +9,47 @@ public class SpitProjectileBehaviour : MonoBehaviour
     private Rigidbody2D rb;
     [SerializeField] PlayerStats HurtPlayer;
 
+    public bool isFacingRight { get; set; }
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        if (rb != null) {
-            rb.linearVelocity = transform.right * speed;
+        if (rb != null)
+        {
+            float direction = isFacingRight ? 1f : -1f; // Set direction based on facing
+            rb.linearVelocity = new Vector2(direction * speed, 0f);
         }
 
         Destroy(gameObject, lifetime);
     }
 
-    private void OnCollisionEnter2D (Collision2D collision) {
-        if (collision.gameObject.CompareTag("Spike")) {
-            Destroy(gameObject);
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Ignore collisions with other projectiles
+        if (collision.gameObject.CompareTag("Projectile"))
+        {
+            return; // Do nothing, let it pass through
         }
 
-        if (collision.gameObject.CompareTag("Player")) {
+        // Ignore collisions with the shield
+        if (collision.gameObject.CompareTag("Shield"))
+        {
+            return; // Do nothing, let it pass through
+        }
+
+        // If it hits a player, deal damage and destroy the projectile
+        if (collision.gameObject.CompareTag("Player"))
+        {
             PlayerStats playerHealth = collision.gameObject.GetComponent<PlayerStats>();
-            if (playerHealth != null) {
+            if (playerHealth != null)
+            {
                 HurtPlayer.doDamage(damage);
             }
+            Destroy(gameObject);
+        }
+        // Destroy on any other collision (e.g., walls, spikes, environment)
+        else
+        {
             Destroy(gameObject);
         }
     }
