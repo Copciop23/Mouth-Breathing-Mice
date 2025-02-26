@@ -1,8 +1,10 @@
+using UnityEditor;
 using UnityEngine;
 
 public class EnemyAI : MonoBehaviour {
     public Transform player;  // Assign in Inspector or find in Start()
     public float moveSpeed = 3f;
+    public float raycastDistance = 1f;
     public float chaseRange = 8f;
     public float stopRange = 2f;  // Stops moving when close
     public float jumpForce = 6f;
@@ -19,7 +21,13 @@ public class EnemyAI : MonoBehaviour {
 
     void Update() {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
-        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+        float distanceToPlayer = Mathf.Abs(player.position.x - rb.position.x);
+
+        if (IsNearEdge()) {
+            FlipSprite();
+        }
+
+        rb.linearVelocity = new Vector2(facingRight ? moveSpeed : -moveSpeed, rb.linearVelocity.y);
 
         if (distanceToPlayer < chaseRange && distanceToPlayer > stopRange) {
             MoveTowardsPlayer();
@@ -30,8 +38,15 @@ public class EnemyAI : MonoBehaviour {
         FlipSprite();
     }
 
+    bool IsNearEdge() {
+        Vector2 rayOrigin = rb.position + new Vector2(facingRight ? 0.5f : -0.5f, 0);
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, raycastDistance, groundLayer);
+
+        return hit.collider == null;
+    }
+
     void MoveTowardsPlayer() {
-        float direction = Mathf.Sign(player.position.x - transform.position.x);
+        float direction = Mathf.Sign(player.position.x - rb.position.x);
         rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
 
         // Jump over obstacles (checks if grounded and near a wall)
@@ -41,7 +56,7 @@ public class EnemyAI : MonoBehaviour {
     }
 
     bool IsNearWall() {
-        return Physics2D.Raycast(transform.position, Vector2.right * (facingRight ? 1 : -1), 0.5f, groundLayer);
+        return Physics2D.Raycast(rb.position, Vector2.right * (facingRight ? 1 : -1), 0.5f, groundLayer);
     }
 
     void FlipSprite() {
