@@ -11,10 +11,6 @@ public class Punch : MonoBehaviour
 
     private bool isPunching = false;
 
-    [Header("Audio")]
-    [SerializeField] private AudioSource punchSound;
-    [SerializeField] private AudioSource hitSound;
-
     [Header("Animator")]
     [SerializeField] private Animator animator;
 
@@ -30,7 +26,7 @@ public class Punch : MonoBehaviour
     {
         isPunching = true;
 
-        punchSound?.Play();
+        AudioManager.Instance.PlaySound("punch", AudioManager.AudioType.SFX);
         animator.CrossFade("punch", 0, 0);
 
         Collider2D[] hitObjects = Physics2D.OverlapCircleAll(punchPoint.position, punchRange, punchableLayer);
@@ -40,7 +36,7 @@ public class Punch : MonoBehaviour
             if (hitObject.TryGetComponent(out EnemyHurt enemy))
             {
                 enemy.TakeDamage(punchDamage, gameObject);
-                hitSound?.Play();
+                AudioManager.Instance.PlaySound("punch_hit", AudioManager.AudioType.SFX);
             }
         }
 

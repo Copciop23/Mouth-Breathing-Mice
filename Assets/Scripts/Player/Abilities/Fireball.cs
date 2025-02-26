@@ -62,5 +62,6 @@ public class Fireball : MonoBehaviour
         {
             projectileBehaviour.isFacingRight = isFacingRight;
         }
+        AudioManager.Instance.PlaySound("fireball", AudioManager.AudioType.SFX);
     }
 }
