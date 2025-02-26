@@ -1,31 +1,34 @@
 using UnityEngine;
-using System.Collections;
 
-public class EnemyShooting : MonoBehaviour
-{
-    public GameObject projectilePrefab;
-    public float shootInterval = 2f;
-    public Transform shootPoint;
+public class EnemyShooting : MonoBehaviour {
+    public GameObject bulletPrefab;
+    public Transform firePoint; // Assign a child GameObject as fire point
+    public float shootRange = 6f;
+    public float bulletSpeed = 10f;
+    public float fireRate = 1.5f; // Time between shots
 
-    private void Start()
-    {
-        StartCoroutine(ShootAtIntervals());
+    private Transform player;
+    private float nextFireTime = 0f;
+
+    void Start() {
+        player = GameObject.FindGameObjectWithTag("Player").transform; // Make sure the player has the tag "Player"
     }
 
-    IEnumerator ShootAtIntervals()
-    {
-        while (true)
-        {
+    void Update() {
+        if (player == null) return;
+
+        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+
+        if (distanceToPlayer <= shootRange && Time.time >= nextFireTime) {
             Shoot();
-            yield return new WaitForSeconds(shootInterval);
+            nextFireTime = Time.time + fireRate;
         }
     }
 
-    void Shoot()
-    {
-        if (projectilePrefab != null && shootPoint != null)
-        {
-            Instantiate(projectilePrefab, shootPoint.position, shootPoint.rotation);
-        }
+    void Shoot() {
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        float direction = Mathf.Sign(player.position.x - transform.position.x);
+        rb.velocity = new Vector2(direction * bulletSpeed, 0);
     }
 }
