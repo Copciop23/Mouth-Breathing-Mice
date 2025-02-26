@@ -10,10 +10,12 @@ using System.Collections.Generic;
 using PlayFab.ProgressionModels;
 using PlayFab.SharedModels;
 using PlayFab.ProgressionModels;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class PlayFabManager : MonoBehaviour
 {
     public InputField nameInput;
+    public int score;
    public Text messageText;
    public InputField emailInput;
    public InputField passwordInput;
@@ -51,6 +53,7 @@ public class PlayFabManager : MonoBehaviour
     {
         messageText.text = "Logged in";
         Debug.Log("Succesful Login");
+        GetLeaderboard();
         SceneManager.LoadScene("main");
         if (result.InfoResultPayload.PlayerProfile != null)
             PlayerData.playerName = result.InfoResultPayload.PlayerProfile.DisplayName;
@@ -110,7 +113,6 @@ public class PlayFabManager : MonoBehaviour
 
     }
     void OnSuccess(LoginResult result) {
-        SendLeaderboard();
         Debug.Log("Succesful Login/account created!");
     }
 
@@ -118,22 +120,50 @@ public class PlayFabManager : MonoBehaviour
         Debug.Log("Error While creating/Logging in");
         Debug.Log(error.GenerateErrorReport());
     }
-    public void SendLeaderboard() {
+    public void SendLeaderboard(string StatisticName, int value) {
     var request = new UpdatePlayerStatisticsRequest {
         Statistics = new List<PlayFab.ClientModels.StatisticUpdate> {
             new PlayFab.ClientModels.StatisticUpdate {
-                StatisticName = "KillTotal", 
-                Value = 3
+                StatisticName = StatisticName,
+                Value = value
             }
-        }
-    };
-
+            }
+        };
     PlayFabClientAPI.UpdatePlayerStatistics(request, OnSuccess, OnError);
+    }
+
+public void GetLeaderboard() {
+    var request = new GetLeaderboardRequest {
+        StatisticName = "KillsInTotal",
+        StartPosition = 0,
+        MaxResultsCount = 2
+
+    };
+    PlayFabClientAPI.GetLeaderboard(request, OnLeaderboardSuccess, OnLeaderboardError);
 }
+private void OnLeaderboardSuccess(GetLeaderboardResult result)
+{
+    Debug.Log("Giving u player nubmer 1");
+    Debug.Log(result.Leaderboard.Count);
+
+    foreach (var entry in result.Leaderboard)
+    {
+        Debug.Log("Giving u player nubmer 1");
+        Debug.Log($"Position: {entry.Position}, Character: {entry.PlayFabId}, Score: {entry.StatValue}");
+    }
+}
+private void OnLeaderboardError(PlayFabError error)
+{
+    Debug.LogError($"Error retrieving leaderboard: {error.GenerateErrorReport()}");
+}
+
 
 private void OnSuccess(UpdatePlayerStatisticsResult result) {
     Debug.Log("Successfully updated player statistics.");
 }
 }
+
+
+
     
 
