@@ -321,8 +321,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d45450a7f78b5494bab50fa334b79e82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  jumpingPower: 10
+  speed: 5
+  jumpingPower: 4
   rb: {fileID: 36341826}
   groundCheck: {fileID: 1935050096}
   groundLayer:
@@ -1900,7 +1900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 36341824}
-  moveSpeed: 5
+  moveSpeed: 7
   chaseRange: 15
   stopRange: 1
   jumpForce: 6
@@ -1925,7 +1925,8 @@ MonoBehaviour:
   firePoint: {fileID: 1900441241}
   shootRange: 6
   bulletSpeed: 10
-  fireRate: 0.09
+  predictionFactor: 0.5
+  fireRate: 0.3
 --- !u!1 &184073079
 GameObject:
   m_ObjectHideFlags: 0

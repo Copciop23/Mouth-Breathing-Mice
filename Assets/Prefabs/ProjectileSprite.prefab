@@ -174,7 +174,6 @@ MonoBehaviour:
   speed: 5
   lifetime: 5
   damage: 20
-  cooldown: 1
   HurtPlayer: {fileID: 0}
 --- !u!50 &3192762080323902707
 Rigidbody2D:

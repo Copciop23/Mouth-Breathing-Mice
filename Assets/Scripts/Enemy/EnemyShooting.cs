@@ -5,13 +5,17 @@ public class EnemyShooting : MonoBehaviour {
     public Transform firePoint; // Assign a child GameObject as fire point
     public float shootRange = 6f;
     public float bulletSpeed = 10f;
+    public float predictionFactor = 0.5f;
     public float fireRate = 1.5f; // Time between shots
-
     private Transform player;
     private float nextFireTime = 0f;
+    private Rigidbody2D playerRb; 
 
     void Start() {
         player = GameObject.FindGameObjectWithTag("Player").transform; // Make sure the player has the tag "Player"
+        playerRb = player.GetComponent<Rigidbody2D>();
+        InvokeRepeating(nameof(Shoot), 1f, 1.5f);
+
     }
 
     void Update() {
@@ -26,9 +30,15 @@ public class EnemyShooting : MonoBehaviour {
     }
 
     void Shoot() {
+        Vector2 playerVelocity = playerRb.linearVelocity;
+        float predictedOffset = playerVelocity.x * predictionFactor;
+
+        Vector2 predictedPosition = new Vector2(player.position.x + predictedOffset, player.position.y);
+
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        
         float direction = Mathf.Sign(player.position.x - transform.position.x);
-        rb.velocity = new Vector2(direction * bulletSpeed, 0);
+        rb.linearVelocity = new Vector2(direction * bulletSpeed, 0);
     }
 }

@@ -178,5 +178,4 @@ MonoBehaviour:
   speed: 10
   lifetime: 8
   damage: 20
-  cooldown: 1
   HurtPlayer: {fileID: 0}
