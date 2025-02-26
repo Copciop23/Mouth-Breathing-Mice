@@ -27,11 +27,6 @@ public class Movement : MonoBehaviour
     [SerializeField] private Animator animator;
     private SpringBoots springboots;
 
-    [Header("Audio")]
-    [SerializeField] private AudioSource jumpSound;
-    [SerializeField] private AudioSource punchSound;
-    [SerializeField] private AudioSource chargeSound;
-
     public bool IsFacingRight => isFacingRight;
 
     private void Start()
@@ -49,6 +44,7 @@ public class Movement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.B))
         {
             StartBlocking();
+            AudioManager.Instance.PlaySound("fireball", AudioManager.AudioType.SFX);
         }
         else if (Input.GetKeyUp(KeyCode.B))
         {
@@ -58,6 +54,7 @@ public class Movement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             StartCrouching();
+            AudioManager.Instance.PlaySound("punch", AudioManager.AudioType.SFX);
         }
         else if (Input.GetKeyUp(KeyCode.S))
         {
@@ -213,7 +210,7 @@ public class Movement : MonoBehaviour
     private void Jump(float power)
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, power);
-        jumpSound?.Play();
+        AudioManager.Instance.PlaySound("jump", AudioManager.AudioType.SFX);
         canJump = false;
         StartCoroutine(JumpCooldown());
     }
@@ -221,7 +218,6 @@ public class Movement : MonoBehaviour
     private IEnumerator PunchAction()
     {
         isPunching = true;
-        punchSound?.Play();
         animator.CrossFade("punch", 0, 0);
 
         yield return new WaitForSeconds(0.30f);
@@ -232,7 +228,6 @@ public class Movement : MonoBehaviour
     private IEnumerator ChargeJump()
     {
         ChargingJump = true;
-        chargeSound?.Play();
         animator.CrossFade("charge", 0, 0);
 
         while (Input.GetKey(KeyCode.LeftAlt))
