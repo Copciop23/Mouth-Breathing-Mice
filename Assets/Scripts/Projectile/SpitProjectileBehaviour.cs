@@ -1,3 +1,4 @@
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class SpitProjectileBehaviour : MonoBehaviour
@@ -25,6 +26,13 @@ public class SpitProjectileBehaviour : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.CompareTag("Enemy")) {
+            EnemyHurt enemyHP = collision.gameObject.GetComponent<EnemyHurt>();
+            if (enemyHP != null) {
+                enemyHP.TakeDamage(damage, gameObject);
+            }
+        }
+
         // Ignore collisions with other projectiles
         if (collision.gameObject.CompareTag("Projectile"))
         {

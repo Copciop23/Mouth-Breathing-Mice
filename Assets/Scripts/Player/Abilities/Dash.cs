@@ -9,7 +9,6 @@ public class Dash : MonoBehaviour
     public float dashDelay = 1.5f;
     [SerializeField] private Rigidbody2D rb;
     private Movement movement;
-    [SerializeField] private AudioSource dashSound;
     private SpringBoots springboots;
 
     public bool canDash { get; private set; } = true;
@@ -42,7 +41,7 @@ public class Dash : MonoBehaviour
         if (movement == null) return;
 
         movement.TriggerDashingAnimation();
-        dashSound?.Play();
+        AudioManager.Instance.PlaySound("dash", AudioManager.AudioType.SFX);
 
         float dashDirection = movement.IsFacingRight ? DashPower : -DashPower;
         rb.position = new Vector2(rb.position.x + dashDirection, rb.position.y);

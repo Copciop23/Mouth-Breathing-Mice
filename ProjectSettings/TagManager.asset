@@ -7,6 +7,8 @@ TagManager:
   - Wall
   - Spike
   - Enemy
+  - Shield
+  - Projectile
   layers:
   - Default
   - TransparentFX
@@ -17,8 +19,8 @@ TagManager:
   - Ground
   - TEXT
   - Punchable
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 
