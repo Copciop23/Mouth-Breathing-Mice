@@ -2,10 +2,9 @@ using UnityEngine;
 
 public class BackgroundSoundScript : MonoBehaviour
 {
-    [SerializeField] private AudioSource backgroundAudio;
     void Start()
     {
-        backgroundAudio.Play();
+        AudioManager.Instance.PlaySound("BackgroundSong", AudioManager.AudioType.Music);
     }
 
 }

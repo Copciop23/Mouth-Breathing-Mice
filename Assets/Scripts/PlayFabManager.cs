@@ -2,168 +2,159 @@ using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine.UI;
-using System;
-using UnityEngine.SceneManagement;
-using Unity.VisualScripting;
-using NUnit.Framework;
 using System.Collections.Generic;
-using PlayFab.ProgressionModels;
-using PlayFab.SharedModels;
-using PlayFab.ProgressionModels;
-using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.SceneManagement;
 
 public class PlayFabManager : MonoBehaviour
 {
     public InputField nameInput;
     public int score;
-   public Text messageText;
-   public InputField emailInput;
-   public InputField passwordInput;
-   public void RegisterButton() {
-    if (passwordInput.text.Length < 6) {
-        messageText.text = "Password Too short!";
-        return;
-    }
-        var request = new RegisterPlayFabUserRequest {
+    public Text messageText;
+    public InputField emailInput;
+    public InputField passwordInput;
+
+    // Register a new PlayFab account
+    public void RegisterButton()
+    {
+        if (passwordInput.text.Length < 6)
+        {
+            messageText.text = "Password Too Short!";
+            return;
+        }
+
+        var request = new RegisterPlayFabUserRequest
+        {
             Email = emailInput.text,
             Password = passwordInput.text,
             RequireBothUsernameAndEmail = false
         };
         PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnError);
-   }
+    }
 
     private void OnRegisterSuccess(RegisterPlayFabUserResult result)
     {
-        messageText.text = "Registered";
+        messageText.text = "Registered and Logged In!";
+        Debug.Log("Registration Successful!");
     }
 
-   public void LoginButton() {
-    var request = new LoginWithEmailAddressRequest {
-        Email = emailInput.text,
-        Password = passwordInput.text,
-        InfoRequestParameters = new GetPlayerCombinedInfoRequestParams {
-            GetPlayerProfile = true
-        }
-        
-    };
-    PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnError);
-   }
+    // Log in with an existing PlayFab account
+    public void LoginButton()
+    {
+        var request = new LoginWithEmailAddressRequest
+        {
+            Email = emailInput.text,
+            Password = passwordInput.text,
+            InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
+            {
+                GetPlayerProfile = true
+            }
+        };
+        PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnError);
+    }
 
     private void OnLoginSuccess(LoginResult result)
     {
-        messageText.text = "Logged in";
-        Debug.Log("Succesful Login");
-        GetLeaderboard();
+        messageText.text = "Logged In!";
+        Debug.Log("Login Successful!");
+
+        // Load the main scene after login
         SceneManager.LoadScene("main");
+
+        // Set the player's display name if available
         if (result.InfoResultPayload.PlayerProfile != null)
             PlayerData.playerName = result.InfoResultPayload.PlayerProfile.DisplayName;
-        if (PlayerData.playerName == null)
-            PlayerData.playerName = "ExampleName";
+
+        // Default name if display name is not set
+        if (string.IsNullOrEmpty(PlayerData.playerName))
+            PlayerData.playerName = "Player";
+
+        // Fetch leaderboard data
+        GetLeaderboard();
     }
-//55
-    public void ResetPasswordButton() {
-        var request = new SendAccountRecoveryEmailRequest {
+
+    // Reset password using email
+    public void ResetPasswordButton()
+    {
+        var request = new SendAccountRecoveryEmailRequest
+        {
             Email = emailInput.text,
-            TitleId = "794EE"
+            TitleId = "794EE" // Replace with your Title ID
         };
         PlayFabClientAPI.SendAccountRecoveryEmail(request, OnPasswordReset, OnError);
-
-   }
-   public void SubmitNameButton() {
-    var request = new UpdateUserTitleDisplayNameRequest {
-        DisplayName = nameInput.text,
-    };
-    PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnDisplayNameUpdate, OnError);
-
-   }
-
-   void OnDisplayNameUpdate(UpdateUserTitleDisplayNameResult result) {
-    Debug.Log("Updated Display name!");
-   }
+    }
 
     private void OnPasswordReset(SendAccountRecoveryEmailResult result)
     {
-        messageText.text = "Password Reset Mail Sent";
+        messageText.text = "Password Reset Email Sent!";
     }
 
-
-
-
-
-
-
-
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    // Update the player's display name
+    public void SubmitNameButton()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Login()
-    {
-        var request = new LoginWithCustomIDRequest {
-            CustomId = SystemInfo.deviceUniqueIdentifier,
-            CreateAccount = true
+        var request = new UpdateUserTitleDisplayNameRequest
+        {
+            DisplayName = nameInput.text,
         };
-
-        PlayFabClientAPI.LoginWithCustomID(request, OnSuccess, OnError);
-
-    }
-    void OnSuccess(LoginResult result) {
-        Debug.Log("Succesful Login/account created!");
+        PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnDisplayNameUpdate, OnError);
     }
 
-    void OnError(PlayFabError error) {
-        Debug.Log("Error While creating/Logging in");
-        Debug.Log(error.GenerateErrorReport());
+    private void OnDisplayNameUpdate(UpdateUserTitleDisplayNameResult result)
+    {
+        Debug.Log("Display Name Updated!");
     }
-    public void SendLeaderboard(string StatisticName, int value) {
-    var request = new UpdatePlayerStatisticsRequest {
-        Statistics = new List<PlayFab.ClientModels.StatisticUpdate> {
-            new PlayFab.ClientModels.StatisticUpdate {
-                StatisticName = StatisticName,
-                Value = value
-            }
+
+    // Send player statistics to the leaderboard
+    public void SendLeaderboard(string statisticName, int value)
+    {
+        var request = new UpdatePlayerStatisticsRequest
+        {
+            Statistics = new List<StatisticUpdate>
+            {
+                new StatisticUpdate
+                {
+                    StatisticName = statisticName, // Corrected field name
+                    Value = value
+                }
             }
         };
-    PlayFabClientAPI.UpdatePlayerStatistics(request, OnSuccess, OnError);
+        PlayFabClientAPI.UpdatePlayerStatistics(request, OnLeaderboardUpdateSuccess, OnError);
     }
 
-public void GetLeaderboard() {
-    var request = new GetLeaderboardRequest {
-        StatisticName = "KillsInTotal",
-        StartPosition = 0,
-        MaxResultsCount = 2
-
-    };
-    PlayFabClientAPI.GetLeaderboard(request, OnLeaderboardSuccess, OnLeaderboardError);
-}
-private void OnLeaderboardSuccess(GetLeaderboardResult result)
-{
-    Debug.Log("Giving u player nubmer 1");
-    Debug.Log(result.Leaderboard.Count);
-
-    foreach (var entry in result.Leaderboard)
+    private void OnLeaderboardUpdateSuccess(UpdatePlayerStatisticsResult result)
     {
-        Debug.Log("Giving u player nubmer 1");
-        Debug.Log($"Position: {entry.Position}, Character: {entry.PlayFabId}, Score: {entry.StatValue}");
+        Debug.Log("Leaderboard Updated Successfully!");
+    }
+
+    // Retrieve leaderboard data
+    public void GetLeaderboard()
+    {
+        var request = new GetLeaderboardRequest
+        {
+            StatisticName = "KillsInTotal", // Replace with your statistic name
+            StartPosition = 0,
+            MaxResultsCount = 10 // Adjust the number of results as needed
+        };
+        PlayFabClientAPI.GetLeaderboard(request, OnLeaderboardSuccess, OnLeaderboardError);
+    }
+
+    private void OnLeaderboardSuccess(GetLeaderboardResult result)
+    {
+        Debug.Log("Leaderboard Retrieved Successfully!");
+        foreach (var entry in result.Leaderboard)
+        {
+            Debug.Log($"Position: {entry.Position}, Player: {entry.DisplayName}, Score: {entry.StatValue}");
+        }
+    }
+
+    private void OnLeaderboardError(PlayFabError error)
+    {
+        Debug.LogError($"Error Retrieving Leaderboard: {error.GenerateErrorReport()}");
+    }
+
+    // Handle errors
+    private void OnError(PlayFabError error)
+    {
+        Debug.LogError($"PlayFab Error: {error.GenerateErrorReport()}");
+        messageText.text = $"Error: {error.GenerateErrorReport()}";
     }
 }
-private void OnLeaderboardError(PlayFabError error)
-{
-    Debug.LogError($"Error retrieving leaderboard: {error.GenerateErrorReport()}");
-}
-
-
-private void OnSuccess(UpdatePlayerStatisticsResult result) {
-    Debug.Log("Successfully updated player statistics.");
-}
-}
-
-
-
-    
-

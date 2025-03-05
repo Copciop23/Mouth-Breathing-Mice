@@ -15,11 +15,21 @@ public class AudioManager : MonoBehaviour
     private AudioSource musicSource;
     private List<AudioSource> sfxSources = new List<AudioSource>();
 
+    private void Start()
+    {
+        masterVolume = PlayerPrefs.GetFloat("MasterVolume", 100f)/100;
+        sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 100f)/100;
+        musicVolume = PlayerPrefs.GetFloat("MusicVolume", 100f)/100;
+    }
+
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            masterVolume = PlayerPrefs.GetFloat("MasterVolume", 100f) / 100;
+            sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 100f) / 100;
+            musicVolume = PlayerPrefs.GetFloat("MusicVolume", 100f) / 100;
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -27,7 +37,6 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         musicSource = gameObject.AddComponent<AudioSource>();
         musicSource.loop = true;
 
