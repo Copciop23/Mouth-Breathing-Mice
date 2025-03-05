@@ -11,9 +11,13 @@ using PlayFab.ProgressionModels;
 using PlayFab.SharedModels;
 using PlayFab.ProgressionModels;
 using UnityEngine.SocialPlatforms.Impl;
+using JetBrains.Annotations;
 
 public class PlayFabManager : MonoBehaviour
 {
+    public Text leaderboardTitle;
+    public GameObject rowPrefab;
+    public Transform rowsParent;
     public InputField nameInput;
     public int score;
    public Text messageText;
@@ -53,8 +57,7 @@ public class PlayFabManager : MonoBehaviour
     {
         messageText.text = "Logged in";
         Debug.Log("Succesful Login");
-        GetLeaderboard();
-        SceneManager.LoadScene("main");
+        GetLeaderboard("KillsInTotal", "Kills");
         if (result.InfoResultPayload.PlayerProfile != null)
             PlayerData.playerName = result.InfoResultPayload.PlayerProfile.DisplayName;
         if (PlayerData.playerName == null)
@@ -132,11 +135,16 @@ public class PlayFabManager : MonoBehaviour
     PlayFabClientAPI.UpdatePlayerStatistics(request, OnSuccess, OnError);
     }
 
-public void GetLeaderboard() {
+public void GetLeaderboard(String StatisticNamee, string titlee) {
+    leaderboardTitle.text = titlee;
     var request = new GetLeaderboardRequest {
-        StatisticName = "KillsInTotal",
+        StatisticName = StatisticNamee,
         StartPosition = 0,
-        MaxResultsCount = 2
+        MaxResultsCount = 5,
+        ProfileConstraints = new PlayerProfileViewConstraints {
+            ShowDisplayName = true
+        }
+
 
     };
     PlayFabClientAPI.GetLeaderboard(request, OnLeaderboardSuccess, OnLeaderboardError);
@@ -145,9 +153,18 @@ private void OnLeaderboardSuccess(GetLeaderboardResult result)
 {
     Debug.Log("Giving u player nubmer 1");
     Debug.Log(result.Leaderboard.Count);
+    foreach (Transform item in rowsParent) {
+        Destroy(item.gameObject);
+    }
+    
 
     foreach (var entry in result.Leaderboard)
     {
+
+        GameObject newGo = Instantiate(rowPrefab, rowsParent);
+        Text[] texts = newGo.GetComponentsInChildren<Text>();
+        texts[0].text = entry.Profile.DisplayName;
+        texts[1].text = entry.StatValue.ToString();
         Debug.Log("Giving u player nubmer 1");
         Debug.Log($"Position: {entry.Position}, Character: {entry.PlayFabId}, Score: {entry.StatValue}");
     }
@@ -156,7 +173,15 @@ private void OnLeaderboardError(PlayFabError error)
 {
     Debug.LogError($"Error retrieving leaderboard: {error.GenerateErrorReport()}");
 }
-
+public void killLeaderboard() {
+    GetLeaderboard("KillsInTotal", "Kills");
+}
+public void winsleaderboard() {
+    GetLeaderboard("WinsInTotal", "Wins");
+}
+public void deathleaderboard() {
+    GetLeaderboard("DeathsInTotal", "Deaths");
+}
 
 private void OnSuccess(UpdatePlayerStatisticsResult result) {
     Debug.Log("Successfully updated player statistics.");
