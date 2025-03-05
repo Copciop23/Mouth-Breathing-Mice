@@ -1,14 +1,13 @@
-using UnityEditor;
 using UnityEngine;
 
 public class EnemyAI : MonoBehaviour {
-    public Transform player;  // Assign in Inspector or find in Start()
+    public Transform player;  
     public float moveSpeed = 3f;
     public float raycastDistance = 1f;
     public float chaseRange = 8f;
-    public float stopRange = 2f;  // Stops moving when close
+    public float stopRange = 2f;
     public float jumpForce = 6f;
-    public Transform groundCheck;  // Empty GameObject under enemy
+    public Transform groundCheck;
     public LayerMask groundLayer;
     public Rigidbody2D rb;
 
@@ -23,12 +22,6 @@ public class EnemyAI : MonoBehaviour {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
         float distanceToPlayer = Mathf.Abs(player.position.x - rb.position.x);
 
-        if (IsNearEdge()) {
-            FlipSprite();
-        }
-
-        rb.linearVelocity = new Vector2(facingRight ? moveSpeed : -moveSpeed, rb.linearVelocity.y);
-
         if (distanceToPlayer < chaseRange && distanceToPlayer > stopRange) {
             MoveTowardsPlayer();
         } else {
@@ -38,21 +31,25 @@ public class EnemyAI : MonoBehaviour {
         FlipSprite();
     }
 
-    bool IsNearEdge() {
-        Vector2 rayOrigin = rb.position + new Vector2(facingRight ? 0.5f : -0.5f, 0);
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, raycastDistance, groundLayer);
-
-        return hit.collider == null;
-    }
-
     void MoveTowardsPlayer() {
         float direction = Mathf.Sign(player.position.x - rb.position.x);
         rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
 
-        // Jump over obstacles (checks if grounded and near a wall)
+        // Jump on platforms if player is above
+        if (isGrounded && IsNearEdge() && player.position.y > transform.position.y) {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        }
+
+        // Jump over obstacles
         if (isGrounded && IsNearWall()) {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
+    }
+
+    bool IsNearEdge() {
+        Vector2 rayOrigin = rb.position + new Vector2(facingRight ? 0.5f : -0.5f, 0);
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, raycastDistance, groundLayer);
+        return hit.collider == null;
     }
 
     bool IsNearWall() {
@@ -60,8 +57,7 @@ public class EnemyAI : MonoBehaviour {
     }
 
     void FlipSprite() {
-        if ((player.position.x > transform.position.x && !facingRight) || 
-            (player.position.x < transform.position.x && facingRight)) {
+        if ((rb.linearVelocity.x > 0 && !facingRight) || (rb.linearVelocity.x < 0 && facingRight)) {
             facingRight = !facingRight;
             transform.localScale = new Vector3(facingRight ? 1 : -1, 1, 1);
         }

@@ -8,7 +8,6 @@ public class SpitProjectileBehaviour : MonoBehaviour
     public int damage = 20;
 
     private Rigidbody2D rb;
-    [SerializeField] PlayerStats HurtPlayer;
 
     public bool isFacingRight { get; set; }
 
@@ -45,16 +44,10 @@ public class SpitProjectileBehaviour : MonoBehaviour
             return; // Do nothing, let it pass through
         }
 
-        // If it hits a player, deal damage and destroy the projectile
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            PlayerStats playerHealth = collision.gameObject.GetComponent<PlayerStats>();
-            if (playerHealth != null)
-            {
-                HurtPlayer.doDamage(damage);
-            }
-            Destroy(gameObject);
+        if (collision.gameObject.CompareTag("Player")) {
+            return;
         }
+
         // Destroy on any other collision (e.g., walls, spikes, environment)
         else
         {
