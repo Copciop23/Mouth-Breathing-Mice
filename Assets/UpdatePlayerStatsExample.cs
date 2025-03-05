@@ -44,7 +44,7 @@ public class UpdatePlayerStatsExample : MonoBehaviour
                 new StatisticUpdate
                 {
                     StatisticName = "Score", // Statistic name
-                    Value = 100              // New value for the statistic
+                    Value = 1000              // New value for the statistic
                 },
                 new StatisticUpdate
                 {
