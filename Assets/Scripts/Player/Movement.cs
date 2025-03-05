@@ -5,7 +5,7 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     private float horizontal;
-    public float speed = 8f;
+    public float speed = 6f;
     public float jumpingPower = 8f;
     private bool isFacingRight = true;
     private bool canJump = true;
