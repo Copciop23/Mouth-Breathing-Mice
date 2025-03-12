@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      cheesetriangle_cheese_Mat_Diffuse_0: -5638474696275968181
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

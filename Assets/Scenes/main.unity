@@ -835,7 +835,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 48196946}
   m_LocalRotation: {x: -0.018412158, y: -0, z: -0, w: 0.99983054}
-  m_LocalPosition: {x: 0, y: 0, z: -960.4}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1864,7 +1864,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 079cb29944d54a4448e0a6d21fabdcb3, type: 3}
   m_Resource: {fileID: 8300000, guid: 079cb29944d54a4448e0a6d21fabdcb3, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -3504,7 +3504,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 334646336}
   m_LocalRotation: {x: -0.018412158, y: -0, z: -0, w: 0.99983054}
-  m_LocalPosition: {x: 0, y: 0, z: -1020.8}
+  m_LocalPosition: {x: 0, y: 0, z: 6}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3512,9 +3512,9 @@ RectTransform:
   - {fileID: 761588605}
   m_Father: {fileID: 463687783}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -25.4, y: 382.9}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -27, y: -302}
   m_SizeDelta: {x: 800, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &357352305
@@ -4830,7 +4830,7 @@ Canvas:
   m_RenderMode: 1
   m_Camera: {fileID: 1254350666}
   m_PlaneDistance: 1
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -4838,7 +4838,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 218433681
   m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!1 &465424065
@@ -5294,7 +5294,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 526985835}
   m_LocalRotation: {x: -0.018412158, y: -0, z: -0, w: 0.99983054}
-  m_LocalPosition: {x: 0, y: 0, z: -938.61}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5307,7 +5307,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5138889}
-  m_AnchoredPosition: {x: 500, y: -50}
+  m_AnchoredPosition: {x: 473, y: -9}
   m_SizeDelta: {x: 229.95, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &526985837
@@ -5322,11 +5322,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8026f31672dc6e448b7daa9db64a44a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashScript: {fileID: 0}
-  springBootsScript: {fileID: 0}
-  fireballScript: {fileID: 0}
-  hawkTuahScript: {fileID: 0}
-  shieldScript: {fileID: 0}
+  dashScript: {fileID: 36341829}
+  springBootsScript: {fileID: 36341833}
+  fireballScript: {fileID: 36341838}
+  hawkTuahScript: {fileID: 36341837}
+  shieldScript: {fileID: 36341836}
   dashSlider: {fileID: 34006684}
   bootsSlider: {fileID: 2134190365}
   fireballSlider: {fileID: 1124949756}
@@ -5376,7 +5376,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 247d1d66e13b3074ab8a9a81a57fa2e8, type: 3}
   m_Resource: {fileID: 8300000, guid: 247d1d66e13b3074ab8a9a81a57fa2e8, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
@@ -12937,7 +12937,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 60bcf4630b5f20b4ea7320c2832ee7a3, type: 3}
   m_Resource: {fileID: 8300000, guid: 60bcf4630b5f20b4ea7320c2832ee7a3, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -14384,8 +14384,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 276045359}
   - {fileID: 584029761}
+  - {fileID: 276045359}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1383295108
@@ -18157,7 +18157,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1796747925}
   m_LocalRotation: {x: -0.018412158, y: -0, z: -0, w: 0.99983054}
-  m_LocalPosition: {x: 0, y: 0, z: -1020.8}
+  m_LocalPosition: {x: 0, y: 0, z: 6}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -18165,7 +18165,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -7.8, y: 382.9}
+  m_AnchoredPosition: {x: -10, y: 243}
   m_SizeDelta: {x: 217.92, y: 119.41}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1796747927
@@ -20497,7 +20497,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d2b18a20f8c55424ba22b5c640c87435, type: 3}
   m_Resource: {fileID: 8300000, guid: d2b18a20f8c55424ba22b5c640c87435, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
