@@ -14,8 +14,6 @@ public class EnemyShooting : MonoBehaviour {
     void Start() {
         player = GameObject.FindGameObjectWithTag("Player").transform; // Make sure the player has the tag "Player"
         playerRb = player.GetComponent<Rigidbody2D>();
-        InvokeRepeating(nameof(Shoot), 1f, 1.5f);
-
     }
 
     void Update() {

@@ -5,11 +5,13 @@ public class EnemyHurt : MonoBehaviour
 {
     public int health = 50;
     [SerializeField] private Slider enemyHealthBar;
+    private EnemyAI enemyAI;
 
     private void Start()
     {
         enemyHealthBar.maxValue = health;
         enemyHealthBar.value = health;
+        enemyAI = GetComponent<EnemyAI>(); // Get the EnemyAI component
     }
 
     private void Update()
@@ -25,6 +27,12 @@ public class EnemyHurt : MonoBehaviour
         {
             AwardKill(attacker);
             Die();
+        }
+
+        // Notify EnemyAI about the damage
+        if (enemyAI != null)
+        {
+            enemyAI.TakeDamage(damage);
         }
     }
 
