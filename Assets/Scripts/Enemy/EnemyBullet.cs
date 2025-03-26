@@ -11,7 +11,7 @@ public class EnemyBullet : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
             // Assume player has a script with TakeDamage(int damage) method
-            other.GetComponent<PlayerStats>()?.doDamage(damage);
+            other.GetComponent<PlayerStats>()?.Health.TakeDamage(damage);
             Destroy(gameObject);
         }
 

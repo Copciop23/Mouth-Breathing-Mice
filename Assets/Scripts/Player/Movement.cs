@@ -26,11 +26,14 @@ public class Movement : MonoBehaviour
     [SerializeField] private Transform playerSprite;
     [SerializeField] private Animator animator;
     private SpringBoots springboots;
+    private PlayerStats playerStats;
+
 
     public bool IsFacingRight => isFacingRight;
 
     private void Start()
     {
+        playerStats = GetComponent<PlayerStats>();
         if (springboots == null)
         {
             springboots = FindObjectOfType<SpringBoots>();
@@ -69,7 +72,7 @@ public class Movement : MonoBehaviour
 
         if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W)) && IsGrounded() && canJump && !recentlyLanded)
         {
-            Jump(jumpingPower);
+            Jump(playerStats.Attributes.JumpPower);
             canDoubleJump = true;
         }
         else if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W)) && canDoubleJump && !IsGrounded())
@@ -111,7 +114,7 @@ public class Movement : MonoBehaviour
     {
         if (!isBlocking && !isCrouching)
         {
-            rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(horizontal * playerStats.Attributes.Speed, rb.linearVelocity.y);
         }
     }
 

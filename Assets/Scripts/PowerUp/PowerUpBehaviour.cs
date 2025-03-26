@@ -11,7 +11,7 @@ public class PowerUpBehaviour : MonoBehaviour
             PlayerStats playerHealth = collision.GetComponent<PlayerStats>();
             if (playerHealth != null)
             {
-                playerHealth.IncreaseHealth(healthIncrease);
+                playerHealth.Health.Heal(20);
             }
 
             Destroy(gameObject); // Remove power-up after collection

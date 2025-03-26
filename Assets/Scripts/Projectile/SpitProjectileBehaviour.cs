@@ -51,7 +51,7 @@ public class SpitProjectileBehaviour : MonoBehaviour
             PlayerStats playerHealth = collision.gameObject.GetComponent<PlayerStats>();
             if (playerHealth != null)
             {
-                HurtPlayer.doDamage(damage);
+                playerHealth.Health.TakeDamage(damage);
             }
             Destroy(gameObject);
         }
