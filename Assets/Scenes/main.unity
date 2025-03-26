@@ -1902,7 +1902,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 36341824}
   moveSpeed: 4
-  raycastDistance: 1
+  raycastDistance: 2
   chaseRange: 15
   stopRange: 0.5
   jumpForce: 6
