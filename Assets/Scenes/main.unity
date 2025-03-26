@@ -1906,6 +1906,7 @@ MonoBehaviour:
   chaseRange: 15
   stopRange: 0.5
   jumpForce: 6
+  verticalCheckDistance: 1.5
   groundCheck: {fileID: 1935050096}
   groundLayer:
     serializedVersion: 2
@@ -1913,12 +1914,6 @@ MonoBehaviour:
   rb: {fileID: 169482646}
   maxHealth: 100
   currentHealth: 0
-  lowHealthThreshold: 0.3
-  healAmount: 30
-  powerups:
-  - {fileID: 411581225}
-  - {fileID: 10826583}
-  - {fileID: 1286990419}
 --- !u!114 &169482652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7806,8 +7801,8 @@ Transform:
   m_GameObject: {fileID: 1193156885}
   serializedVersion: 2
   m_LocalRotation: {x: -0.023800641, y: -0, z: -0, w: 0.99971676}
-  m_LocalPosition: {x: -2.71, y: -3.55, z: -0.05}
-  m_LocalScale: {x: -0.50722164, y: 0.122274995, z: 1.4954063}
+  m_LocalPosition: {x: -2.642, y: -4.295, z: -0.015}
+  m_LocalScale: {x: -0.50722164, y: 0.70298916, z: 1.4954063}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
