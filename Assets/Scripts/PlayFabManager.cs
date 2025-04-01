@@ -15,6 +15,7 @@ using JetBrains.Annotations;
 
 public class PlayFabManager : MonoBehaviour
 {
+    public InputField usernameInput;
     public Text leaderboardTitle;
     public GameObject rowPrefab;
     public Transform rowsParent;
@@ -31,7 +32,8 @@ public class PlayFabManager : MonoBehaviour
         var request = new RegisterPlayFabUserRequest {
             Email = emailInput.text,
             Password = passwordInput.text,
-            RequireBothUsernameAndEmail = false
+            RequireBothUsernameAndEmail = true,
+            DisplayName = usernameInput.text
         };
         PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnError);
    }
