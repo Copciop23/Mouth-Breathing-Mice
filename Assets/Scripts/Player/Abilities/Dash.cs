@@ -10,6 +10,7 @@ public class Dash : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     private Movement movement;
     private SpringBoots springboots;
+    private PlayerStats playerStats;
 
     public bool canDash { get; private set; } = true;
     public float DashTimer { get; private set; }
@@ -18,6 +19,7 @@ public class Dash : MonoBehaviour
     {
         movement = GetComponent<Movement>();
         springboots = GetComponent<SpringBoots>();
+        playerStats = GetComponent<PlayerStats>();
     }
 
     void Update()

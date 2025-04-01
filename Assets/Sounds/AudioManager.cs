@@ -20,48 +20,38 @@ public class AudioManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            masterVolume = PlayerPrefs.GetFloat("MasterVolume", 100f) / 100;
+            sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 100f) / 100;
+            musicVolume = PlayerPrefs.GetFloat("MusicVolume", 100f) / 100;
+
+            Debug.Log($"Loaded Volumes - Master: {masterVolume}, SFX: {sfxVolume}, Music: {musicVolume}");
+
             DontDestroyOnLoad(gameObject);
+
+            // Initialize audio sources
+            musicSource = gameObject.AddComponent<AudioSource>();
+            musicSource.loop = true;
+
+            for (int i = 0; i < 5; i++)
+            {
+                AudioSource sfxSource = gameObject.AddComponent<AudioSource>();
+                sfxSources.Add(sfxSource);
+            }
+
+            LoadSounds();
+
+            // Update volumes after initializing everything
+            UpdateVolumes();
         }
         else
         {
             Destroy(gameObject);
             return;
         }
-
-        musicSource = gameObject.AddComponent<AudioSource>();
-        musicSource.loop = true;
-
-        for (int i = 0; i < 5; i++)
-        {
-            AudioSource sfxSource = gameObject.AddComponent<AudioSource>();
-            sfxSources.Add(sfxSource);
-        }
-
-        LoadSounds();
     }
+
     private void LoadSounds()
     {
-        Transform sfxChild = transform.Find("SFX");
-        if (sfxChild != null)
-        {
-            AudioSource[] sfxAudioSources = sfxChild.GetComponentsInChildren<AudioSource>();
-            foreach (AudioSource source in sfxAudioSources)
-            {
-                if (!sfxLibrary.ContainsKey(source.gameObject.name))
-                {
-                    sfxLibrary.Add(source.gameObject.name, source.clip);
-                }
-                else
-                {
-                    Debug.LogWarning($"SFX with name '{source.gameObject.name}' already exists.");
-                }
-            }
-        }
-        else
-        {
-            Debug.LogWarning("SFX child object not found.");
-        }
-
         Transform musicChild = transform.Find("Music");
         if (musicChild != null)
         {
@@ -71,6 +61,7 @@ public class AudioManager : MonoBehaviour
                 if (!musicLibrary.ContainsKey(source.gameObject.name))
                 {
                     musicLibrary.Add(source.gameObject.name, source.clip);
+                    Debug.Log($"Added music clip '{source.gameObject.name}' to library.");
                 }
                 else
                 {
@@ -82,10 +73,33 @@ public class AudioManager : MonoBehaviour
         {
             Debug.LogWarning("Music child object not found.");
         }
+
+        Transform sfxChild = transform.Find("SFX");
+        if (sfxChild != null)
+        {
+            AudioSource[] sfxAudioSources = sfxChild.GetComponentsInChildren<AudioSource>();
+            foreach (AudioSource source in sfxAudioSources)
+            {
+                if (!sfxLibrary.ContainsKey(source.gameObject.name))
+                {
+                    sfxLibrary.Add(source.gameObject.name, source.clip);
+                    Debug.Log($"Added SFX clip '{source.gameObject.name}' to library.");
+                }
+                else
+                {
+                    Debug.LogWarning($"SFX with name '{source.gameObject.name}' already exists.");
+                }
+            }
+        }
+        else
+        {
+            Debug.LogWarning("SFX child object not found.");
+        }
     }
 
     public void PlaySound(string soundName, AudioType type)
     {
+        Debug.Log($"Attempting to play sound: {soundName} of type: {type}");
         switch (type)
         {
             case AudioType.SFX:
@@ -130,18 +144,23 @@ public class AudioManager : MonoBehaviour
             Debug.LogWarning("No available AudioSource for SFX.");
         }
     }
+
     private void PlayMusic(AudioClip clip)
     {
         musicSource.clip = clip;
         musicSource.volume = masterVolume * musicVolume;
+        Debug.Log($"Playing music with volume: {musicSource.volume}");
         musicSource.Play();
     }
+
     public void StopMusic()
     {
         musicSource.Stop();
     }
+
     public void UpdateVolumes()
     {
+        Debug.Log($"Updating Volumes - Master: {masterVolume}, SFX: {sfxVolume}, Music: {musicVolume}");
         musicSource.volume = masterVolume * musicVolume;
 
         foreach (var source in sfxSources)

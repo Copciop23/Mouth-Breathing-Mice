@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
     private float horizontal;
-    public float speed = 8f;
+    public float speed = 6f;
     public float jumpingPower = 8f;
     private bool isFacingRight = true;
     private bool canJump = true;
@@ -25,11 +26,14 @@ public class Movement : MonoBehaviour
     [SerializeField] private Transform playerSprite;
     [SerializeField] private Animator animator;
     private SpringBoots springboots;
+    private PlayerStats playerStats;
+
 
     public bool IsFacingRight => isFacingRight;
 
     private void Start()
     {
+        playerStats = GetComponent<PlayerStats>();
         if (springboots == null)
         {
             springboots = FindObjectOfType<SpringBoots>();
@@ -68,7 +72,7 @@ public class Movement : MonoBehaviour
 
         if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W)) && IsGrounded() && canJump && !recentlyLanded)
         {
-            Jump(jumpingPower);
+            Jump(playerStats.Attributes.JumpPower);
             canDoubleJump = true;
         }
         else if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W)) && canDoubleJump && !IsGrounded())
@@ -110,7 +114,7 @@ public class Movement : MonoBehaviour
     {
         if (!isBlocking && !isCrouching)
         {
-            rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(horizontal * playerStats.Attributes.Speed, rb.linearVelocity.y);
         }
     }
 
@@ -249,5 +253,15 @@ public class Movement : MonoBehaviour
         {
             animator.CrossFade("dash", 0, 0);
         }
+    }
+
+    internal void SetSpeed(float value)
+    {
+        speed = value;
+    }
+
+    internal void SetJumpPower(float value)
+    {
+        jumpingPower = value;
     }
 }

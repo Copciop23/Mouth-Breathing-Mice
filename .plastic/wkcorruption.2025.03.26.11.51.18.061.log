@@ -1,0 +1,8 @@
+Process name: Unity
+Process image: C:\Program Files\Unity 6000.0.24f1\Editor\Unity.exe
+Process started: 2025.03.26.11.49.58.791
+Error: End of file
+StackTrace:   at Codice.CM.Common.Serialization.PlasticBinaryReader.ThrowEndOfFile () [0x00051] in <9877eb58f6f144c884d75b42e9bdd116>:0 
+  at Codice.CM.Common.Serialization.PlasticBinaryReader.ReadString () [0x000ca] in <9877eb58f6f144c884d75b42e9bdd116>:0 
+  at Codice.CM.WorkspaceServer.TreeChangedDataStore.ReadChangedTree (Codice.CM.Common.WorkspaceInfo wkInfo, Codice.Client.Commands.WkTree.LocalItemIdSequencer localItemIdSequencer, Codice.CM.Common.Serialization.PlasticBinaryReader chgTreeReader) [0x00001] in <9877eb58f6f144c884d75b42e9bdd116>:0 
+  at Codice.CM.WorkspaceServer.TreeChangedDataStore.GetChangedTree (Codice.CM.Common.WorkspaceInfo wkInfo, System.String wkChangesFile, Codice.Client.Commands.WkTree.LocalItemIdSequencer localItemIdSequencer) [0x00028] in <9877eb58f6f144c884d75b42e9bdd116>:0 

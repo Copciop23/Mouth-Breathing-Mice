@@ -439,6 +439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: 100
+  maxHealth: 100
   slider: {fileID: 999494106}
   DeathScreen: {fileID: 1321238822}
   playerSprite: {fileID: 661821576}
@@ -1411,9 +1412,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4068b9a2109ab3e4dbf27783e8b23390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 9117396092212988311, guid: f8d90ff908023984f8328b3d22e5c072, type: 3}
-  shootInterval: 1
-  shootPoint: {fileID: 1900441241}
+  bulletPrefab: {fileID: 0}
+  firePoint: {fileID: 0}
+  shootRange: 6
+  bulletSpeed: 10
+  predictionFactor: 0.5
+  fireRate: 1.5
 --- !u!114 &169482650
 MonoBehaviour:
   m_ObjectHideFlags: 0
