@@ -618,10 +618,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9b0f47e907ee334b945daa4df5a7753, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHealth: 100
-  maxHealth: 100
-  slider: {fileID: 0}
-  DeathScreen: {fileID: 1321238822}
+  healthSlider: {fileID: 1717912492}
+  deathScreen: {fileID: 1321238822}
   playerSprite: {fileID: 661821576}
 --- !u!114 &36341833
 MonoBehaviour:
