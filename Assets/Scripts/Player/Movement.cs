@@ -102,7 +102,7 @@ public class Movement : MonoBehaviour
         }
         else
         {
-            rb.position += new Vector2(0, -0.0002f);
+            rb.position += new Vector2(0, -0.0014f);
             animator.CrossFade("inWall", 0, 0);
         }
     }
