@@ -16,6 +16,9 @@ public class PlayerStats : MonoBehaviour
     private Vector3 respawnPosition;
     private HashSet<Collider2D> processedColliders = new HashSet<Collider2D>();
 
+    // Now you can directly set the player number in the Inspector
+    [SerializeField] public int playerNumber;  // 1 for Player 1, 2 for Player 2
+
     public int Kills => combatStats.Kills;
     public PlayerHealth Health => health;
     public PlayerAttributes Attributes => attributes;
