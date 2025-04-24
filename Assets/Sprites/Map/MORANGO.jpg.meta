@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 25a2efce39df941549d255a2fd5626cf
+guid: 4fc1064fd69e64843b2a7b7598ae3484
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -359533964855933417
-    second: 1-1.png-1.png_0
+      213: 2994628282205839623
+    second: MORANGO_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 1-1.png-1.png_0
+      name: MORANGO_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 2
-        width: 27
-        height: 34
+        x: 0
+        y: 0
+        width: 1500
+        height: 1500
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 716031c83cda20bf0800000000000000
-      internalID: -359533964855933417
+      spriteID: 701a7337e8e0f8920800000000000000
+      internalID: 2994628282205839623
       vertices: []
       indices: 
       edges: []
@@ -134,8 +134,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      1-1.png-1.png_0: -359533964855933417
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
