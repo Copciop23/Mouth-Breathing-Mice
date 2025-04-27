@@ -11,6 +11,7 @@ public class Movement : MonoBehaviour
     private bool canJump = true;
     private bool recentlyLanded = false;
     private bool isPunching = false;
+    private bool isWhipping = false;
     private bool canDoubleJump = false;
     private bool ChargingJump = false;
     private bool isBlocking = false;
@@ -91,6 +92,12 @@ public class Movement : MonoBehaviour
             StartCoroutine(PunchAction());
         }
 
+        if (Input.GetKeyDown(KeyCode.X) && !isWhipping)
+        {
+            StartCoroutine(WhipAction());
+        }
+
+
         if (springboots.IsChargingJump)
         {
             StartCoroutine(ChargeJump());
@@ -105,7 +112,7 @@ public class Movement : MonoBehaviour
         }
         else
         {
-            rb.position += new Vector2(0, -0.0002f);
+            rb.position += new Vector2(0, -0.0014f);
             animator.CrossFade("inWall", 0, 0);
         }
     }
@@ -191,6 +198,7 @@ public class Movement : MonoBehaviour
         if (ChargingJump) return;
         if (isBlocking) return;
         if (isCrouching) return;
+        if (isWhipping) return;
 
         if (!IsGrounded() && rb.linearVelocity.y > 0)
         {
@@ -227,6 +235,17 @@ public class Movement : MonoBehaviour
 
         isPunching = false;
     }
+
+        private IEnumerator WhipAction()
+    {
+        isWhipping = true;
+        animator.CrossFade("whip", 0, 0);
+
+        yield return new WaitForSeconds(0.45f);
+
+        isWhipping = false;
+    }
+
 
     private IEnumerator ChargeJump()
     {
