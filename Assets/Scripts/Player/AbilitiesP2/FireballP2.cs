@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class Fireball : MonoBehaviour
+public class FireballP2 : MonoBehaviour
 {
     public GameObject fireballPrefab;
     public Transform firePoint;
     public float fireballSpeed = 10f;
     public float cooldownTime = 5f;
-    public KeyCode fireKey = KeyCode.F;
+    public KeyCode fireKey = KeyCode.Keypad3;
 
     private bool isFacingRight = true;
     private float timeSinceLastShot = 0f;
@@ -27,10 +27,14 @@ public class Fireball : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
             isFacingRight = false;
-        else if (Input.GetKeyDown(KeyCode.D))
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
             isFacingRight = true;
+        }
 
         firePoint.localPosition = isFacingRight ? new Vector2(0.5f, 0f) : new Vector2(-0.5f, 0f);
 
@@ -46,8 +50,9 @@ public class Fireball : MonoBehaviour
         GameObject fireball = Instantiate(fireballPrefab, firePoint.position, firePoint.rotation);
         SpitProjectileBehaviour projectileBehaviour = fireball.GetComponent<SpitProjectileBehaviour>();
         if (projectileBehaviour != null)
+        {
             projectileBehaviour.isFacingRight = isFacingRight;
-
+        }
         AudioManager.Instance.PlaySound("fireball", AudioManager.AudioType.SFX);
     }
 }

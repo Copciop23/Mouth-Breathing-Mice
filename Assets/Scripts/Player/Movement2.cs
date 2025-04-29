@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+public class MovementP2 : MonoBehaviour
 {
     private float horizontal;
     public float speed = 6f;
@@ -20,14 +20,24 @@ public class Movement : MonoBehaviour
     private Vector3 lastPosition;
     private float immobilityTime;
 
+    // Player 2 Controls
+    private KeyCode jumpKey = KeyCode.UpArrow;
+    private KeyCode blockKey = KeyCode.Keypad0;
+    private KeyCode crouchKey = KeyCode.DownArrow;
+    private KeyCode punchKey = KeyCode.Keypad1;
+    private KeyCode dashKey = KeyCode.Keypad2;
+    private KeyCode fireballKey = KeyCode.Keypad3;
+    private KeyCode hawkTuahKey = KeyCode.Keypad4;
+    private KeyCode shieldKey = KeyCode.Keypad5;
+    private KeyCode chargeJumpKey = KeyCode.RightControl;
+
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform playerSprite;
     [SerializeField] private Animator animator;
-    private SpringBoots springboots;
+    private SpringBootsP2 springboots;
     private PlayerStats playerStats;
-
 
     public bool IsFacingRight => isFacingRight;
 
@@ -36,31 +46,31 @@ public class Movement : MonoBehaviour
         playerStats = GetComponent<PlayerStats>();
         if (springboots == null)
         {
-            springboots = FindObjectOfType<SpringBoots>();
+            springboots = GetComponent<SpringBootsP2>();
         }
     }
 
     void Update()
 {
-    // Movement with A/D keys
-    horizontal = Input.GetKey(KeyCode.D) ? 1 : Input.GetKey(KeyCode.A) ? -1 : 0;
+    // Manual input with Arrow keys
+    horizontal = Input.GetKey(KeyCode.RightArrow) ? 1 : Input.GetKey(KeyCode.LeftArrow) ? -1 : 0;
 
-    if (Input.GetKeyDown(KeyCode.B))
+    if (Input.GetKeyDown(KeyCode.RightShift))
     {
         StartBlocking();
         AudioManager.Instance.PlaySound("fireball", AudioManager.AudioType.SFX);
     }
-    else if (Input.GetKeyUp(KeyCode.B))
+    else if (Input.GetKeyUp(KeyCode.RightShift))
     {
         StopBlocking();
     }
 
-    if (Input.GetKeyDown(KeyCode.S))
+    if (Input.GetKeyDown(KeyCode.DownArrow))
     {
         StartCrouching();
         AudioManager.Instance.PlaySound("punch", AudioManager.AudioType.SFX);
     }
-    else if (Input.GetKeyUp(KeyCode.S))
+    else if (Input.GetKeyUp(KeyCode.DownArrow))
     {
         StopCrouching();
     }
@@ -71,23 +81,23 @@ public class Movement : MonoBehaviour
         return;
     }
 
-    if ((Input.GetKeyDown(KeyCode.W)) && IsGrounded() && canJump && !recentlyLanded)
+    if ((Input.GetKeyDown(KeyCode.UpArrow)) && IsGrounded() && canJump && !recentlyLanded)
     {
         Jump(playerStats.Attributes.JumpPower);
         canDoubleJump = true;
     }
-    else if ((Input.GetKeyDown(KeyCode.W)) && canDoubleJump && !IsGrounded())
+    else if ((Input.GetKeyDown(KeyCode.UpArrow)) && canDoubleJump && !IsGrounded())
     {
         Jump(jumpingPower * 0.8f);
         canDoubleJump = false;
     }
 
-    if ((Input.GetKeyUp(KeyCode.W)) && rb.linearVelocity.y > 0f)
+    if ((Input.GetKeyUp(KeyCode.UpArrow)) && rb.linearVelocity.y > 0f)
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
     }
 
-    if (Input.GetMouseButtonDown(0) && !isPunching)
+    if (Input.GetKeyDown(KeyCode.RightControl) && !isPunching)
     {
         StartCoroutine(PunchAction());
     }
@@ -166,12 +176,11 @@ public class Movement : MonoBehaviour
 
     private bool IsGrounded()
     {
-        bool grounded = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.000001f, groundLayer);
+        bool grounded = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, groundLayer);
         if (grounded)
         {
             canDoubleJump = false;
         }
-
         return grounded;
     }
 
@@ -234,12 +243,13 @@ public class Movement : MonoBehaviour
         ChargingJump = true;
         animator.CrossFade("charge", 0, 0);
 
-        while (Input.GetKey(KeyCode.LeftAlt))
+        while (Input.GetKey(chargeJumpKey))
         {
-            ChargingJump = false;
-            animator.CrossFade("jumping", 0, 0);
             yield return null;
         }
+
+        ChargingJump = false;
+        animator.CrossFade("jumping", 0, 0);
     }
 
     private IEnumerator JumpCooldown()
@@ -254,15 +264,5 @@ public class Movement : MonoBehaviour
         {
             animator.CrossFade("dash", 0, 0);
         }
-    }
-
-    internal void SetSpeed(float value)
-    {
-        speed = value;
-    }
-
-    internal void SetJumpPower(float value)
-    {
-        jumpingPower = value;
     }
 }

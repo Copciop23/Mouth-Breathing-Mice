@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class Fireball : MonoBehaviour
+public class HawkTuahP2 : MonoBehaviour
 {
-    public GameObject fireballPrefab;
+    public GameObject spitPrefab;
     public Transform firePoint;
-    public float fireballSpeed = 10f;
-    public float cooldownTime = 5f;
-    public KeyCode fireKey = KeyCode.F;
+    public float spitSpeed = 5f;
+    public float cooldownTime = 3f;
+    public KeyCode spitKey = KeyCode.Keypad5;
 
     private bool isFacingRight = true;
     private float timeSinceLastShot = 0f;
@@ -27,27 +27,31 @@ public class Fireball : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
             isFacingRight = false;
-        else if (Input.GetKeyDown(KeyCode.D))
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
             isFacingRight = true;
+        }
 
         firePoint.localPosition = isFacingRight ? new Vector2(0.5f, 0f) : new Vector2(-0.5f, 0f);
 
-        if (Input.GetKeyDown(fireKey) && !isOnCooldown)
+        if (Input.GetKeyDown(spitKey) && !isOnCooldown)
         {
-            ShootFireball();
+            ShootSpit();
             isOnCooldown = true;
         }
     }
 
-    void ShootFireball()
+    void ShootSpit()
     {
-        GameObject fireball = Instantiate(fireballPrefab, firePoint.position, firePoint.rotation);
-        SpitProjectileBehaviour projectileBehaviour = fireball.GetComponent<SpitProjectileBehaviour>();
+        GameObject spit = Instantiate(spitPrefab, firePoint.position, firePoint.rotation);
+        SpitProjectileBehaviour projectileBehaviour = spit.GetComponent<SpitProjectileBehaviour>();
         if (projectileBehaviour != null)
+        {
             projectileBehaviour.isFacingRight = isFacingRight;
-
-        AudioManager.Instance.PlaySound("fireball", AudioManager.AudioType.SFX);
+        }
     }
 }
