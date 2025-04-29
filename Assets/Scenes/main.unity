@@ -653,14 +653,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1accc6ec3cd4ecc4d9070cbb0152beff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  punchDamage: 10
-  punchRange: 0.5
-  punchPoint: {fileID: 1333642293}
-  punchableLayer:
-    serializedVersion: 2
-    m_Bits: 512
-  animator: {fileID: 661821579}
-  playerStats: {fileID: 36341832}
 --- !u!114 &36341835
 MonoBehaviour:
   m_ObjectHideFlags: 0

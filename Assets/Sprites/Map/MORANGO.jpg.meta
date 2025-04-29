@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      MORANGO_0: 2994628282205839623
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
