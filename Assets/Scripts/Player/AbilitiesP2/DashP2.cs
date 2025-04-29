@@ -1,30 +1,29 @@
 using System.Collections;
 using UnityEngine;
-using System.Collections.Generic;
-using UnityEngine.UI;
 
-public class Dash : MonoBehaviour
+public class DashP2 : MonoBehaviour
 {
     public float DashPower = 1f;
     public float dashDelay = 1.5f;
     [SerializeField] private Rigidbody2D rb;
-    private Movement movement;
-    private SpringBoots springboots;
+    private MovementP2 movement;
+    private SpringBootsP2 springboots;
     private PlayerStats playerStats;
+    private KeyCode dashKey = KeyCode.Keypad2;
 
     public bool canDash { get; private set; } = true;
     public float DashTimer { get; private set; }
 
     void Start()
     {
-        movement = GetComponent<Movement>();
-        springboots = GetComponent<SpringBoots>();
+        movement = GetComponent<MovementP2>();
+        springboots = GetComponent<SpringBootsP2>();
         playerStats = GetComponent<PlayerStats>();
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1) && canDash && !springboots.IsChargingJump)
+        if (Input.GetKeyDown(dashKey) && canDash && !springboots.IsChargingJump)
         {
             DashAbility();
             StartCoroutine(DashCooldown());
@@ -36,15 +35,10 @@ public class Dash : MonoBehaviour
         }
     }
 
-
-
     private void DashAbility()
     {
-        if (movement == null) return;
-
         movement.TriggerDashingAnimation();
         AudioManager.Instance.PlaySound("dash", AudioManager.AudioType.SFX);
-
         float dashDirection = movement.IsFacingRight ? DashPower : -DashPower;
         rb.position = new Vector2(rb.position.x + dashDirection, rb.position.y);
     }
@@ -56,7 +50,4 @@ public class Dash : MonoBehaviour
         yield return new WaitForSeconds(dashDelay);
         canDash = true;
     }
-
-
-
 }

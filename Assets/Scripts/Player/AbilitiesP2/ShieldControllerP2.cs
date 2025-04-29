@@ -1,12 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
-public class ShieldController : MonoBehaviour
+public class ShieldControllerP2 : MonoBehaviour
 {
     public GameObject shieldPrefab;
     public float shieldDuration = 0.3f;
     public float cooldownTime = 7f;
-    public KeyCode shieldKey = KeyCode.H;
+    public KeyCode shieldKey = KeyCode.Keypad4;
 
     private bool isShieldActive = false;
     private bool isOnCooldown = false;
@@ -39,6 +39,7 @@ public class ShieldController : MonoBehaviour
         isOnCooldown = true;
 
         GameObject shield = Instantiate(shieldPrefab, transform.position, Quaternion.identity, transform);
+
         yield return new WaitForSeconds(shieldDuration);
         Destroy(shield);
 
