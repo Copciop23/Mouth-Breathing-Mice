@@ -103,12 +103,12 @@ TextureImporter:
       name: Slide_0
       rect:
         serializedVersion: 2
-        x: 11
-        y: 1
-        width: 22
-        height: 34
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 0
+        y: 0
+        width: 42
+        height: 37
+      alignment: 9
+      pivot: {x: 0.5822, y: 0.6329}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 7882a6ca494fe499992fa726f487a3ff
     internalID: 0
     vertices: []
     indices: 
