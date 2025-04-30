@@ -106,7 +106,7 @@ public class PlayerStats : MonoBehaviour
 [System.Serializable]
 public class PlayerHealth
 {
-    private int currentHealth;
+    private int currentHealth = 100;
     private int maxHealth;
     private Slider healthSlider;
 

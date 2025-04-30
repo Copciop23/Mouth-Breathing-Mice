@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 5fff28a736c21544a80b3c1680949f93
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - playerSystem: {instanceID: 0}
+  - enemySystem: {instanceID: 0}
+  - gameplayMechanics: {instanceID: 0}
+  - loginCanvas: {instanceID: 0}
+  - modeSelectionCanvas: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
