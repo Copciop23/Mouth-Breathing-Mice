@@ -1,4 +1,3 @@
-using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class SpitProjectileBehaviour : MonoBehaviour
@@ -8,27 +7,34 @@ public class SpitProjectileBehaviour : MonoBehaviour
     public int damage = 20;
 
     private Rigidbody2D rb;
-    [SerializeField] PlayerStats HurtPlayer;
+    [SerializeField] private PlayerStats HurtPlayer;
 
     public bool isFacingRight { get; set; }
+    private PlayerStats shooterStats;  // Add a reference to the player who shot this projectile
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        // Set the player reference at the moment of firing the projectile
+        shooterStats = GetComponentInParent<PlayerStats>(); // Gets the parent player stats
+
         if (rb != null)
         {
             float direction = isFacingRight ? 1f : -1f; // Set direction based on facing
-            rb.linearVelocity = new Vector2(direction * speed, 0f);
+            rb.linearVelocity = new Vector2(direction * speed, 0f); // Apply velocity in the correct direction
         }
 
-        Destroy(gameObject, lifetime);
+        Destroy(gameObject, lifetime);  // Destroy the projectile after its lifetime
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy")) {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
             EnemyHurt enemyHP = collision.gameObject.GetComponent<EnemyHurt>();
-            if (enemyHP != null) {
+            if (enemyHP != null)
+            {
                 enemyHP.TakeDamage(damage, gameObject);
             }
         }
@@ -49,7 +55,7 @@ public class SpitProjectileBehaviour : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             PlayerStats playerHealth = collision.gameObject.GetComponent<PlayerStats>();
-            if (playerHealth != null)
+            if (playerHealth != null && playerHealth != shooterStats) // Make sure we don't damage the shooter
             {
                 playerHealth.Health.TakeDamage(damage);
             }
