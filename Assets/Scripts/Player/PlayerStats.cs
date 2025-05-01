@@ -104,7 +104,7 @@ public class PlayerStats : MonoBehaviour
 }
 
 [System.Serializable]
-public class PlayerHealth
+public class PlayerHealth : MonoBehaviour
 {
     private int currentHealth = 100;
     private int maxHealth;

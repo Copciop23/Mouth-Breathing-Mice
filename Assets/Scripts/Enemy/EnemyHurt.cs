@@ -28,12 +28,6 @@ public class EnemyHurt : MonoBehaviour
             AwardKill(attacker);
             Die();
         }
-
-        // Notify EnemyAI about the damage
-        if (enemyAI != null)
-        {
-            enemyAI.TakeDamage(damage);
-        }
     }
 
     private void Die()
