@@ -5,42 +5,47 @@ public class HawkTuah : MonoBehaviour
     public GameObject spitPrefab;
     public Transform firePoint;
     public float spitSpeed = 5f;
-    public float cooldownTime = 3f;  // Set cooldown in the Inspector
+    public float cooldownTime = 3f;
+    public KeyCode spitKey = KeyCode.G;
 
     private bool isFacingRight = true;
-    private float timeSinceLastShot = 0f; // Track cooldown timer
+    private float timeSinceLastShot = 0f;
+    private bool isOnCooldown = false;
+
+    public bool IsOnCooldown => isOnCooldown;
+    public float RemainingCooldown => isOnCooldown ? Mathf.Max(0f, cooldownTime - timeSinceLastShot) : 0f;
 
     void Update()
     {
-        timeSinceLastShot += Time.deltaTime; // Update cooldown timer
-
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        if (isOnCooldown)
         {
+            timeSinceLastShot += Time.deltaTime;
+            if (timeSinceLastShot >= cooldownTime)
+            {
+                isOnCooldown = false;
+                timeSinceLastShot = 0f;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
             isFacingRight = false;
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-        {
+        else if (Input.GetKeyDown(KeyCode.D))
             isFacingRight = true;
-        }
 
-        firePoint.localPosition = isFacingRight ? new Vector2(0.1f, 0) : new Vector2(-0.1f, 0);
+        firePoint.localPosition = isFacingRight ? new Vector2(0.5f, 0f) : new Vector2(-0.5f, 0f);
 
-        // Shoot the spit when 'G' is pressed and cooldown has passed
-        if (Input.GetKeyDown(KeyCode.G) && timeSinceLastShot >= cooldownTime)
+        if (Input.GetKeyDown(spitKey) && !isOnCooldown)
         {
             ShootSpit();
-            timeSinceLastShot = 0f;  // Reset cooldown timer
+            isOnCooldown = true;
         }
     }
 
     void ShootSpit()
     {
         GameObject spit = Instantiate(spitPrefab, firePoint.position, firePoint.rotation);
-
         SpitProjectileBehaviour projectileBehaviour = spit.GetComponent<SpitProjectileBehaviour>();
         if (projectileBehaviour != null)
-        {
             projectileBehaviour.isFacingRight = isFacingRight;
-        }
     }
 }

@@ -15,8 +15,6 @@ public class SpringBoots : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private AudioSource jumpSound;
-    [SerializeField] private Slider ChargeSlider;
     public float CurrentJumpPower => currentJumpPower;
     public bool IsChargingJump => isChargingJump;
 
@@ -49,7 +47,6 @@ public class SpringBoots : MonoBehaviour
             PerformJump(currentJumpPower);
             isChargingJump = false;
         }
-        ChargeSlider.value = currentJumpPower;
     }
 
     private bool IsGrounded()
@@ -60,7 +57,7 @@ public class SpringBoots : MonoBehaviour
     private void PerformJump(float power)
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, power);
-        jumpSound?.Play();
+        AudioManager.Instance.PlaySound("jump", AudioManager.AudioType.SFX);
         currentJumpPower = 0;
     }
 }

@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Sprites/Map/Materials/New Material.mat.meta
 guid: 5b1d72add47b1f74499701b06a50313a
 NativeFormatImporter:
+========
+guid: 8c8ab4fc3ff4d90408fad22333af1995
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> Markas:Assets/Scenes/main.meta
   externalObjects: {}
   mainObjectFileID: 2100000
   userData: 
