@@ -107,7 +107,7 @@ public class Movement : MonoBehaviour
     else
     {
         rb.position += new Vector2(0, -0.0002f);
-        animator.CrossFade("inWall", 0, 0);
+        animator.CrossFade("inWall-albino", 0, 0);
     }
 }
 
@@ -128,19 +128,19 @@ public class Movement : MonoBehaviour
     private void StopBlocking()
     {
         isBlocking = false;
-        animator.CrossFade("idle", 0, 0);
+        animator.CrossFade("idle-albino", 0, 0);
     }
 
     private void StartCrouching()
     {
         isCrouching = true;
-        animator.CrossFade("down", 0, 0);
+        animator.CrossFade("down-albino", 0, 0);
     }
 
     private void StopCrouching()
     {
         isCrouching = false;
-        animator.CrossFade("idle", 0, 0);
+        animator.CrossFade("idle-albino", 0, 0);
     }
 
     private void DetectImmobility()
@@ -195,26 +195,26 @@ public class Movement : MonoBehaviour
 
         if (!IsGrounded() && rb.linearVelocity.y > 0)
         {
-            animator.CrossFade("jump", 0, 0);
+            animator.CrossFade("albino-jump", 0, 0);
         }
         else if (rb.linearVelocity.y < 0)
         {
-            animator.CrossFade("landing", 0, 0);
+            animator.CrossFade("landing-albino", 0, 0);
         }
         else if (horizontal != 0 && IsGrounded())
         {
-            animator.CrossFade("running", 0, 0);
+            animator.CrossFade("running-albino", 0, 0);
         }
         else
         {
-            animator.CrossFade("idle", 0, 0);
+            animator.CrossFade("idle-albino", 0, 0);
         }
     }
 
     private void Jump(float power)
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, power);
-        AudioManager.Instance.PlaySound("jump", AudioManager.AudioType.SFX);
+        AudioManager.Instance.PlaySound("albino-jump", AudioManager.AudioType.SFX);
         canJump = false;
         StartCoroutine(JumpCooldown());
     }
@@ -222,7 +222,7 @@ public class Movement : MonoBehaviour
     private IEnumerator PunchAction()
     {
         isPunching = true;
-        animator.CrossFade("punch", 0, 0);
+        animator.CrossFade("punch-albino", 0, 0);
 
         yield return new WaitForSeconds(0.30f);
 
