@@ -36,8 +36,6 @@ public class Dash : MonoBehaviour
         }
     }
 
-
-
     private void DashAbility()
     {
         if (movement == null) return;
@@ -56,7 +54,4 @@ public class Dash : MonoBehaviour
         yield return new WaitForSeconds(dashDelay);
         canDash = true;
     }
-
-
-
 }
