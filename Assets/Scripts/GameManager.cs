@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,14 +20,31 @@ public class GameManager : MonoBehaviour
 
     [Header("UI")]
     public GameObject modeSelectionCanvas;
-    public GameObject gameplayCanvas;
+    public GameObject PVPGameplayCanvas;
+    public GameObject BossGameplayCanvas;
 
     [Header("Maps")]
     public GameObject bossMap;
     public GameObject pvpMap;
 
+    [Header("UI References")]
+    public Slider player1HealthSlider; 
+    public Transform bossHealthBarParent; 
+    public Transform pvpHealthBarParent; 
+
+    private Vector2 pvpOriginalPosition;
+    private Vector3 pvpOriginalScale;
+    private Vector2 pvpOriginalAnchorsMin, pvpOriginalAnchorsMax;
+
     // State tracking
     private GameMode currentMode;
+
+    [Header("Countdown Settings")]
+    private GameTimer PVPGameTimer;
+    private GameTimer BossGameTimer;
+    [Header("Countdown Timers")]
+    [SerializeField] private FightStartingTimer pvpCountdown;
+    [SerializeField] private FightStartingTimer bossCountdown;
 
     private enum GameMode
     {
@@ -37,6 +56,25 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         InitializeGame();
+        InitializeTimers();
+
+        // Positions for player1 health slider
+        RectTransform pvpRT = player1HealthSlider.GetComponent<RectTransform>();
+        pvpOriginalPosition = pvpRT.anchoredPosition;
+        pvpOriginalScale = pvpRT.localScale;
+        pvpOriginalAnchorsMin = pvpRT.anchorMin;
+        pvpOriginalAnchorsMax = pvpRT.anchorMax;
+    }
+
+    void InitializeTimers()
+    {
+        GameTimer[] allTimers = FindObjectsOfType<GameTimer>(true);
+        
+        PVPGameTimer = System.Array.Find(allTimers, t => t.timerType == GameTimer.TimerType.PVP);
+        BossGameTimer = System.Array.Find(allTimers, t => t.timerType == GameTimer.TimerType.Boss);
+        
+        if (PVPGameTimer == null || BossGameTimer == null)
+            Debug.LogError("Missing timers in scene!");
     }
 
     void Update()
@@ -51,7 +89,8 @@ public class GameManager : MonoBehaviour
         UICamera.SetActive(true);
         
         modeSelectionCanvas.SetActive(true);
-        gameplayCanvas.SetActive(false);
+        PVPGameplayCanvas.SetActive(false);
+        BossGameplayCanvas.SetActive(false);
         
         // Ensure everything is disabled at start
         player1.SetActive(false);
@@ -81,6 +120,7 @@ public class GameManager : MonoBehaviour
     {
         // Reset previous state
         ResetAllGameplay();
+        ResetBossEnemy();
         
         // Set new state
         currentMode = GameMode.BossFight;
@@ -90,19 +130,45 @@ public class GameManager : MonoBehaviour
         UICamera.SetActive(false);
         
         player1.SetActive(true);
-        bossEnemy.SetActive(true);
-        bossEnemy.transform.position = bossSpawnPoint.position;
         
         modeSelectionCanvas.SetActive(false);
-        gameplayCanvas.SetActive(true);
+        BossGameplayCanvas.SetActive(true);
+        PVPGameplayCanvas.SetActive(false);
+
+        player1HealthSlider.transform.SetParent(bossHealthBarParent, false);
+        player1HealthSlider.gameObject.SetActive(true);
+
+        RectTransform sliderRT = player1HealthSlider.GetComponent<RectTransform>();
+        sliderRT.anchoredPosition = new Vector2(390, 0);
+        sliderRT.localScale = Vector3.one;
+        sliderRT.anchorMin = new Vector2(0.5f, 0.5f); // Center anchors
+        sliderRT.anchorMax = new Vector2(0.5f, 0.5f);
+
+        BossGameTimer.ResetTimer();
 
         ResetPlayer1();
+
+        StartCoroutine(BossStartSequence());
+    }
+
+    IEnumerator WaitAndResume() {
+        yield return new WaitForSecondsRealtime(3);
+        Time.timeScale = 1;
     }
 
     public void Start1v1Mode()
     {
         ResetAllGameplay();
         currentMode = GameMode.PvP;
+
+        player1HealthSlider.transform.SetParent(pvpHealthBarParent, false);
+    
+        // Restore original PVP settings
+        RectTransform sliderRT = player1HealthSlider.GetComponent<RectTransform>();
+        sliderRT.anchoredPosition = pvpOriginalPosition;
+        sliderRT.localScale = pvpOriginalScale;
+        sliderRT.anchorMin = pvpOriginalAnchorsMin;
+        sliderRT.anchorMax = pvpOriginalAnchorsMax;
         
         pvpMap.SetActive(true);
         mainCamera.SetActive(true);
@@ -112,10 +178,31 @@ public class GameManager : MonoBehaviour
         player2.SetActive(true);
         
         modeSelectionCanvas.SetActive(false);
-        gameplayCanvas.SetActive(true);
+        PVPGameplayCanvas.SetActive(true);
+        BossGameplayCanvas.SetActive(false);
 
         ResetPlayers();
+
+        StartCoroutine(PvPStartSequence());
+
+        PVPGameTimer.ResetTimer();
     }
+
+    private IEnumerator PvPStartSequence()
+{
+    Time.timeScale = 0f; // Freeze game
+    yield return StartCoroutine(pvpCountdown.RunCountdown(3));
+    Time.timeScale = 1f; // Unfreeze game
+    PVPGameTimer.ResumeTimer(); // Start the PvP timer
+}
+
+private IEnumerator BossStartSequence()
+{
+    Time.timeScale = 0f; // Freeze game
+    yield return StartCoroutine(bossCountdown.RunCountdown(3));
+    Time.timeScale = 1f; // Unfreeze game
+    BossGameTimer.ResumeTimer(); // Start the Boss timer
+}
 
     public void ReturnToMenu()
     {
@@ -125,17 +212,24 @@ public class GameManager : MonoBehaviour
         mainCamera.SetActive(false);
         UICamera.SetActive(true);
         modeSelectionCanvas.SetActive(true);
-        gameplayCanvas.SetActive(false);
+        
+        PVPGameTimer.PauseTimer();
+        BossGameTimer.PauseTimer();
+
+        PVPGameplayCanvas.SetActive(false);
+        BossGameplayCanvas.SetActive(false);
     }
 
     public void Logout()
     {
         ResetAllGameplay();
         
-        gameplayCanvas.SetActive(false);
+        PVPGameplayCanvas.SetActive(false);
+        BossGameplayCanvas.SetActive(false);
+
     }
 
-    private void ResetAllGameplay()
+    public void ResetAllGameplay()
     {
         // Disable all gameplay elements
         player1.SetActive(false);
@@ -152,7 +246,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void ResetPlayers() 
+    public void ResetPlayers() 
 {
     ResetPlayer1();
 
@@ -161,8 +255,9 @@ public class GameManager : MonoBehaviour
     {
         player2.SetActive(true);
         
-        PlayerHealth health2 = player2.GetComponent<PlayerHealth>();
-        if (health2 != null) health2.ResetHealth();
+        PlayerStats stats2 = player2.GetComponent<PlayerStats>();
+        if (stats2 != null && stats2.Health != null) 
+            stats2.Health.ResetHealth();
         
         Rigidbody2D rb2 = player2.GetComponent<Rigidbody2D>();
         if (rb2 != null)
@@ -171,9 +266,8 @@ public class GameManager : MonoBehaviour
             rb2.angularVelocity = 0f;
         }
         
-        if (player2SpawnPoint != null) {
+        if (player2SpawnPoint != null) 
             player2.transform.position = player2SpawnPoint.position;
-        }
         
     }
 }
@@ -182,11 +276,11 @@ private void ResetPlayer1() {
     // Player 1 Reset
     if (player1 != null)
     {
-        // Ensure player is active before accessing components
         player1.SetActive(true);
         
-        PlayerHealth health1 = player1.GetComponent<PlayerHealth>();
-        if (health1 != null) health1.ResetHealth();
+        PlayerStats stats1 = player1.GetComponent<PlayerStats>();
+        if (stats1 != null && stats1.Health != null) 
+            stats1.Health.ResetHealth();
         
         Rigidbody2D rb1 = player1.GetComponent<Rigidbody2D>();
         if (rb1 != null)
@@ -195,8 +289,24 @@ private void ResetPlayer1() {
             rb1.angularVelocity = 0f;
         }
 
-        player1.transform.position = player1SpawnPoint.position;
-        
+        if (player1SpawnPoint != null)
+            player1.transform.position = player1SpawnPoint.position;
+    }
+}
+
+private void ResetBossEnemy() {
+    if (bossEnemy != null)
+    {
+        bossEnemy.SetActive(true);
+
+        EnemyHurt enemyStats = bossEnemy.GetComponent<EnemyHurt>();
+        if (enemyStats != null) {
+            enemyStats.resetHealth();
+        }
+
+        if (bossSpawnPoint != null) {
+            bossEnemy.transform.position = bossSpawnPoint.position;
+        }
     }
 }
 }

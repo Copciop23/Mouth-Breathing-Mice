@@ -42,6 +42,7 @@ public class Movement : MonoBehaviour
 
     void Update()
 {
+    if (!enabled) return;
     // Movement with A/D keys
     horizontal = Input.GetKey(KeyCode.D) ? 1 : Input.GetKey(KeyCode.A) ? -1 : 0;
 
@@ -113,6 +114,7 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!enabled) return;
         if (!isBlocking && !isCrouching)
         {
             rb.linearVelocity = new Vector2(horizontal * playerStats.Attributes.Speed, rb.linearVelocity.y);

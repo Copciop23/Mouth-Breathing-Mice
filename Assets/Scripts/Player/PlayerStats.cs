@@ -2,18 +2,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 public class PlayerStats : MonoBehaviour
 {
-    [SerializeField] private Slider healthSlider;
+    [Header("Death Screen")]
     [SerializeField] private GameObject deathScreen;
-    [SerializeField] private GameObject playerSprite;
+    [SerializeField] private TMP_Text wastedText;
+    [SerializeField] private Image fadeImage;
 
+    [Header("Death Screen Settings")]
+    [SerializeField] private float fadeDuration = 2f;
+    [SerializeField] private float wastedDisplayTime = 1.5f;
+
+    [Header("Other Attributes")]
+    [SerializeField] private GameManager gameManager;
+    [SerializeField] private Slider healthSlider;
     private Movement movementScript;
     private PlayerHealth health;
     private PlayerAttributes attributes;
     private PlayerCombatStats combatStats;
-    private Vector3 respawnPosition;
+    private bool isDead;
     private HashSet<Collider2D> processedColliders = new HashSet<Collider2D>();
 
     // Now you can directly set the player number in the Inspector
@@ -31,80 +40,83 @@ public class PlayerStats : MonoBehaviour
         combatStats = new PlayerCombatStats();
         attributes = new PlayerAttributes();
 
-        respawnPosition = transform.position;
-
         if (deathScreen != null)
         {
             deathScreen.SetActive(false);
         }
+
+        if (fadeImage != null) {
+            fadeImage.color = new Color(0, 0, 0, 0);
+        }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Spike"))
-        {
-            Collider2D collider = collision.collider;
-
-            if (!processedColliders.Contains(collider))
+    void Update() {
+         if (!isDead && health != null && health.CurrentHealth <= 0)
             {
-                processedColliders.Add(collider);
-                health.TakeDamage(20);
-
-                if (health.CurrentHealth <= 0)
-                {
-                    StartCoroutine(HandleDeath());
-                }
+                isDead = true;
+                StartCoroutine(HandleDeath());
             }
         }
-    }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Spike"))
+        private IEnumerator HandleDeath()
         {
-            Collider2D collider = collision.collider;
-            processedColliders.Remove(collider);
+            if (movementScript != null)
+        {
+            movementScript.enabled = false;
         }
-    }
+        else
+        {
+            Debug.LogError("Movement component missing on: " + gameObject.name);
+        }
 
-    private IEnumerator HandleDeath()
-    {
-        if (deathScreen != null)
+        if (deathScreen != null) 
         {
             deathScreen.SetActive(true);
-        }
+            // Show text and image
+            if (wastedText != null && fadeImage != null)
+            {
+                float timer = 0f;
+                wastedText.gameObject.SetActive(true);
+                while (timer < fadeDuration)
+                {
+                    timer += Time.deltaTime;
+                    float alpha = Mathf.Lerp(0, 1, timer / fadeDuration);
+                    fadeImage.color = new Color(0, 0, 0, alpha);
+                    yield return null;
+                }
+                yield return new WaitForSeconds(wastedDisplayTime);
+                wastedText.gameObject.SetActive(false);
+            }
 
-        if (playerSprite != null)
-        {
-            playerSprite.SetActive(false);
-        }
-        movementScript.enabled = false;
+            // Wait AFTER fade completes
+            yield return new WaitForSeconds(0.5f);
 
-        yield return new WaitForSeconds(1);
-        movementScript.enabled = true;
-
-        if (deathScreen != null)
-        {
+            // Return to menu AFTER all visual effects
+            if (gameManager != null) 
+            {
+                movementScript.enabled = true;
+                gameManager.ReturnToMenu();
+            }
+            else
+            {
+                Debug.LogError("GameManager reference missing!");
+            }
             deathScreen.SetActive(false);
-        }
+                
+            }
 
-        health.ResetHealth();
-        transform.position = respawnPosition;
+        isDead = false;
+        yield break;
+    }
 
-        if (playerSprite != null)
+        public void AddKill()
         {
-            playerSprite.SetActive(true);
+            combatStats.AddKill();
         }
-    }
-
-    public void AddKill()
-    {
-        combatStats.AddKill();
-    }
 }
 
 [System.Serializable]
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth
 {
     private int currentHealth = 100;
     private int maxHealth;
