@@ -1,8 +1,13 @@
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     [Header("Cameras")]
+    public static bool startingtimer = false;
+     public float totalTime = 99f;
+    public TMP_Text countdownText;
+    private float currentTime;    
     public GameObject mainCamera;
     public GameObject UICamera;
 
@@ -29,10 +34,23 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         escapeButtonFunction();
+        if (startingtimer == true) {
+            if (currentTime > 0)
+                {
+                    currentTime -= Time.deltaTime;
+                    UpdateCountdownText();
+                }
+            else
+                {
+                    Debug.Log("TIME'S UP!");
+                    enabled = false;
+                }
+        }
     }
 
     public void escapeButtonFunction() {
         if (Input.GetKey(KeyCode.Escape)) {
+        startingtimer = false;
         mainCamera.SetActive(false);
         UICamera.SetActive(true);
         modeSelectionCanvas.SetActive(true);
@@ -43,8 +61,10 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         // Enable only login UI
-        loginCanvas.SetActive(true);
-        modeSelectionCanvas.SetActive(false);
+        startingtimer = false;
+        modeSelectionCanvas.SetActive(true);
+        currentTime = totalTime;
+        UpdateCountdownText();
     }
 
     public void StartBossFight()
@@ -69,12 +89,15 @@ public class GameManager : MonoBehaviour
         player1.SetActive(true);
         
         // Switch UI
+
         loginCanvas.SetActive(false);
+        startingtimer = true;
         modeSelectionCanvas.SetActive(false);
     }
 
     public void Start1v1Mode()
     {
+        startingtimer = true;
         // Toggle maps
         pvpMap.SetActive(true);
         bossMap.SetActive(false);
@@ -100,5 +123,8 @@ public class GameManager : MonoBehaviour
         loginCanvas.SetActive(true);
         modeSelectionCanvas.SetActive(false);
         gameplayCanvas.SetActive(false);
+    }
+    void UpdateCountdownText() {
+        countdownText.text = Mathf.CeilToInt(currentTime).ToString();
     }
 }

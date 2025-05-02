@@ -359,6 +359,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 36341824}
+  - component: {fileID: 36341840}
   - component: {fileID: 36341827}
   - component: {fileID: 36341826}
   - component: {fileID: 36341825}
@@ -617,7 +618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 1717912492}
-  deathScreen: {fileID: 0}
+  deathScreen: {fileID: 1321238822}
   playerSprite: {fileID: 661821576}
   playerNumber: 1
 --- !u!114 &36341833
@@ -715,6 +716,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9acb7ab5bf66a6f43a3a5294ced50540, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &36341840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36341823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1accc6ec3cd4ecc4d9070cbb0152beff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  punchDamage: 10
+  punchBoxSize: {x: 0.35, y: 0.58}
+  punchOffset: 0.2
+  punchableLayer:
+    serializedVersion: 2
+    m_Bits: 768
+  animator: {fileID: 661821579}
+  playerStats: {fileID: 36341832}
 --- !u!1 &45670107
 GameObject:
   m_ObjectHideFlags: 0
@@ -1626,11 +1647,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   punchDamage: 10
-  punchRange: 1
-  punchPoint: {fileID: 464713935}
+  punchBoxSize: {x: 0.35, y: 0.58}
+  punchOffset: 0.2
   punchableLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 768
   animator: {fileID: 2017813239}
   playerStats: {fileID: 76055190}
 --- !u!114 &76055203
@@ -5319,7 +5340,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &461189988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7663,7 +7684,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &673209588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13787,6 +13808,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fff28a736c21544a80b3c1680949f93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalTime: 99
+  countdownText: {fileID: 1796747927}
   mainCamera: {fileID: 673209587}
   UICamera: {fileID: 461189987}
   player1: {fileID: 36341823}
@@ -13827,6 +13850,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   totalTime: 99
   countdownText: {fileID: 1796747927}
+  currentTime: 0
 --- !u!1 &1162162497
 GameObject:
   m_ObjectHideFlags: 0
@@ -18721,7 +18745,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1534008546
 MonoBehaviour:
   m_ObjectHideFlags: 0
