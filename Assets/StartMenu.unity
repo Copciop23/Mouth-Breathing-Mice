@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7910c9407a4dc204090f454a5dc486d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usernameInput: {fileID: 0}
+  usernameInput: {fileID: 1907795499}
   leaderboardTitle: {fileID: 168871425}
   rowPrefab: {fileID: 7023962037584977038, guid: 49b0d641bd4229d4bbbcdc1387abf85f, type: 3}
   rowsParent: {fileID: 2109238736}

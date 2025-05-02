@@ -32,9 +32,10 @@ public class PlayFabManager : MonoBehaviour
         var request = new RegisterPlayFabUserRequest {
             Email = emailInput.text,
             Password = passwordInput.text,
-            RequireBothUsernameAndEmail = true,
-            DisplayName = usernameInput.text
-        };
+            Username = usernameInput.text,
+            DisplayName = usernameInput.text,
+            RequireBothUsernameAndEmail = true
+                };
         PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnError);
    }
 
