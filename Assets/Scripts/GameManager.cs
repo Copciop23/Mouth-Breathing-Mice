@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     private Vector2 pvpOriginalAnchorsMin, pvpOriginalAnchorsMax;
 
     // State tracking
-    private GameMode currentMode;
+    public static GameMode currentMode;
 
     [Header("Countdown Settings")]
     private GameTimer PVPGameTimer;
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private FightStartingTimer pvpCountdown;
     [SerializeField] private FightStartingTimer bossCountdown;
 
-    private enum GameMode
+    public enum GameMode
     {
         Menu,
         BossFight,
@@ -183,6 +183,7 @@ public class GameManager : MonoBehaviour
         BossGameplayCanvas.SetActive(false);
 
         ResetPlayers();
+        PlayerData.killssss += 1;
 
         StartCoroutine(PvPStartSequence());
 

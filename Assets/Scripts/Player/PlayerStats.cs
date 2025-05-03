@@ -66,6 +66,10 @@ public class PlayerStats : MonoBehaviour
     private IEnumerator HandleDeath()
     {
         PlayerData.deathssss += 1;
+        if (GameManager.currentMode == GameManager.GameMode.PvP) {
+            PlayerData.killssss +=1;
+            PlayerData.winssss +=1;
+        }
 
         if (movementP1 != null) movementP1.enabled = false;
         if (movementP2 != null) movementP2.enabled = false;
