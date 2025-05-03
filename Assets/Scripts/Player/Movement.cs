@@ -88,10 +88,6 @@ public class Movement : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
         }
 
-        if (Input.GetMouseButtonDown(0) && !isPunching)
-        {
-            StartCoroutine(PunchAction());
-        }
 
         if (springboots.IsChargingJump)
         {
