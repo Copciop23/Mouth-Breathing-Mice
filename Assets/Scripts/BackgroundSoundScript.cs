@@ -5,7 +5,7 @@ public class BackgroundSoundScript : MonoBehaviour
     void Start()
     {
 
-        AudioManager.Instance.PlaySound("BackgroundMusic", AudioManager.AudioType.Music);
+        AudioManager.Instance.PlaySound("MainMenuSong", AudioManager.AudioType.Music);
     }
 
 }

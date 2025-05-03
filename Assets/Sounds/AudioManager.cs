@@ -169,6 +169,37 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void SwitchToBackgroundMusic()
+    {
+        Debug.Log("Switching from MainMenuSong to BackgroundMusic.");
+
+        if (musicLibrary.TryGetValue("MainMenuSong", out AudioClip mainMenuSong))
+        {
+            if (musicSource.clip == mainMenuSong && musicSource.isPlaying)
+            {
+                musicSource.Stop();
+            }
+        }
+        else
+        {
+            Debug.LogWarning("MainMenuSong not found in the library.");
+        }
+
+        if (musicLibrary.TryGetValue("BackgroundMusic", out AudioClip backgroundMusic))
+        {
+            if (musicSource.clip != backgroundMusic)
+            {
+                musicSource.clip = backgroundMusic;
+                musicSource.volume = masterVolume * musicVolume;
+                musicSource.Play();
+            }
+        }
+        else
+        {
+            Debug.LogWarning("BackgroundMusic not found in the library.");
+        }
+    }
+
     public enum AudioType
     {
         SFX,

@@ -59,18 +59,18 @@ public class Movement : MonoBehaviour
     if (Input.GetKeyDown(KeyCode.S))
     {
         StartCrouching();
-        AudioManager.Instance.PlaySound("punch", AudioManager.AudioType.SFX);
+        AudioManager.Instance.PlaySound("h", AudioManager.AudioType.SFX);
     }
     else if (Input.GetKeyUp(KeyCode.S))
     {
         StopCrouching();
     }
 
-    if (isBlocking || isCrouching)
-    {
-        rb.linearVelocity = Vector2.zero;
-        return;
-    }
+    // if (isBlocking || isCrouching)
+    // {
+    //     rb.linearVelocity = Vector2.zero;
+    //     return;
+    // }
 
     if ((Input.GetKeyDown(KeyCode.W)) && IsGrounded() && canJump && !recentlyLanded)
     {
@@ -216,7 +216,7 @@ public class Movement : MonoBehaviour
     private void Jump(float power)
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, power);
-        AudioManager.Instance.PlaySound("albino-jump", AudioManager.AudioType.SFX);
+        AudioManager.Instance.PlaySound("jump", AudioManager.AudioType.SFX);
         canJump = false;
         StartCoroutine(JumpCooldown());
     }

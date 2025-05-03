@@ -68,18 +68,18 @@ public class MovementP2 : MonoBehaviour
     if (Input.GetKeyDown(KeyCode.DownArrow))
     {
         StartCrouching();
-        AudioManager.Instance.PlaySound("punch", AudioManager.AudioType.SFX);
+        AudioManager.Instance.PlaySound("h", AudioManager.AudioType.SFX);
     }
     else if (Input.GetKeyUp(KeyCode.DownArrow))
     {
         StopCrouching();
     }
 
-    if (isBlocking || isCrouching)
-    {
-        rb.linearVelocity = Vector2.zero;
-        return;
-    }
+    // if (isBlocking || isCrouching)
+    // {
+    //     rb.linearVelocity = Vector2.zero;
+    //     return;
+    // }
 
     if ((Input.GetKeyDown(KeyCode.UpArrow)) && IsGrounded() && canJump && !recentlyLanded)
     {
