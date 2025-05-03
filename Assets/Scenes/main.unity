@@ -2741,8 +2741,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db4fdc5b59df42e4db7980106f19adc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
-  maxHealth: 10
+  health: 250
+  maxHealth: 250
   enemyHealthBar: {fileID: 1010987085}
   gameManager: {fileID: 1161889759}
   deathScreen: {fileID: 975771994}
