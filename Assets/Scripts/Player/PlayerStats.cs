@@ -65,6 +65,7 @@ public class PlayerStats : MonoBehaviour
 
     private IEnumerator HandleDeath()
     {
+        PlayerData.deathssss += 1;
 
         if (movementP1 != null) movementP1.enabled = false;
         if (movementP2 != null) movementP2.enabled = false;
@@ -114,7 +115,14 @@ public class PlayerStats : MonoBehaviour
 
     public void AddKill()
     {
+        PlayerData.killssss += 1;
         combatStats.AddKill();
+    }
+    public static void updatestats()
+    {
+        PlayFabManager.SendLeaderboard("WinsInTotal", PlayerData.winssss);
+        PlayFabManager.SendLeaderboard("KillsInTotal", PlayerData.killssss);
+        PlayFabManager.SendLeaderboard("DeathsInTotal", PlayerData.deathssss);
     }
 }
 

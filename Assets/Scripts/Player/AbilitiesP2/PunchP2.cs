@@ -38,7 +38,6 @@ public class PunchP2 : MonoBehaviour
     {
         isPunching = true;
         movement.enabled = false;
-
         animator?.CrossFade("punch", 0f);
         yield return new WaitForSeconds(0.1f);
 
@@ -67,8 +66,8 @@ public class PunchP2 : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.2f);
-        movement.enabled = true;
         isPunching = false;
+        movement.enabled = true;
     }
 
     private void OnDrawGizmosSelected()

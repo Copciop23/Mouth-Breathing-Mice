@@ -45,6 +45,7 @@ public class EnemyHurt : MonoBehaviour
 
     private IEnumerator HandleDeath()
     {
+        PlayerData.winssss += 1;
         // Turn off moving and shooting of AI
         if (movement != null) movement.enabled = false;
         if (enemyShooting != null) enemyShooting.enabled = false;

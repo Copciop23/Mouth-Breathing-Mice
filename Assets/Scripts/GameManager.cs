@@ -207,6 +207,7 @@ public class GameManager : MonoBehaviour
 
     public void ReturnToMenu()
     {
+        PlayerStats.updatestats();
         ResetAllGameplay();
         currentMode = GameMode.Menu;
 

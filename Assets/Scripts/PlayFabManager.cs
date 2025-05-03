@@ -12,9 +12,12 @@ using PlayFab.SharedModels;
 using PlayFab.ProgressionModels;
 using UnityEngine.SocialPlatforms.Impl;
 using JetBrains.Annotations;
+using TMPro;
+using System.Collections;
 
 public class PlayFabManager : MonoBehaviour
 {
+    public Text usernametttt;
     public InputField usernameInput;
     public Text leaderboardTitle;
     public GameObject rowPrefab;
@@ -44,7 +47,7 @@ public class PlayFabManager : MonoBehaviour
 
     private void OnRegisterSuccess(RegisterPlayFabUserResult result)
     {
-        messageText.text = "Registered";
+        messageText.text = "";
     }
 
     public void LoginButton()
@@ -64,13 +67,25 @@ public class PlayFabManager : MonoBehaviour
 
     private void OnLoginSuccess(LoginResult result)
     {
+        emailInput.text = "";
+        passwordInput.text = "";
         messageText.text = "Logged in";
         Debug.Log("Succesful Login");
+        GetPlayerStats();
         GetLeaderboard("KillsInTotal", "Kills");
         if (result.InfoResultPayload.PlayerProfile != null)
+        {
+            Debug.Log("Has a profile");
+            Debug.Log(result.InfoResultPayload.PlayerProfile.DisplayName);
             PlayerData.playerName = result.InfoResultPayload.PlayerProfile.DisplayName;
-        if (PlayerData.playerName == null)
+            usernametttt.text = "Logged in as: " + result.InfoResultPayload.PlayerProfile.DisplayName;
+        }
+        if (result.InfoResultPayload.PlayerProfile == null)
+        {
+            Debug.Log("Hasnt a profile");
             PlayerData.playerName = "ExampleName";
+            usernametttt.text = "Logged in as: Guest";
+        }
     }
     //55
     public void ResetPasswordButton()
@@ -113,12 +128,34 @@ public class PlayFabManager : MonoBehaviour
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
+    
 
     // Update is called once per frame
+
+    void GetPlayerStats() {
+    PlayFabClientAPI.GetPlayerStatistics(new GetPlayerStatisticsRequest(), 
+    result => {
+        Debug.Log("Got player statistics:");
+        foreach (var stat in result.Statistics) {
+            Debug.Log($"Statistic: {stat.StatisticName} = {stat.Value}");
+            if (stat.StatisticName == "WinsInTotal") {
+                PlayerData.winssss = stat.Value;
+                Debug.Log(PlayerData.winssss);
+            }
+            if (stat.StatisticName == "KillsInTotal") {
+                PlayerData.killssss = stat.Value;
+                Debug.Log(PlayerData.killssss);
+            }
+            if (stat.StatisticName == "DeathsInTotal") {
+                PlayerData.deathssss = stat.Value;
+                Debug.Log(PlayerData.deathssss);
+            }
+        }
+    }, 
+    error => {
+        Debug.LogError("Error getting statistics: " + error.GenerateErrorReport());
+    });
+}
     void Login()
     {
         var request = new LoginWithCustomIDRequest
@@ -138,10 +175,12 @@ public class PlayFabManager : MonoBehaviour
     void OnError(PlayFabError error)
     {
         Debug.Log("Error While creating/Logging in");
+        usernametttt.text = "Failed to Login";
         Debug.Log(error.GenerateErrorReport());
     }
-    public void SendLeaderboard(string StatisticName, int value)
+    public static void SendLeaderboard(string StatisticName, int value)
     {
+        if (PlayFabClientAPI.IsClientLoggedIn()){
         var request = new UpdatePlayerStatisticsRequest
         {
             Statistics = new List<PlayFab.ClientModels.StatisticUpdate> {
@@ -151,11 +190,20 @@ public class PlayFabManager : MonoBehaviour
             }
             }
         };
-        PlayFabClientAPI.UpdatePlayerStatistics(request, OnSuccess, OnError);
+
+        PlayFabClientAPI.UpdatePlayerStatistics(request,
+        result => {
+            Debug.Log($"Successfully updated stat");
+        },
+        error => {
+            Debug.LogError("Error updating stat: " + error.GenerateErrorReport());
+        });
+        }
     }
 
     public void GetLeaderboard(String StatisticNamee, string titlee)
     {
+        if (PlayFabClientAPI.IsClientLoggedIn()) {
         leaderboardTitle.text = titlee;
         var request = new GetLeaderboardRequest
         {
@@ -170,6 +218,7 @@ public class PlayFabManager : MonoBehaviour
 
         };
         PlayFabClientAPI.GetLeaderboard(request, OnLeaderboardSuccess, OnLeaderboardError);
+        }
     }
     private void OnLeaderboardSuccess(GetLeaderboardResult result)
     {
@@ -213,6 +262,33 @@ public class PlayFabManager : MonoBehaviour
     {
         Debug.Log("Successfully updated player statistics.");
     }
+    void Start()
+    {
+        Debug.Log("This script is attached to: " + gameObject.name);
+        if (PlayFabClientAPI.IsClientLoggedIn())
+    {
+        StartCoroutine(StartWithDelay());
+    }
+        PlayFabSettings.staticSettings.TitleId = "794EE";
+        
+    }
+    public IEnumerator StartWithDelay()
+    {
+        yield return new WaitForSeconds(1);
+        loadscener();
+    }
+    public void loadscener()
+    {
+        if (usernametttt == null || leaderboardTitle == null || rowsParent == null)
+{
+        Debug.LogError("UI references not set. Did you forget to assign them in the scene?");
+}
+        usernametttt.text = "Logged in as: " + PlayerData.playerName;
+        GetPlayerStats();
+        killLeaderboard();
+    }
+
+
 }
 
 
