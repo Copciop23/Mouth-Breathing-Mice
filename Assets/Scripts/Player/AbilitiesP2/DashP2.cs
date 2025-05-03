@@ -10,7 +10,7 @@ public class DashP2 : MonoBehaviour
     private SpringBootsP2 springboots;
     private PlayerStats playerStats;
     private KeyCode dashKey = KeyCode.Keypad2;
-    
+
     public bool canDash { get; private set; } = true;
     public float DashTimer { get; private set; }
 

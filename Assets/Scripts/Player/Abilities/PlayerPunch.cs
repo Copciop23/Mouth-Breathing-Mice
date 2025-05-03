@@ -22,7 +22,7 @@ public class PlayerPunch : MonoBehaviour
 
     void Update()
     {
-        
+
         if (Input.GetKeyDown(KeyCode.A))
             isFacingRight = false;
         else if (Input.GetKeyDown(KeyCode.D))

@@ -22,7 +22,7 @@ public class PunchP2 : MonoBehaviour
 
     void Update()
     {
-        
+
         if (Input.GetKeyDown(KeyCode.LeftArrow))
             isFacingRight = false;
         else if (Input.GetKeyDown(KeyCode.RightArrow))

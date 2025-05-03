@@ -41,76 +41,76 @@ public class Movement : MonoBehaviour
     }
 
     void Update()
-{
-    if (!enabled) return;
-    // Movement with A/D keys
-    horizontal = Input.GetKey(KeyCode.D) ? 1 : Input.GetKey(KeyCode.A) ? -1 : 0;
+    {
+        if (!enabled) return;
+        // Movement with A/D keys
+        horizontal = Input.GetKey(KeyCode.D) ? 1 : Input.GetKey(KeyCode.A) ? -1 : 0;
 
-    if (Input.GetKeyDown(KeyCode.B))
-    {
-        StartBlocking();
-        AudioManager.Instance.PlaySound("fireball", AudioManager.AudioType.SFX);
-    }
-    else if (Input.GetKeyUp(KeyCode.B))
-    {
-        StopBlocking();
-    }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            StartBlocking();
+            AudioManager.Instance.PlaySound("fireball", AudioManager.AudioType.SFX);
+        }
+        else if (Input.GetKeyUp(KeyCode.B))
+        {
+            StopBlocking();
+        }
 
-    if (Input.GetKeyDown(KeyCode.S))
-    {
-        StartCrouching();
-        AudioManager.Instance.PlaySound("h", AudioManager.AudioType.SFX);
-    }
-    else if (Input.GetKeyUp(KeyCode.S))
-    {
-        StopCrouching();
-    }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            StartCrouching();
+            AudioManager.Instance.PlaySound("h", AudioManager.AudioType.SFX);
+        }
+        else if (Input.GetKeyUp(KeyCode.S))
+        {
+            StopCrouching();
+        }
 
-    // if (isBlocking || isCrouching)
-    // {
-    //     rb.linearVelocity = Vector2.zero;
-    //     return;
-    // }
+        // if (isBlocking || isCrouching)
+        // {
+        //     rb.linearVelocity = Vector2.zero;
+        //     return;
+        // }
 
-    if ((Input.GetKeyDown(KeyCode.W)) && IsGrounded() && canJump && !recentlyLanded)
-    {
-        Jump(playerStats.Attributes.JumpPower);
-        canDoubleJump = true;
-    }
-    else if ((Input.GetKeyDown(KeyCode.W)) && canDoubleJump && !IsGrounded())
-    {
-        Jump(jumpingPower * 0.8f);
-        canDoubleJump = false;
-    }
+        if ((Input.GetKeyDown(KeyCode.W)) && IsGrounded() && canJump && !recentlyLanded)
+        {
+            Jump(playerStats.Attributes.JumpPower);
+            canDoubleJump = true;
+        }
+        else if ((Input.GetKeyDown(KeyCode.W)) && canDoubleJump && !IsGrounded())
+        {
+            Jump(jumpingPower * 0.8f);
+            canDoubleJump = false;
+        }
 
-    if ((Input.GetKeyUp(KeyCode.W)) && rb.linearVelocity.y > 0f)
-    {
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
-    }
+        if ((Input.GetKeyUp(KeyCode.W)) && rb.linearVelocity.y > 0f)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
+        }
 
-    if (Input.GetMouseButtonDown(0) && !isPunching)
-    {
-        StartCoroutine(PunchAction());
-    }
+        if (Input.GetMouseButtonDown(0) && !isPunching)
+        {
+            StartCoroutine(PunchAction());
+        }
 
-    if (springboots.IsChargingJump)
-    {
-        StartCoroutine(ChargeJump());
-    }
+        if (springboots.IsChargingJump)
+        {
+            StartCoroutine(ChargeJump());
+        }
 
-    DetectImmobility();
+        DetectImmobility();
 
-    if (IsGrounded() || !IsImmobile())
-    {
-        Flip();
-        UpdateAnimation();
+        if (IsGrounded() || !IsImmobile())
+        {
+            Flip();
+            UpdateAnimation();
+        }
+        else
+        {
+            rb.position += new Vector2(0, -0.0002f);
+            animator.CrossFade("inWall-albino", 0, 0);
+        }
     }
-    else
-    {
-        rb.position += new Vector2(0, -0.0002f);
-        animator.CrossFade("inWall-albino", 0, 0);
-    }
-}
 
     private void FixedUpdate()
     {

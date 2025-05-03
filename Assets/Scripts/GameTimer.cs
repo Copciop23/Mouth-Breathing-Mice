@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GameTimer : MonoBehaviour
 {
-    public enum TimerType {PVP, Boss}
+    public enum TimerType { PVP, Boss }
     public TimerType timerType;
     public float totalTime = 99f;
     public TMP_Text countdownText;
@@ -21,7 +21,7 @@ public class GameTimer : MonoBehaviour
         {
             currentTime -= Time.deltaTime;
             UpdateCountdownText();
-            
+
             if (currentTime <= 0)
             {
                 Debug.Log("TIME'S UP!");

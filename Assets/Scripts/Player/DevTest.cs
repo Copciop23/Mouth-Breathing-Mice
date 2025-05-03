@@ -9,6 +9,6 @@ public class DevTest : MonoBehaviour
 
     void Update()
     {
-        speeds.text = " x: "+rb.position.x.ToString()+"\n y: "+ rb.position.y.ToString()+"\n x vel: "+rb.linearVelocity.x.ToString() + "\n y vel: " + rb.linearVelocity.y.ToString();
+        speeds.text = " x: " + rb.position.x.ToString() + "\n y: " + rb.position.y.ToString() + "\n x vel: " + rb.linearVelocity.x.ToString() + "\n y vel: " + rb.linearVelocity.y.ToString();
     }
 }

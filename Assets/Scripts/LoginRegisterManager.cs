@@ -24,7 +24,8 @@ public class LoginRegisterManager : MonoBehaviour
         registerPanel.SetActive(true);
     }
 
-    public void LoginToMenu() {
+    public void LoginToMenu()
+    {
         menuGamemodeCanvas.SetActive(true);
         loginRegisterCanvas.SetActive(false);
     }

@@ -12,10 +12,10 @@ public class Usernames : MonoBehaviour
 
     private void Start()
     {
-        if (playerName!=null)
+        if (playerName != null)
         {
             usernameHolder.text = playerName;
         }
     }
-} 
+}
 

@@ -22,6 +22,7 @@ public class EnemyHurt : MonoBehaviour
     {
         movement = GetComponent<EnemyAI>();
         enemyShooting = GetComponent<EnemyShooting>();
+
         enemyHealthBar.maxValue = health;
         enemyHealthBar.value = health;
 
@@ -36,62 +37,62 @@ public class EnemyHurt : MonoBehaviour
         enemyHealthBar.value = health;
 
         if (!isDead && health <= 0)
-            {
-                isDead = true;
-                StartCoroutine(HandleDeath());
-            }
+        {
+            isDead = true;
+            StartCoroutine(HandleDeath());
+        }
     }
 
     private IEnumerator HandleDeath()
     {
-        if (movement != null) {
+        // Turn off moving and shooting of AI
+        if (movement != null) movement.enabled = false;
+        if (enemyShooting != null) enemyShooting.enabled = false;
+
+        if (deathScreen != null)
+        {
             movement.enabled = false;
-        }
-        if (enemyShooting != null) {
-            enemyShooting.enabled = false;
-        }
 
-    if (deathScreen != null) 
-    {
-        movement.enabled = false;
+            deathScreen.SetActive(true);
 
-        deathScreen.SetActive(true);
-        
-        // Show text and image
-        if (bossDefeatedText != null && fadeImage != null)
-        {
-            float timer = 0f;
-            bossDefeatedText.gameObject.SetActive(true);
-            while (timer < fadeDuration)
+            // Show text and image
+            if (bossDefeatedText != null && fadeImage != null)
             {
-                timer += Time.deltaTime;
-                float alpha = Mathf.Lerp(0, 1, timer / fadeDuration);
-                fadeImage.color = new Color(0, 0, 0, alpha);
-                yield return null;
+                float timer = 0f;
+                bossDefeatedText.gameObject.SetActive(true);
+                while (timer < fadeDuration)
+                {
+                    timer += Time.deltaTime;
+                    float alpha = Mathf.Lerp(0, 1, timer / fadeDuration);
+                    fadeImage.color = new Color(0, 0, 0, alpha);
+                    yield return null;
+                }
+                yield return new WaitForSeconds(wastedDisplayTime);
+                bossDefeatedText.gameObject.SetActive(false);
             }
-            yield return new WaitForSeconds(wastedDisplayTime);
-            bossDefeatedText.gameObject.SetActive(false);
+
+            // Wait AFTER fade completes
+            yield return new WaitForSeconds(0.5f);
+
+            // Turn the movement and shooting back on
+            if (movement != null) movement.enabled = true;
+            if (enemyShooting != null) enemyShooting.enabled = true;
+
+            // Return to menu AFTER all visual effects
+            if (gameManager != null)
+            {
+
+                gameManager.ReturnToMenu();
+            }
+            else
+            {
+                Debug.LogError("GameManager reference missing!");
+            }
+            deathScreen.SetActive(false);
         }
 
-        // Wait AFTER fade completes
-        yield return new WaitForSeconds(0.5f);
-
-        // Return to menu AFTER all visual effects
-        if (gameManager != null) 
-        {
-            movement.enabled = true;
-            enemyShooting.enabled = true;
-            gameManager.ReturnToMenu();
-        }
-        else
-        {
-            Debug.LogError("GameManager reference missing!");
-        }
-        deathScreen.SetActive(false);
+        isDead = false;
     }
-
-    isDead = false;
-}
 
     public void TakeDamage(int damage, GameObject attacker)
     {
@@ -103,10 +104,11 @@ public class EnemyHurt : MonoBehaviour
         }
     }
 
-    public void resetHealth() {
+    public void resetHealth()
+    {
         health = maxHealth;
     }
- 
+
     private void AwardKill(GameObject attacker)
     {
         PlayerStats playerStats = attacker.GetComponent<PlayerStats>();

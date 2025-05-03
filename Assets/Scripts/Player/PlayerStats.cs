@@ -18,7 +18,8 @@ public class PlayerStats : MonoBehaviour
     [Header("Other Attributes")]
     [SerializeField] private GameManager gameManager;
     [SerializeField] private Slider healthSlider;
-    private Movement movementScript;
+    private Movement movementP1;
+    private MovementP2 movementP2;
     private PlayerHealth health;
     private PlayerAttributes attributes;
     private PlayerCombatStats combatStats;
@@ -35,7 +36,9 @@ public class PlayerStats : MonoBehaviour
 
     void Start()
     {
-        movementScript = GetComponent<Movement>();
+        movementP1 = GetComponent<Movement>();
+        movementP2 = GetComponent<MovementP2>();
+
         health = new PlayerHealth(100, healthSlider);
         combatStats = new PlayerCombatStats();
         attributes = new PlayerAttributes();
@@ -45,33 +48,31 @@ public class PlayerStats : MonoBehaviour
             deathScreen.SetActive(false);
         }
 
-        if (fadeImage != null) {
+        if (fadeImage != null)
+        {
             fadeImage.color = new Color(0, 0, 0, 0);
         }
     }
 
-    void Update() {
-         if (!isDead && health != null && health.CurrentHealth <= 0)
-            {
-                isDead = true;
-                StartCoroutine(HandleDeath());
-            }
+    void Update()
+    {
+        if (!isDead && health != null && health.CurrentHealth <= 0)
+        {
+            isDead = true;
+            StartCoroutine(HandleDeath());
         }
+    }
 
-        private IEnumerator HandleDeath()
-        {
-            if (movementScript != null)
-        {
-            movementScript.enabled = false;
-        }
-        else
-        {
-            Debug.LogError("Movement component missing on: " + gameObject.name);
-        }
+    private IEnumerator HandleDeath()
+    {
 
-        if (deathScreen != null) 
+        if (movementP1 != null) movementP1.enabled = false;
+        if (movementP2 != null) movementP2.enabled = false;
+
+        if (deathScreen != null)
         {
             deathScreen.SetActive(true);
+
             // Show text and image
             if (wastedText != null && fadeImage != null)
             {
@@ -91,10 +92,12 @@ public class PlayerStats : MonoBehaviour
             // Wait AFTER fade completes
             yield return new WaitForSeconds(0.5f);
 
+            if (movementP1 != null) movementP1.enabled = true;
+            if (movementP2 != null) movementP2.enabled = true;
+
             // Return to menu AFTER all visual effects
-            if (gameManager != null) 
+            if (gameManager != null)
             {
-                movementScript.enabled = true;
                 gameManager.ReturnToMenu();
             }
             else
@@ -102,17 +105,17 @@ public class PlayerStats : MonoBehaviour
                 Debug.LogError("GameManager reference missing!");
             }
             deathScreen.SetActive(false);
-                
-            }
+
+        }
 
         isDead = false;
         yield break;
     }
 
-        public void AddKill()
-        {
-            combatStats.AddKill();
-        }
+    public void AddKill()
+    {
+        combatStats.AddKill();
+    }
 }
 
 [System.Serializable]

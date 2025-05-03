@@ -38,5 +38,5 @@ public class AbilityUI : MonoBehaviour
         shieldSlider.value = shieldScript.RemainingCooldown;
 
     }
-} 
+}
 

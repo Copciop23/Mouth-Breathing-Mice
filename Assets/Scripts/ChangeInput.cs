@@ -16,15 +16,19 @@ public class ChangeInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab) && Input.GetKey(KeyCode.LeftShift)) {
+        if (Input.GetKeyDown(KeyCode.Tab) && Input.GetKey(KeyCode.LeftShift))
+        {
             Selectable next = system.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnUp();
-            if (next != null) {
+            if (next != null)
+            {
                 next.Select();
             }
         }
-        else if (Input.GetKeyDown(KeyCode.Tab)) {
+        else if (Input.GetKeyDown(KeyCode.Tab))
+        {
             Selectable next = system.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnDown();
-            if (next != null) {
+            if (next != null)
+            {
                 next.Select();
             }
         }
