@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.Events;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -61,9 +62,12 @@ public class PlayerStats : MonoBehaviour
             isDead = true;
             StartCoroutine(HandleDeath());
         }
-    }
 
-    private IEnumerator HandleDeath()
+    }
+    void onblocktouched(GameObject Block) {
+        StartCoroutine(HandleDeath());
+    }
+    public IEnumerator HandleDeath()
     {
         PlayerData.deathssss += 1;
         if (GameManager.currentMode == GameManager.GameMode.PvP) {
@@ -128,6 +132,7 @@ public class PlayerStats : MonoBehaviour
         PlayFabManager.SendLeaderboard("KillsInTotal", PlayerData.killssss);
         PlayFabManager.SendLeaderboard("DeathsInTotal", PlayerData.deathssss);
     }
+
 }
 
 [System.Serializable]

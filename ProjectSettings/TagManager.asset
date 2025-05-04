@@ -11,6 +11,7 @@ TagManager:
   - Projectile
   - Powerup
   - powerup
+  - Death
   layers:
   - Default
   - TransparentFX

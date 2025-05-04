@@ -177,6 +177,11 @@ public class MovementP2 : MonoBehaviour
     private bool IsGrounded()
     {
         bool grounded = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, groundLayer);
+        RaycastHit2D hit = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.000001f, groundLayer);
+        if (hit.collider != null && hit.collider.CompareTag("Death"))
+        {
+            SendMessage("onblocktouched", hit.collider.gameObject, SendMessageOptions.DontRequireReceiver);
+        }
         if (grounded)
         {
             canDoubleJump = false;
