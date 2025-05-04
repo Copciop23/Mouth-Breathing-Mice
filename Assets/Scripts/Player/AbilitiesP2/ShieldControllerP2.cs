@@ -53,6 +53,7 @@ public class ShieldControllerP2 : MonoBehaviour
         // Add sprite renderer with blue circle
         SpriteRenderer renderer = shieldVisual.AddComponent<SpriteRenderer>();
         renderer.sprite = CreateCircleSprite();
+        float shieldOpacity = 0;
         renderer.color = new Color(0.2f, 0.6f, 1f, shieldOpacity); // Light blue
         renderer.sortingOrder = 10; // Make sure it renders above player
 
