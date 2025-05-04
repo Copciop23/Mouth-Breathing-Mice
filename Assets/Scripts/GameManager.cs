@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Script for handling functions like UI and cameras
+
 public class GameManager : MonoBehaviour
 {
     [Header("Cameras")]
