@@ -29,42 +29,50 @@ public class SpitProjectileBehaviour : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
+{
+    // Check if the collision is with an enemy
+    if (collision.gameObject.CompareTag("Enemy"))
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        EnemyHurt enemyHP = collision.gameObject.GetComponent<EnemyHurt>();
+        if (enemyHP != null)
         {
-            EnemyHurt enemyHP = collision.gameObject.GetComponent<EnemyHurt>();
-            if (enemyHP != null)
-            {
-                enemyHP.TakeDamage(damage, gameObject);
-            }
-        }
-
-        // Ignore collisions with other projectiles
-        if (collision.gameObject.CompareTag("Projectile"))
-        {
-            return; // Do nothing, let it pass through
-        }
-
-        // Ignore collisions with the shield
-        if (collision.gameObject.CompareTag("Shield"))
-        {
-            return; // Do nothing, let it pass through
-        }
-
-        // If it hits a player, deal damage and destroy the projectile
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            PlayerStats playerHealth = collision.gameObject.GetComponent<PlayerStats>();
-            if (playerHealth != null && playerHealth != shooterStats) // Make sure we don't damage the shooter
-            {
-                playerHealth.Health.TakeDamage(damage);
-            }
-            Destroy(gameObject);
-        }
-        // Destroy on any other collision (e.g., walls, spikes, environment)
-        else
-        {
-            Destroy(gameObject);
+            enemyHP.TakeDamage(damage, gameObject);
         }
     }
+
+    // Ignore collisions with other projectiles
+    if (collision.gameObject.CompareTag("Projectile"))
+    {
+        return; // Do nothing, let it pass through
+    }
+
+    
+    if (collision.gameObject.layer == 11)  
+    {
+        Destroy(gameObject); 
+        return; 
+    }
+    if (collision.gameObject.layer == 11)  
+    {
+        Destroy(gameObject); 
+        return; 
+    }
+
+    
+    if (collision.gameObject.CompareTag("Player"))
+    {
+        PlayerStats playerHealth = collision.gameObject.GetComponent<PlayerStats>();
+        if (playerHealth != null && playerHealth != shooterStats) 
+        {
+            playerHealth.Health.TakeDamage(damage);
+        }
+        Destroy(gameObject);
+    }
+
+    // Destroy on any other collision (e.g., walls, spikes, environment)
+    else
+    {
+        Destroy(gameObject);
+    }
+}
 }

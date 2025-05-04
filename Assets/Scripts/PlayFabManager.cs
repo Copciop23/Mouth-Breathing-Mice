@@ -47,7 +47,21 @@ public class PlayFabManager : MonoBehaviour
 
     private void OnRegisterSuccess(RegisterPlayFabUserResult result)
     {
-        messageText.text = "";
+        GetPlayerStats();
+        GetLeaderboard("KillsInTotal", "Kills");
+        if (result.Username != null)
+        {
+            Debug.Log("Has a profile");
+            Debug.Log(result.Username);
+            PlayerData.playerName = result.Username;
+            usernametttt.text = "Logged in as: " + result.Username;
+        }
+        if (result.Username == null)
+        {
+            Debug.Log("Hasnt a profile");
+            PlayerData.playerName = "ExampleName";
+            usernametttt.text = "Logged in as: Guest";
+        }
     }
 
     public void LoginButton()

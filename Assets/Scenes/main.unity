@@ -669,10 +669,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d3c67c9c2ea6a46814a159c473935b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shieldPrefab: {fileID: 3792853561976584580, guid: 97a4f588c6eea61478e2ae99da797e06, type: 3}
   shieldDuration: 0.4
   cooldownTime: 5
   shieldKey: 104
+  shieldOffset: {x: 0, y: 0}
+  shieldRadius: 0.2
+  shieldOpacity: 0.5
+  isShieldActive: 0
+  isOnCooldown: 0
+  timeSinceLastShield: 0
 --- !u!114 &36341837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1572,10 +1577,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ed9c4cef3684714d8ba65f36202ae4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shieldPrefab: {fileID: 3792853561976584580, guid: 97a4f588c6eea61478e2ae99da797e06, type: 3}
   shieldDuration: 0.4
   cooldownTime: 5
   shieldKey: 261
+  shieldOffset: {x: 0, y: 0}
+  shieldRadius: 0.2
+  shieldOpacity: 0.5
+  isShieldActive: 0
+  isOnCooldown: 0
+  timeSinceLastShield: 0
 --- !u!114 &76055204
 MonoBehaviour:
   m_ObjectHideFlags: 0

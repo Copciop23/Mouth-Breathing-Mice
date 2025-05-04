@@ -10,6 +10,7 @@ TagManager:
   - Shield
   - Projectile
   - Powerup
+  - powerup
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - Punchable
   - Player
   - Enemy
-  - 
+  - Shield
   - 
   - 
   - 

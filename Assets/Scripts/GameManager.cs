@@ -183,7 +183,6 @@ public class GameManager : MonoBehaviour
         BossGameplayCanvas.SetActive(false);
 
         ResetPlayers();
-        PlayerData.killssss += 1;
 
         StartCoroutine(PvPStartSequence());
 
