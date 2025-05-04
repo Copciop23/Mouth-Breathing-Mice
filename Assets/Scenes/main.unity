@@ -5240,6 +5240,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -79.089
       objectReference: {fileID: 0}
+    - target: {fileID: -4171001361061973571, guid: ec88d25454e5742e0a83494f270a2296, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -3270834789232462163, guid: ec88d25454e5742e0a83494f270a2296, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.2871
@@ -8551,6 +8555,10 @@ PrefabInstance:
     - target: {fileID: -6067185528594298527, guid: ec88d25454e5742e0a83494f270a2296, type: 3}
       propertyPath: m_DynamicOccludee
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5266785677919700964, guid: ec88d25454e5742e0a83494f270a2296, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4873779955919480951, guid: ec88d25454e5742e0a83494f270a2296, type: 3}
       propertyPath: m_LocalPosition.x
