@@ -30,6 +30,10 @@ public class PlayerStats : MonoBehaviour
     // Now you can directly set the player number in the Inspector
     [SerializeField] public int playerNumber;  // 1 for Player 1, 2 for Player 2
 
+    [Header("Animation")]
+    [SerializeField] private Animator animator;
+    [SerializeField] private string deathAnimationName = "death-albino";
+
     public int Kills => combatStats.Kills;
     public PlayerHealth Health => health;
     public PlayerAttributes Attributes => attributes;
@@ -70,19 +74,32 @@ public class PlayerStats : MonoBehaviour
     public IEnumerator HandleDeath()
     {
         PlayerData.deathssss += 1;
-        if (GameManager.currentMode == GameManager.GameMode.PvP) {
-            PlayerData.killssss +=1;
-            PlayerData.winssss +=1;
+        if (GameManager.currentMode == GameManager.GameMode.PvP)
+        {
+            PlayerData.killssss += 1;
+            PlayerData.winssss += 1;
         }
 
+        // Disable player movement
         if (movementP1 != null) movementP1.enabled = false;
         if (movementP2 != null) movementP2.enabled = false;
 
+        // Play death animation
+        if (animator != null)
+        {
+            animator.CrossFade(deathAnimationName, 0, 0);
+        }
+        else
+        {
+            Debug.LogError("Animator reference is missing! Cannot play death animation.");
+        }
+
+        // Display death screen
         if (deathScreen != null)
         {
             deathScreen.SetActive(true);
 
-            // Show text and image
+            // Show text and image with fade effect
             if (wastedText != null && fadeImage != null)
             {
                 float timer = 0f;
@@ -101,6 +118,7 @@ public class PlayerStats : MonoBehaviour
             // Wait AFTER fade completes
             yield return new WaitForSeconds(0.5f);
 
+            // Re-enable movement
             if (movementP1 != null) movementP1.enabled = true;
             if (movementP2 != null) movementP2.enabled = true;
 
@@ -114,7 +132,6 @@ public class PlayerStats : MonoBehaviour
                 Debug.LogError("GameManager reference missing!");
             }
             deathScreen.SetActive(false);
-
         }
 
         isDead = false;

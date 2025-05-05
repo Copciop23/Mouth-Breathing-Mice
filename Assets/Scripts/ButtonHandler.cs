@@ -1,5 +1,6 @@
 using UnityEngine;
 
+//button handler script for triggering music upon clicking buttons with this handler
 public class ButtonHandler : MonoBehaviour
 {
     public void SwitchMusic()

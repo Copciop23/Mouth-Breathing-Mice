@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Movement : MonoBehaviour
 {
@@ -29,11 +28,18 @@ public class Movement : MonoBehaviour
     private SpringBoots springboots;
     private PlayerStats playerStats;
 
+    [SerializeField] private ShieldController shieldController;
+    private float blockDuration = 0.6f; // How long blocking lasts
+    private float blockCooldown = 4.5f; // Cooldown between blocks
+    private float lastBlockTime = -10f; // Initialize to allow immediate first block
+
 
     public bool IsFacingRight => isFacingRight;
 
     private void Start()
     {
+        if (shieldController == null) shieldController = GetComponent<ShieldController>();
+
         playerStats = GetComponent<PlayerStats>();
         if (springboots == null)
         {
@@ -47,15 +53,15 @@ public class Movement : MonoBehaviour
         // Movement with A/D keys
         horizontal = Input.GetKey(KeyCode.D) ? 1 : Input.GetKey(KeyCode.A) ? -1 : 0;
 
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.H))
         {
             StartBlocking();
-            AudioManager.Instance.PlaySound("fireball", AudioManager.AudioType.SFX);
+//            AudioManager.Instance.PlaySound("fireball", AudioManager.AudioType.SFX);
         }
-        else if (Input.GetKeyUp(KeyCode.B))
-        {
-            StopBlocking();
-        }
+//        else if (Input.GetKeyUp(KeyCode.H))
+//        {
+//            StopBlocking();
+ //       }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
@@ -108,7 +114,6 @@ public class Movement : MonoBehaviour
             animator.CrossFade("inWall-albino", 0, 0);
         }
     }
-    
 
     private void FixedUpdate()
     {
@@ -121,14 +126,10 @@ public class Movement : MonoBehaviour
 
     private void StartBlocking()
     {
-        isBlocking = true;
-        animator.CrossFade("block", 0, 0);
-    }
-
-    private void StopBlocking()
-    {
-        isBlocking = false;
-        animator.CrossFade("idle-albino", 0, 0);
+        if (Time.time >= lastBlockTime + blockCooldown)
+        {
+            StartCoroutine(HandleBlocking());
+        }
     }
 
     private void StartCrouching()
@@ -167,11 +168,6 @@ public class Movement : MonoBehaviour
     private bool IsGrounded()
     {
         bool grounded = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.000001f, groundLayer);
-        RaycastHit2D hit = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.000001f, groundLayer);
-        if (hit.collider != null && hit.collider.CompareTag("Death"))
-        {
-            SendMessage("onblocktouched", hit.collider.gameObject, SendMessageOptions.DontRequireReceiver);
-        }
         if (grounded)
         {
             canDoubleJump = false;
@@ -251,6 +247,24 @@ public class Movement : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         canJump = true;
+    }
+
+    private IEnumerator HandleBlocking()
+    {
+        isBlocking = true;
+        animator.CrossFade("block-albino", 0, 0);
+
+        // Blocking lasts for the duration
+        yield return new WaitForSeconds(blockDuration);
+
+        isBlocking = false;
+        animator.CrossFade("idle-albino", 0, 0);
+
+        // Set cooldown
+        lastBlockTime = Time.time;
+
+        // Optional: Provide feedback that blocking is on cooldown
+        Debug.Log("Blocking is on cooldown.");
     }
 
     public void TriggerDashingAnimation()

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+//script for background music
 public class BackgroundSoundScript : MonoBehaviour
 {
     void Start()

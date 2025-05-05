@@ -39,10 +39,17 @@ public class MovementP2 : MonoBehaviour
     private SpringBootsP2 springboots;
     private PlayerStats playerStats;
 
+    [SerializeField] private ShieldController shieldController;
+    private float blockDuration = 0.6f; // How long blocking lasts
+    private float blockCooldown = 4.5f; // Cooldown between blocks
+    private float lastBlockTime = -10f; // Initialize to allow immediate first block
+
     public bool IsFacingRight => isFacingRight;
 
     private void Start()
     {
+        if (shieldController == null) shieldController = GetComponent<ShieldController>();
+
         playerStats = GetComponent<PlayerStats>();
         if (springboots == null)
         {
@@ -55,15 +62,16 @@ public class MovementP2 : MonoBehaviour
         // Manual input with Arrow keys
         horizontal = Input.GetKey(KeyCode.RightArrow) ? 1 : Input.GetKey(KeyCode.LeftArrow) ? -1 : 0;
 
-        if (Input.GetKeyDown(KeyCode.RightShift))
+        if (Input.GetKeyDown(KeyCode.Keypad5))
         {
             StartBlocking();
             AudioManager.Instance.PlaySound("fireball", AudioManager.AudioType.SFX);
         }
-        else if (Input.GetKeyUp(KeyCode.RightShift))
-        {
-            StopBlocking();
-        }
+        // Removed the StopBlocking on key up to match movement.cs
+        // else if (Input.GetKeyUp(KeyCode.RightShift))
+        // {
+        //     StopBlocking();
+        // }
 
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
@@ -74,12 +82,6 @@ public class MovementP2 : MonoBehaviour
         {
             StopCrouching();
         }
-
-        // if (isBlocking || isCrouching)
-        // {
-        //     rb.linearVelocity = Vector2.zero;
-        //     return;
-        // }
 
         if ((Input.GetKeyDown(KeyCode.UpArrow)) && IsGrounded() && canJump && !recentlyLanded)
         {
@@ -131,14 +133,28 @@ public class MovementP2 : MonoBehaviour
 
     private void StartBlocking()
     {
-        isBlocking = true;
-        animator.CrossFade("block", 0, 0);
+        if (Time.time >= lastBlockTime + blockCooldown)
+        {
+            StartCoroutine(HandleBlocking());
+        }
     }
 
-    private void StopBlocking()
+    private IEnumerator HandleBlocking()
     {
+        isBlocking = true;
+        animator.CrossFade("block", 0, 0);
+
+        // Blocking lasts for the duration
+        yield return new WaitForSeconds(blockDuration);
+
         isBlocking = false;
         animator.CrossFade("idle", 0, 0);
+
+        // Set cooldown
+        lastBlockTime = Time.time;
+
+        // Optional: Provide feedback that blocking is on cooldown
+        Debug.Log("Blocking is on cooldown.");
     }
 
     private void StartCrouching()

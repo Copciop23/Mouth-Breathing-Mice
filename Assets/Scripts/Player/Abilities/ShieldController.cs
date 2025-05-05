@@ -17,9 +17,26 @@ public class ShieldController : MonoBehaviour
     [SerializeField] private float timeSinceLastShield = 0f;
     private GameObject shieldVisual;
 
+    private SpriteRenderer playerSpriteRenderer;
+    private Sprite originalSprite;
+    private Animator animator;
+
+    [Header("Sprites")]
+    [SerializeField] private Sprite dodgeSprite; // Drag your dodge-1.png here
+
     public bool IsOnCooldown => isOnCooldown;
     public float RemainingCooldown => isOnCooldown ? Mathf.Max(0f, cooldownTime - timeSinceLastShield) : 0f;
 
+    void Start()
+    {
+        playerSpriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+        if (playerSpriteRenderer != null)
+        {
+            originalSprite = playerSpriteRenderer.sprite; // Save the original sprite
+        }
+    }
+    
     void Update()
     {
         if (isOnCooldown)
@@ -44,6 +61,12 @@ public class ShieldController : MonoBehaviour
         isOnCooldown = true;
         timeSinceLastShield = 0f;
 
+        // Change to dodge sprite
+        if (playerSpriteRenderer != null && dodgeSprite != null)
+        {
+            playerSpriteRenderer.sprite = dodgeSprite;
+        }
+
         // Create circular shield
         shieldVisual = new GameObject("ShieldVisual");
         shieldVisual.transform.position = (Vector2)transform.position + shieldOffset;
@@ -52,6 +75,7 @@ public class ShieldController : MonoBehaviour
         // Add sprite renderer with blue circle
         SpriteRenderer renderer = shieldVisual.AddComponent<SpriteRenderer>();
         renderer.sprite = CreateCircleSprite();
+        float shieldOpacity = 0;
         renderer.color = new Color(0.2f, 0.6f, 1f, shieldOpacity); // Light blue
         renderer.sortingOrder = 10; // Make sure it renders above player
 
@@ -65,7 +89,13 @@ public class ShieldController : MonoBehaviour
 
         yield return new WaitForSeconds(shieldDuration);
 
+        // Destroy shield and revert to original sprite
         Destroy(shieldVisual);
+        if (playerSpriteRenderer != null)
+        {
+            playerSpriteRenderer.sprite = originalSprite;
+        }
+
         isShieldActive = false;
     }
 
@@ -74,7 +104,7 @@ public class ShieldController : MonoBehaviour
         // Create a simple circle texture
         Texture2D tex = new Texture2D(128, 128);
         Color[] pixels = tex.GetPixels();
-        
+
         Vector2 center = new Vector2(tex.width / 2, tex.height / 2);
         float radius = tex.width / 2;
 
@@ -86,10 +116,10 @@ public class ShieldController : MonoBehaviour
                 pixels[y * tex.width + x] = dist <= radius ? Color.white : Color.clear;
             }
         }
-        
+
         tex.SetPixels(pixels);
         tex.Apply();
-        
+
         return Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.one * 0.5f);
     }
 
